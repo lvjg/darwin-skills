@@ -1,0 +1,6 @@
+interface:
+  display_name: "System Overview Design"
+  short_description: "Create sound evidence-backed system designs"
+  default_prompt: "Use $system-overview-design to explain verified current operation or form the smallest evidence-backed target design, keeping responsibilities clear and adding mechanisms only when justified."
+policy:
+  allow_implicit_invocation: false

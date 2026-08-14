@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Review"
+  short_description: "Judge route, system quality, evidence, and readiness"
+  default_prompt: "Use $plan-review to independently judge whether this proposal solves the real problem with justified responsibilities and boundaries, whether a materially simpler viable route exists, what remains unproven, and whether it is ready for my next decision."
