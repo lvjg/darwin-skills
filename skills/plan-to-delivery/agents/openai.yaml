@@ -1,6 +1,6 @@
 interface:
   display_name: "Plan to Delivery"
-  short_description: "Keep one checkpoint from design to delivery"
-  default_prompt: "Use $plan-to-delivery to orchestrate this system-level requirement through isolated workers, maintaining one source-grounded task checkpoint, projecting complete role-relevant context, and requiring independent review and final outcome evidence."
+  short_description: "Carry intent and exact design through delivery"
+  default_prompt: "Use $plan-to-delivery to verify or resume a system-level delivery workflow, then keep user intent and the exact design aligned across isolated design, review, implementation, acceptance, and cleanup Workers."
 policy:
   allow_implicit_invocation: false
