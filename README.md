@@ -1,84 +1,39 @@
-# Codex 全局配置与 Skills 快照
+# Codex 系统设计与交付工作流
 
-这个仓库保存一组可直接安装的 Codex 全局配置快照。Git 仓库中的内容是发布快照的权威版本；制作快照时读取的本机全局文件不是安装时的数据源。
+一组面向 Codex 的工程工作流，覆盖系统设计、方案评审、实施编排、交付验收和代码收敛。仓库同时提供一份通用工程约束 [`codex/AGENTS.md`](codex/AGENTS.md)，用于统一判断、执行和完成标准。
 
-## 快照范围
+## Skills
 
-仓库只管理以下 6 个安装目标：
-
-- `~/.codex/AGENTS.md`
-- `~/.agents/skills/plan-to-delivery`
-- `~/.agents/skills/system-overview-design`
-- `~/.agents/skills/plan-review`
-- `~/.agents/skills/delivery-review`
-- `~/.agents/skills/code-cleanup`
-
-其中实际技能名是 `system-overview-design`。
-
-目录结构：
-
-```text
-.
-├── README.md
-├── codex/
-│   └── AGENTS.md
-├── scripts/
-│   ├── install.sh
-│   └── update.sh
-└── skills/
-    ├── code-cleanup/
-    ├── delivery-review/
-    ├── plan-review/
-    ├── plan-to-delivery/
-    └── system-overview-design/
-```
-
-安装采用精确替换，不合并文件。每次安装都会覆盖上述 6 个目标中的全部本地编辑；`~/.agents/skills` 下的其他技能不受影响。
+| Skill | 说明 |
+| --- | --- |
+| [`plan-to-delivery`](skills/plan-to-delivery/SKILL.md) | 在用户明确调用时，编排系统级需求从设计、方案评审、实施到交付验收和清理的完整闭环，并保持角色隔离、单写入者和最终证据约束。 |
+| [`system-overview-design`](skills/system-overview-design/SKILL.md) | 基于可验证事实创建或重写系统现状说明、目标技术方案或高层设计，明确责任、状态、契约、失败恢复和演进路径。 |
+| [`plan-review`](skills/plan-review/SKILL.md) | 在实施前独立评审技术方案，判断路线能否解决真实问题、结构是否必要、关键前提是否有证据，以及是否可以进入下一决策。 |
+| [`delivery-review`](skills/delivery-review/SKILL.md) | 对精确的交付候选进行只读验收，检查结果、范围、完整性、实现质量、风险和下一门禁所需证据。 |
+| [`code-cleanup`](skills/code-cleanup/SKILL.md) | 在目标已经确认且获得修改授权后，删除过时路径、重复、防御性兜底和无依据的复杂度，同时保持已确认行为。 |
 
 ## 安装
 
-默认安装到 `~/.local/share/codex-global-skills`。下面是一条可直接复制、对含空格路径安全的命令：
+使用通用 Agent Skills CLI，将仓库内全部 Skills 全局安装给 Codex：
 
 ```sh
-repo_dir="$HOME/.local/share/codex-global-skills"; mkdir -p "$(dirname "$repo_dir")" && git clone https://github.com/lvjg/skills.git "$repo_dir" && sh "$repo_dir/scripts/install.sh"
+npx skills add lvjg/skills --skill '*' --global --agent codex --yes
 ```
 
-自定义 clone 路径：
+只安装一个 Skill：
 
 ```sh
-repo_dir="/path/with spaces/codex skills"; mkdir -p "$(dirname "$repo_dir")" && git clone https://github.com/lvjg/skills.git "$repo_dir" && sh "$repo_dir/scripts/install.sh"
+npx skills add lvjg/skills --skill plan-review --global --agent codex
 ```
 
-安装脚本会先检查全部仓库源和目标父目录，在每个目标所在文件系统中完成暂存复制与逐字节验证，然后才逐个替换目标。每个目标单独回滚；6 个目标不构成跨目标事务。如果某个目标失败，脚本会以非零状态退出并指出该目标，可以修复原因后安全重跑。
+## 更新
 
-## 更新已有 clone
-
-使用默认 clone 路径：
+更新已全局安装的 Skills：
 
 ```sh
-sh "$HOME/.local/share/codex-global-skills/scripts/update.sh"
+npx skills update --global
 ```
 
-使用自定义 clone 路径：
+## 全局工程约束
 
-```sh
-sh "/path/with spaces/codex skills/scripts/update.sh"
-```
-
-`update.sh` 只接受完全干净的 Git 工作树，包括 tracked、staged 和 untracked 状态；它只执行 `git pull --ff-only`，成功后调用安装脚本。网络错误、分叉、Git 错误或安装失败都会以非零状态退出。
-
-## 回退到旧快照
-
-在已有 clone 中 checkout 所需的旧提交，再重新安装：
-
-```sh
-repo_dir="/path/with spaces/codex skills"; git -C "$repo_dir" checkout <commit> && sh "$repo_dir/scripts/install.sh"
-```
-
-如需恢复到最新分支，之后显式 checkout 对应分支并运行 `update.sh`。
-
-## 运行边界
-
-- 支持 macOS 或 Linux、POSIX `sh`、Git，以及系统常见的标准命令行工具。
-- 安装按文件内容精确复制；不承诺保留或管理 ACL、扩展属性（xattr）等平台元数据。
-- 不支持原生 Windows shell。可在满足上述工具和路径语义的兼容环境中自行验证。
+[`codex/AGENTS.md`](codex/AGENTS.md) 不是 Skill，不会被 Agent Skills CLI 安装。需要时请先审阅，再将它作为 Codex 全局 `AGENTS.md` 使用。
