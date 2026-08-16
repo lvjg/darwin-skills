@@ -1,6 +1,6 @@
 interface:
   display_name: "Plan to Delivery"
-  short_description: "Carry intent and the current design through delivery"
-  default_prompt: "Use $plan-to-delivery to verify or resume a system-level delivery workflow, then keep user intent and the identified current design aligned across isolated design, review, implementation, acceptance, and cleanup Workers."
+  short_description: "Control system delivery from intent to evidence"
+  default_prompt: "Use $plan-to-delivery to control or resume an end-to-end system-level delivery, keeping user intent and the identified current design aligned across isolated design, review, implementation, acceptance, and cleanup Workers."
 policy:
   allow_implicit_invocation: false

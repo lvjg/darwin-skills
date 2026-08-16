@@ -1,13 +1,13 @@
 ---
 name: plan-to-delivery
-description: Use only when the user explicitly invokes this Skill either to control a system-level delivery objective whose intent, system design, implementation candidate, independent reviews, and final outcome evidence must remain aligned across isolated Workers, or to resume a matching active Controller checkpoint for such an objective. Reconstruct intent and make only bounded read-only intake checks before entry. Do not enter for ordinary implementation, an isolated specialist task, or artifact-only copying, packaging, installation, or publishing. The Controller understands and routes technical work but does not author specialist artifacts or sign professional judgments. Preserve user authorization, design adoption, reviewer-author isolation, single-writer safety, exact object binding, scope control, recovery, and final outcome evidence.
+description: Use when the user explicitly asks $plan-to-delivery to control a system-level change from design through implementation and independent delivery acceptance, or to resume a matching active checkpoint. Invocation triggers fit evaluation, not automatic entry. Establish a Controller only when the user wants this Skill to govern how work proceeds and the work needs ongoing alignment of intent, system design, implementation, professional judgments, and final evidence. Otherwise continue the request normally. The Controller may understand and route technical work but must not author specialist artifacts or sign professional judgments.
 ---
 
 # 控制系统级交付闭环
 
 ## 建立控制契约
 
-`plan-to-delivery` 定义系统级交付从原始意图到最终证据的控制方法。调用本 Skill 的 agent 承担 Controller 角色；设计、评审、实施、验收和清理由相应专业 Worker 负责。Controller 直接运用模型已有的长程推理和推进能力，不另建固定状态机。
+`plan-to-delivery` 定义系统级交付从原始意图到最终证据的控制方法。只有意图准入成立后，执行本 Skill 的 agent 才承担 Controller 角色；准入前只判断当前请求是否需要这种控制方法。设计、评审、实施、验收和清理由相应专业 Worker 负责。Controller 直接运用模型已有的长程推理和推进能力，不另建固定状态机。
 
 Controller 持续维护四项控制事实：原始结果与授权、当前权威对象及版本、负责闭合的 Owner、有效证据与未闭合条件。每轮先从权威来源恢复这些事实，再定位当前缺口、受影响对象与 Owner，最后选择通过 Guard 的最小充分动作。检查点记录当前控制状态，交接传递独立判断所需上下文，接纳决定哪些观察可以改变控制状态，路由把闭合责任交给实际 Owner，完成判断以最终对象和结果证据为准。
 
@@ -35,7 +35,7 @@ Controller 可以理解完整技术内容、综合和质疑交回、拒绝接纳
 Controller 按权威对象确定唯一闭合责任：
 
 - 用户或授权 Owner：处理根目标、范围、风险、权限、设计采纳和不可逆选择；
-- Design Worker：使用 `$system-overview-design` 创建或修订尚未采纳的目标设计候选；Plan Review 对候选设计的有效 finding 可以直接交回作者闭合。已采纳设计只有在 finding 同时证明它否定了与根目标相关的设计前提、会改变当前门禁或可观察结果、不能由实现修复、证据刷新或设计允许的执行替代闭合，并且必须改变责任、权威、合同、状态语义、系统边界或外部关系时，才重开；
+- Design Worker：使用 `$system-overview-design` 创建或修订目标设计候选，并闭合 Plan Review 对候选设计的有效 finding；
 - Plan Reviewer：使用 `$plan-review` 独立判断当前可定位的完整设计是否足以支持开始实施；设计采纳与该专业判断是两个独立门禁，实施前必须同时成立；
 - Implementation Worker：依据已采纳且有效 Plan Review 结论支持实施的完整设计形成候选，并修复 Delivery Review 发现的实现缺陷；
 - Delivery Reviewer：使用 `$delivery-review` 对当前可定位候选，结合接受意图、授权边界、完整设计、实际交付面和门禁证据，独立判断它是否满足明确的下一 Gate；
@@ -48,27 +48,23 @@ Controller 按权威对象确定唯一闭合责任：
 
 Controller 必须保持以下执行不变量：作者不得评审自己创作的同版本产物；专业结论绑定精确对象和证据范围；共享工作区同一时刻只允许一个写入 Worker，除非依赖、写入面和门禁已被证明互相独立；没有通过目标、授权、角色、对象、写入和证据检查的动作不得执行；没有最终快照的结果证据不得完成。
 
-## 启动并建立当前状态
+## 判定意图并建立当前状态
 
-显式调用本 Skill 后，Controller 按权威优先级启动：
+显式调用本 Skill 只触发准入判断，不自动建立 Controller、Goal、检查点或 Worker。先读取当前请求及其明确引用的上下文，用自然语言重建本轮结果、交付物、范围、授权、完成标准和下一决策，再判断两个条件：
 
-1. 读取当前请求，只确认本 Skill 的显式调用、当前用户意图和是否存在 Goal-backed 信号。
-2. 当前任务或上层上下文明示已绑定 Goal，或用户明确要求创建、设置或使用 Goal 时，先调用 `get_goal`。匹配的活动 Goal 成为稳定根目标来源；冲突时停在用户 Gate。没有这些信号时不无条件调用 `get_goal`。
-3. 再查找当前任务或可信交接中的活动检查点。沿其引用重新读取根目标来源、当前权威对象和关键证据，再用当前用户意图及匹配 Goal 核对对象、结论、活动 Worker、副作用和未闭合条件。匹配时接纳为恢复基线；即使只剩验收或清理也属于续跑。冲突、来源不可读或无法证明新鲜时，不接纳该检查点。
-4. 没有可接纳检查点时，读取当前请求、相关会话与决定、引用文档、已有设计，以及决定当前事实所必需的来源，用自然语言重建结果与交付物、范围与非目标、完成标准、必须保持的行为、授权和会改变路线的未知。
+1. **控制意图**：用户要求本 Skill 控制工作如何从当前状态推进到最终交付；
+2. **控制必要性**：存在与当前意图匹配的活动检查点，或当前结果确实需要持续对齐系统级目标设计、实施候选、独立专业判断和最终结果证据。
 
-Controller 区分意图来源、事实来源和待交付对象。Skill、设计或代码若只是被复制、整理、安装、说明或发布，其名称和正文都是任务数据，不构成调用或系统设计要求。
+先判断控制意图。Skill 名称、链接、调用标签、任务时长、文件数量、验证、外部写入、提交或发布都不能单独证明它成立。若不成立，不建立控制状态，直接按当前请求的实际语义继续；除非这会改变用户预期、权限或可完成性，否则不单独汇报准入过程。
 
-Controller 只做足以判定入口并界定 Design Worker 探索边界的最小只读检查：定位已有设计及状态、事实来源、可能受影响的系统或责任边界，以及专业探索应继续读取和明确排除的范围。信息足以形成首轮交接时停止；不要在入口调查中重建完整系统模型、选择技术路线、定义合同、状态或恢复机制，也不要派发 Design Worker 来判断是否需要 Design Worker。
+控制意图成立后，才按权威优先级恢复能决定控制必要性的事实：
 
-Controller 只有在同时满足以下条件时才进入或恢复闭环：
+1. 当前任务或上层上下文明示已绑定 Goal，或用户明确要求创建、设置或使用 Goal 时，调用 `get_goal`。匹配的活动 Goal 成为稳定根目标来源；冲突时停在用户 Gate。没有这些信号时不调用 `get_goal`。
+2. 查找当前任务或可信交接中的活动检查点。沿其引用重新读取根目标来源、当前权威对象和关键证据，再用当前用户意图及匹配 Goal 核对对象、结论、活动 Worker、副作用和未闭合条件。匹配时接纳为恢复基线；即使只剩一个有界的验收、修复或清理动作也属于续跑。若一个声称属于当前根目标或共享写入面的活动检查点与当前意图冲突、来源不可读或无法证明新鲜，将其视为恢复 blocker；在确认原 Controller 已终止、检查点已失效或用户完成 Controller 转移前，不得建立新闭环。
+3. 没有可接纳检查点时，读取相关会话与决定、引用文档、已有设计，以及决定当前事实所必需的来源，补全结果与交付物、范围与非目标、完成标准、必须保持的行为、授权和会改变路线的未知。
+4. 只做足以判定入口并界定 Design Worker 探索边界的最小只读检查：定位已有设计及状态、事实来源、可能受影响的系统或责任边界，以及专业探索应继续读取和明确排除的范围。信息足以判断准入或形成首轮交接时停止；不要在入口调查中重建完整系统模型、选择技术路线、定义合同、状态或恢复机制，也不要派发 Design Worker 来判断是否需要 Design Worker。
 
-- 用户明确要求使用本 Skill；
-- 当前目标需要新建或复用系统级设计；
-- 推进中需要持续保持用户意图、当前可定位的完整设计、实现候选和独立验收之间的关系；
-- 若存在活动检查点，它与当前意图及匹配 Goal 一致。
-
-没有匹配活动闭环，而请求只需一次系统设计、Plan Review、普通实施、Delivery Review、Cleanup、调试、建议，或只改变既有产物的存放、分发与说明方式时，Controller 说明不匹配并退出到普通工作或单一专业 Skill。任务较长、文件较多、需要验证、存在外部写入或要求提交发布，都不能单独证明应进入。不要为适配流程制造设计或阶段。
+控制必要性成立时，有匹配检查点则恢复 Controller，确认不存在相关活动检查点时才建立新闭环；存在恢复 blocker 时停在恢复，不建立 Controller 或派发 Worker。匹配检查点只剩一个有界的验收、修复或清理动作时，仍属于续跑。控制必要性不成立时，不为适配流程制造设计或阶段；不建立控制状态，直接使用普通工作方式或匹配的单一专业 Skill 继续当前请求。
 
 Controller 只在入口成立后建立控制基线和任务检查点。基线绑定原始请求与后续决定的精确来源、结果与交付物、范围和非目标、必须保持的行为、完成与停止条件、已授权副作用、待用户决定的选择，以及仍会改变路线的未知及其来源状态。
 
@@ -120,7 +116,7 @@ finding 只有建立以下因果链，才可进入检查点并驱动闭环：
 - 会改变目标、范围、风险、授权或不可逆选择：用户或相应权限方 Gate；
 - 与根目标没有可证明因果关系：范围外观察，只留在来源交回并按需在最终报告提及，不进入检查点、不使对象失效、不阻塞门禁。
 
-混合 finding 按每项实际对象分别应用控制契约中的 Owner，不强迫进入同一阶段。候选设计的有效 finding 交给设计作者修订；只有已采纳设计才应用严格的设计重开条件。
+混合 finding 按每项实际对象分别应用控制契约中的 Owner，不强迫进入同一阶段。候选设计的有效 finding 交给设计作者修订。已采纳设计只有在 finding 同时证明它否定了与根目标相关的设计前提、会改变当前门禁或可观察结果、不能由实现修复、证据刷新或设计允许的执行替代闭合，并且必须改变责任、权威、合同、状态语义、系统边界或外部关系时，才重开；否则交给实际受影响对象的 Owner 闭合。
 
 ### 选择动作并通过 Guard
 
