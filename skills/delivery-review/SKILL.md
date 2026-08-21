@@ -1,113 +1,164 @@
 ---
 name: delivery-review
-description: Use when the user requests a read-only acceptance judgment of a delivered or partially delivered implementation, including a patch, diff, branch, commit, pull request, migration, refactor, configuration change, or follow-up after fixes. Trigger for final implementation acceptance, pre-merge, pre-integration, pre-staging, pre-migration, or pre-release readiness, and questions about whether a candidate is complete, in scope, implementation-sound, or safe to accept, merge, deploy, or release. Reconstruct the accepted outcome, authorized delivery boundary, material delivered surfaces, active system, implementation quality, and gate-specific evidence; report the candidate's decision, verified delivery defects, unresolved acceptance conditions, and evidence limits. Keep the verdict on the delivered candidate here even when remediation requires a new design choice. Reviewing alone authorizes no edits; modify only when the user also explicitly authorizes implementation.
+description: Use when the user requests a read-only acceptance review of a delivered or partially delivered implementation, including a patch, diff, branch, commit, pull request, migration, refactor, configuration change, or follow-up after fixes. Independently reconstruct what the exact candidate was required to deliver and what it actually delivers; derive applicable failure modes from user intent, active contracts, governing project instructions, real consumers, current capabilities, and delivered surfaces; use focused code, runtime, and evidence checks to decide whether the candidate is complete, correct, in scope, implementation-sound, transition-safe, and sufficiently proven for the user's next action. Do not create or rewrite the plan, choose a replacement architecture, or modify code unless the user separately authorizes implementation.
 ---
 
 # Delivery Review
 
-Decide whether the exact delivered candidate is an acceptable implementation for its explicit or contextually implied next gate. Treat defect discovery as evidence for that decision, not as the purpose of review. Acceptance requires more than functional agreement with a plan: the candidate must produce the accepted normal and failure outcomes, stay within the authorized delivery boundary, preserve active contracts and behavior, form a complete and maintainable implementation, introduce no material unsupported surface or risk, and have evidence proportionate to the gate.
+Act as an implementation investigator deciding whether the exact delivered candidate is acceptable for the user's next action. Reconstruct delivered truth rather than checking whether the author followed a plan or whether tests pass. A candidate must deliver the required normal and failure outcomes, preserve active contracts, remain within the authorized boundary, use an implementation whose present structure and lifecycle are justified, introduce no material unsupported burden, and have evidence proportionate to the decision.
 
-Do not reject a candidate merely because another implementation would be shorter or more elegant. Do not accept it merely because its own tests pass or because it faithfully follows an approved plan.
+Treat defects as evidence for acceptance, not as the purpose of review. Do not reject a candidate merely because another implementation is shorter or more elegant. Do not accept it merely because it follows an approved design, compiles, or passes its own tests. Keep the review read-only.
 
-`acceptance frame -> delivered surfaces and system -> integrated delivery judgment -> discriminating challenge -> gate decision`
+Use this reasoning path:
 
-## Establish the Acceptance Frame
+`required delivery <-> actual delivery -> applicable failure modes -> discriminating checks -> delivery defects or evidence gaps -> acceptance decision`
 
-Identify the candidate, relevant comparison basis, next gate, dirty state, and intentional deferrals strongly enough to avoid mixing materially different revisions. Do not require a hash, full worktree inventory, or frozen workspace unless reproducible auditability is requested or unresolved identity can change the verdict. Distinguish what is present in the working tree from what is tracked, built, migrated, deployed, or otherwise deliverable.
+## Establish the Required Delivery
 
-Separate four scopes:
+Identify the exact candidate, comparison basis, requested next action, relevant dirty state, and intentional deferrals strongly enough to avoid mixing revisions. The next action or gate comes from the user's request, an accepted milestone, or the external workflow; never lower it merely because the candidate is incomplete. When materially different plausible gates remain, state bounded conditional decisions instead of selecting the one the artifact can pass.
 
-- Accepted intent: the outcomes and changes the user authorized.
-- Necessary propagation: additional surfaces that must change to complete those outcomes or preserve contracts.
-- Delivered surface: every material code, dependency, public interface, configuration, stored shape, migration, background process, compatibility path, artifact, or operational obligation included in the candidate.
-- Validation boundary: unchanged behavior or external facts that require evidence without authorizing modification.
+Place an acceptance condition at the earliest action that would become unsound without it. Intrinsic integration properties—such as selected runtime composition, dependency failure semantics, schema enforcement, executable recovery that an established guarantee requires, or operational instructions owned by the candidate—cannot be deferred merely because live exposure happens later. Conversely, production permissions, live data, environment capacity, and real user journeys are required only when the requested action depends on them. Do not reject a safely integrable candidate for unavailable release evidence or use a later rehearsal to excuse an incomplete candidate.
 
-When the user does not name a gate, infer the narrowest immediate decision supported by the artifact and requested action, and state the assumption with the verdict. Do not silently judge a partial increment against a later gate. Give bounded conditional decisions when plausible gates require materially different evidence and context cannot resolve them.
+Establish four scopes:
 
-Build the frame from sources with different roles:
+- **Accepted intent:** observable normal and failure results, authorized changes, preserved behavior, accepted degradation, and explicit quality decisions.
+- **Necessary propagation:** additional changes required to make those results real or preserve active contracts.
+- **Delivered surface:** every material code path, dependency, interface, configuration, stored shape, migration, background process, compatibility path, artifact, or operational obligation included in the candidate.
+- **Validation boundary:** unchanged behavior or external facts that need evidence but do not authorize modification.
 
-- Use the user's current accepted outcome, scope, preserved behavior, quality expectations, and explicit acceptance decisions to define the result and delivery boundary.
-- Use active public, persisted, security, operational, dependency, and project contracts or conventions to constrain what may change and the implementation quality required at the gate. Treat a convention as binding only when its owning source and material consequence are established.
-- Use an approved plan, design, RFC, or checklist as evidence of intended scope, route, risks, and proof obligations while it still describes the candidate; it does not override actual behavior or make a changed route acceptable by itself.
-- Use code, tests, comments, history, diagnostics, and the author's account as evidence of delivery, not as authority to define their own success.
+Use sources by the authority they actually have:
 
-Resolve conflicts by the owner of required semantics, the owner of actual behavior, scope, and freshness rather than by source count or a universal priority order. Keep any decision-changing conflict or assumption open and narrow the verdict accordingly.
+- The user's current accepted intent defines the requested result and authorization boundary.
+- Active public, persisted, security, dependency, and operational contracts define required semantics.
+- Applicable project instructions such as `AGENTS.md` may encode delivery constraints and known failure patterns. Separate artifact constraints from agent-process rules and preferences. Apply a rule to the candidate only when it protects an established outcome, invariant, contract, boundary, or material lifecycle property and the candidate triggers it.
+- An approved plan, design, RFC, or checklist is evidence of intended route, scope, risks, and proof obligations while it still describes the candidate; it cannot override actual behavior or make an unsound result acceptable.
+- Code, tests, comments, history, diagnostics, and the author's account are evidence of what was delivered, not authority to define their own success.
 
-Express acceptance as observable success and failure outcomes, authorized and necessary change, preserved contracts, implementation integrity, material residual risk, and evidence required by the gate. Calibrate depth to consequence, reversibility, reach, uncertainty, and cost of failure.
+Resolve conflicts by semantic ownership, actual behavior, authorization, scope, and freshness. Keep a decision-changing conflict open rather than inventing an acceptance criterion.
 
-## Reconstruct the Delivered Candidate
+Do not treat an author's comment, rejected suggestion, historical choice, or unapproved deviation as accepted risk. Only a current decision or authoritative contract can accept its consequence for the relevant scope.
 
-Read the change end to end before judging individual hunks. Form one coherent model of the delivered system and trace at least one representative active path through entrypoint, decisions, owners, state, effects, and observable result.
+## Reconstruct the Actual Delivery
 
-Close causal scope in both directions:
+Read the candidate end to end before judging individual hunks. Inventory material delivered surfaces by responsibility rather than by file count:
 
-- Work backward from each required outcome and preserved guarantee to the owners, wiring, contracts, state, configuration, migration, runtime participants, and evidence needed to make it true.
-- Work forward from each material delivered surface to callers, consumers, public exposure, stored data, external systems, asynchronous work, operations, recovery, rollback, maintenance obligations, and user-visible effects.
+`delivered surface -> owning responsibility -> changed behavior, state, contract, dependency, or lifecycle -> active caller or consumer -> observable or operational consequence`
 
-For every material delivered surface, establish the current accepted outcome, contract, consumer, owner, risk boundary, or transition obligation that requires it. Do not dismiss dormant or disabled code merely because it is not on the current active path when shipping it creates a public, security, dependency, migration, deployment, maintenance, recovery, or removal obligation. Do not treat file count or diff size as scope by themselves.
+Trace both directions:
 
-Go outside submitted files only along paths that can change completeness, attribution, behavior, compatibility, ownership, implementation integrity, failure semantics, material delivered burden, or the gate decision. Search the owning module before calling a capability absent. Separate introduced defects from unrelated debt unless the candidate activates, depends on, expands, or materially worsens that debt.
+- From every required outcome and preserved guarantee, trace backward through observable result, effect or state, semantic owner, runtime wiring, and entrypoint. This exposes missing participants, artifacts, wiring, and failure behavior.
+- From every material delivered surface, trace forward through callers, consumers, public exposure, persisted data, external effects, asynchronous work, deployment, recovery, rollback, maintenance, and removal obligations. This exposes wrong or excess delivery.
 
-When a new fact changes the accepted outcome, delivery boundary, candidate model, or evidence basis, revise every dependent conclusion. Before deciding, confirm that materially reviewed content still matches what was inspected; invalidate and rerun only evidence whose artifact, path, environment, configuration, data, or assumptions changed.
+Include dormant or disabled code when shipping it creates a public, security, dependency, migration, deployment, maintenance, recovery, or removal burden. Go outside submitted files only along paths that can change attribution, completeness, behavior, ownership, failure semantics, material delivered burden, or acceptance. Search the owning module and resolved dependency before calling a capability absent. Separate candidate-caused defects from unrelated debt unless the candidate activates, depends on, expands, or materially worsens that debt.
 
-## Judge the Delivered System
+## Reconcile Required and Actual Delivery
 
-Derive coverage from the accepted frame, actual changed and delivered surfaces, active contracts, project structure, and material failure mechanisms. Use the following as interacting observation directions, not mandatory passes or report sections.
+Use the following as failure directions, not report sections or a checklist. Pursue one only when the required or delivered facts create a concrete hypothesis.
 
-- **Outcome and completeness:** Verify that each required normal and failure result is reachable through real wiring, all required participants and artifacts are deliverable, old or bypass paths do not defeat it, and no unintended behavior remains active.
-- **Scope integrity:** Distinguish necessary propagated work from unrelated change, speculative capability, and opportunistic refactoring. A behavior-preserving change may still violate scope when it materially expands attribution, review, rollback, public, dependency, state, security, operational, or maintenance surface without a current obligation.
-- **Responsibility and structure:** Locate the semantic owner of each changed rule, authoritative fact, state transition, side effect, failure response, and recovery policy. Examine competing writes or policies, fragmented decisions, cycles, hidden ordering, internal leakage, harmful dependency direction, and file or module responsibility only when they create a material delivery risk. Do not demand one storage location or executor for all state: local, derived, cached, or replicated state is valid when its authority, lifecycle, reconciliation, and failure behavior are clear.
-- **Implementation quality and evolvability:** Determine whether control and data flow make critical invariants and failure behavior reliably understandable and verifiable; whether a required change remains local to its owner; whether abstractions represent current stable responsibilities or evidenced variation; and whether the implementation introduces material ambiguity, duplication, change propagation, or maintenance burden. Do not turn naming, formatting, local verbosity, or personal style into findings.
-- **Capability fit and structural economy:** For policy- or lifecycle-bearing machinery, inspect the owning project area, resolved framework, and dependency APIs for an existing capability with the required contract. A new mechanism is unsupported when no current outcome, contract, consumer, owner, isolation boundary, reproduced failure, or transition obligation requires it and its absence would preserve accepted guarantees. Report it only when the delivered surface creates material long-lived cost or risk; similarity or the existence of a cleaner implementation alone is insufficient.
-- **Behavior and material risk:** Trace affected contracts, stored shapes, external effects, and failure paths. Examine authorization, validation, data integrity, error propagation, timeout, cancellation, retry, idempotency, concurrency, ordering, latency, load, bounded resources, backpressure, observability, and operational cost only where a real boundary or failure mechanism makes them decision-relevant.
-- **Transition and operation:** For persisted or externally visible change, judge compatibility, deployment order, mixed versions, migration states, recovery, rollback, removal of superseded paths, and operational readiness separately from code reversion.
+### Missing Delivery
 
-Examine both insufficient and unsupported defenses. Require an untrusted boundary, active contract, reproduced failure, or explicit degradation policy for each new fallback, default, broad catch, retry, compatibility branch, duplicate validation, or data limit. Do not presume generated code lacks necessary defenses or demand hypothetical branches without a causal failure mode. Verify version-sensitive behavior against the resolved version, authoritative documentation or source, or a focused runtime probe when the assumption can change acceptance.
+A required result is not delivered when its real path lacks a necessary owner, participant, configuration, schema, migration, artifact, consumer, or failure response; when implementation exists but is not selected by runtime composition; when an old or bypass path defeats it; or when an intermediate artifact is presented as the observable outcome.
 
-An approved route does not excuse an unsound delivered result. A route difference is not automatically a defect either: report it when it changes accepted scope, outcomes, contracts, responsibility, risk, reversibility, or invalidates the evidence required by the gate. Keep the candidate's verdict here; if remediation requires choosing a foundational owner, contract, state model, boundary, or external relationship, leave that future design choice to its owning decision.
+### Incorrect Delivery
 
-## Challenge the Acceptance Judgment
+Delivery is wrong when actual behavior violates an accepted result, active contract, invariant, authority, or failure semantic. Inspect source-of-truth selection, validation, authorization, data integrity, error projection, timeout, cancellation, retry, idempotency, concurrency, ordering, partial completion, and external-effect handling only where the real path or an applicable project rule makes them relevant. A mock, helper, or local implementation cannot establish semantics owned by another boundary.
 
-Challenge the strongest plausible explanation that the candidate is acceptable and the strongest plausible explanation that it is not. Prefer the smallest check that separates them over a broad suite that repeats the implementation's assumptions.
+### Excess Delivery
 
-Reverse-check materially affected boundaries against their authoritative constraint sources so a requirement omitted by both the request and diff does not disappear from review. Combine unknowns only when they share a state, authority, dependency, side effect, or failure domain and can jointly change the gate; do not build a generic risk matrix.
+A surface is excess when it is neither accepted intent, necessary propagation, protection for an established failure or boundary, nor an explicit user-owned tradeoff, and removing it preserves accepted guarantees and transition safety. This includes unrelated refactoring and speculative interfaces, dependencies, abstractions, state, configuration, background work, fallback, compatibility, or generic capability that creates material review, rollback, runtime, security, operational, maintenance, recovery, or removal burden. Diff size and behavior preservation alone prove neither compliance nor excess.
 
-Treat evidence according to what it establishes:
+### Unsound Implementation
 
-- Source inspection can establish delivered structure, ownership, scope, static integrity, and support for a behavior, not occurrence in the real environment.
-- Focused unit, contract, mock, or local tests establish their exercised boundary and fixtures, not an external dependency, persisted environment, or user-visible outcome they replace.
-- Real integration, runtime, persistence, deployment, or user-visible evidence establishes the corresponding end-to-end claim; require it only when the next gate depends on that claim.
+A functionally plausible candidate is still unsound when its structure makes current invariants, authority, and failure behavior unreliable to understand or verify, or causes a required change to propagate beyond its owner. Look for fragmented or competing policy, facts, and writes; hidden ordering or side effects; parallel sources or execution paths; abstractions without a current stable responsibility or evidenced variation; business decisions placed in technical adapters; harmful dependency direction; custom machinery duplicating an existing maintained capability; and concrete ambiguity, duplication, or change propagation across owners.
 
-Independently verify only decision-changing claims whose evidence is absent, stale, self-confirming, environment-sensitive, conflicting, or weaker than the gate requires. Treat a missing test as an evidence question rather than an automatic implementation defect, and a passing suite as scoped evidence rather than complete delivery proof.
+Prove a quality finding with a current invariant, active consumer, real rule, existing duplication, current requirement, or committed change. A hypothetical future change may probe the structure but cannot by itself establish present material harm. Naming, formatting, local verbosity, and preference for a cleaner implementation are not defects.
 
-## Decide What Belongs in the Review
+### Unsafe Transition or Operation
 
-Admit a finding only when all of the following hold:
+A target implementation is not acceptable when active consumers, mixed versions, persisted data, deployment order, configuration, credentials, process roles, migration states, recovery, rollback, or removal cannot safely reach and operate the target. Distinguish code reversion from recovery of data and committed external effects. Give every necessary temporary mechanism an owner, verification, exit condition, and deletion path.
 
-1. It lies on an actual causal path, a required path that is missing, a materially affected contract, or a material surface included in the delivered candidate.
-2. It demonstrates or leaves unestablished a violation of an accepted outcome, authorized scope, necessary completeness, preserved behavior, active contract, implementation-integrity requirement, or gate requirement.
-3. It rests on traceable verified evidence or names the missing evidence and the opposing outcomes that would change the decision.
-4. Its consequence is material enough to change acceptance, required remediation, or residual risk.
+### Unproven Delivery
 
-Handle conclusions according to what they establish:
+Treat a missing or weak proof as an evidence gap rather than a confirmed defect. Source inspection establishes structure and support for behavior, not real occurrence. Focused unit, contract, mock, or local tests establish only their exercised boundary and fixtures. Runtime, persistence, deployment, or user-visible evidence establishes the corresponding end-to-end claim. A passing suite is scoped evidence; a missing test is not automatically a behavior defect.
 
-- Report a verified delivery defect in behavior, integration, scope, ownership, implementation integrity, risk, or transition with its demonstrated causal consequence.
-- Report a decision-changing evidence gap as an unresolved acceptance condition, not a confirmed defect.
-- When the candidate implements an unsound or unresolved route, report the delivered consequence and keep its gate decision here without selecting the replacement route.
-- Omit unrelated debt, non-material implementation preferences, speculative future concerns that added no material delivered burden, and opportunistic refactoring advice.
+For a failure observed only in a constrained, simulated, or non-authoritative environment, first establish a causal path from the candidate. Without candidate-causal evidence, keep it as an action-specific evidence gap and request the smallest authoritative rerun; do not prescribe a code change, relax a limit, or claim the candidate passes. When the trace implicates the candidate, judge the delivered defect normally.
 
-Do not treat an author's comment, rejected suggestion, or historical choice as accepted risk. Close a concern only when a current authoritative decision or contract accepts its consequence with the relevant scope.
+## Derive Applicable Failure Modes
 
-Keep review read-only. State the violated or unestablished result, scope, owner, contract, implementation-integrity condition, failure semantics, or gate requirement. It is valid to require an unsupported delivered surface to be absent, bounded, or justified by a current obligation; do not prescribe exact file moves, refactors, replacement architecture, or implementation steps. If the same request authorizes implementation, finish the verdict on the reviewed candidate before beginning that separate phase, and never use the old verdict as proof of the changed candidate.
+Generate review hypotheses from four sources:
 
-Stop when further inspection or testing cannot change the gate decision, required acceptance conditions, or material residual risk.
+1. The required-versus-actual reconciliation above.
+2. Applicable artifact constraints and failure patterns in governing project instructions, contracts, and conventions.
+3. The kinds of surfaces the candidate introduces or changes.
+4. Reproduced failures, regressions, or active operational facts with a causal path to the candidate.
 
-## Report the Decision
+Translate a governing rule into a review hypothesis through:
 
-Lead with whether the exact candidate satisfies the stated or inferred gate and what prevents acceptance. Identify scope and gate compactly, mark an inferred gate as an assumption, and give bounded decisions when materially different gates remain plausible.
+`rule -> protected outcome, invariant, contract, or boundary -> triggered candidate surface -> prohibited failure state -> smallest discriminating evidence`
 
-Order findings by consequence. For each, give the narrowest useful location, verified fact or decision-changing unknown, causal effect on the accepted result, scope, implementation integrity, contract, risk, or gate, and the condition that must become true for acceptance. Do not force severity labels or prescribe the local implementation shape.
+Do not perform a textual compliance audit or apply every rule to every surface. Agent communication, tool-use, and workflow instructions do not become code defects. A preference becomes acceptance-relevant only when its violation has a concrete material consequence.
 
-Close with the evidence boundary: what was verified, what remains unestablished, which unknowns can change the verdict, and whether the candidate materially changed while evidence was gathered. If it changed, state which candidate the verdict covers and which evidence was invalidated or rerun. Keep internal consistency separate from outcome proof.
+Use delivered surfaces to route focused checks:
 
-If no issue clears the admission threshold, say that the candidate satisfies the gate, summarize the discriminating evidence, state any material evidence limit, and stop. Do not add scores, strengths for balance, fixed dimension sections, nits, or optional cleanup suggestions.
+- For new durable state or copies, first prove the persistence obligation; then inspect authority, writes, reads, consistency, recovery, cleanup, and retirement.
+- For a new abstraction or shared mechanism, inspect current consumers, stable responsibility or variation, ownership, change propagation, and whether deletion or direct ownership preserves the result.
+- For new custom code or a dependency, inspect existing project and maintained dependency capabilities, resolved versions, full contract fit, and owned lifecycle cost.
+- For retry, fallback, broad catches, compatibility, or duplicate validation, identify the active contract, untrusted boundary, reproduced failure, or accepted degradation that requires it; then inspect effect safety and exit.
+- For public or persisted shapes, inspect active producers and consumers, compatibility, migration, mixed versions, and authority.
+- For background work, inspect selection, ownership, bounded resources, shutdown, failure, recovery, observation, and operation only to the degree its established guarantee requires.
+- For a replacement, verify that superseded active paths are absent or explicitly bounded and that data, consumers, rollback, and removal reach the intended target.
+
+## Apply Focused Review Methods
+
+Choose the smallest method that can prove or overturn a material hypothesis:
+
+- **Outcome-to-code trace:** follow `required result -> entrypoint -> decision owner -> state or effect -> observable result` through normal and required failure behavior.
+- **Change-to-obligation trace:** follow `delivered surface -> current outcome, contract, consumer, failure, isolation, or transition obligation` to distinguish necessary propagation from excess.
+- **Contract and consumer reverse-check:** start from active API, persisted, security, dependency, and operational constraints to find requirements omitted by both the request and diff.
+- **Ownership and change-propagation test:** apply a real rule change or mechanism replacement and identify unnecessary edits, duplicated policy, authority conflicts, or leakage across boundaries.
+- **State and failure simulation:** establish `prior state -> action -> committed state or effect -> interruption, retry, cancellation, concurrency, or partial completion -> next authoritative decision -> observable result`.
+- **Capability-fit test:** compare the delivered custom mechanism with direct reuse, owner-local extension, and the smallest new capability under full required semantics and lifecycle burden.
+- **Deletion test:** remove an added surface conceptually and verify whether accepted outcomes, active contracts, required failure semantics, and transition safety still hold and whether complexity disappears rather than moving elsewhere.
+- **Evidence discrimination:** choose the smallest independent check whose possible results separate acceptance-relevant outcomes; avoid broad suites that merely repeat the implementation's assumptions.
+
+Apply a delivery anti-ratchet rule. Once a delivered mechanism has no established obligation, conceptually remove it and reconstruct the remaining candidate before continuing. Findings that depend on that mechanism existing—such as additional identity, recovery, migration, compatibility, draining, reconciliation, or lifecycle machinery—no longer apply. Continue only where removal may affect an active consumer, existing data, committed external effect, security boundary, cleanup safety, or another independent delivered surface. Never use deletion to waive a real durable business fact, security guarantee, active contract, or committed external effect.
+
+## Execute One Stable Review
+
+1. Fix the candidate, comparison basis, required delivery, and externally determined next action. Make no finding yet.
+2. Reconstruct the actual delivered surfaces and representative active paths.
+3. Reconcile required and actual delivery to identify missing, incorrect, and excess candidates for investigation.
+4. Derive only applicable project and surface-triggered failure hypotheses.
+5. Resolve obligation and scope before auditing the internal completeness of optional machinery; remove unsupported surfaces conceptually and invalidate dependent hypotheses.
+6. Judge the retained implementation for behavior, ownership, authority, state, failure semantics, capability fit, quality, transition, and operation using only methods that can change acceptance.
+7. Challenge the strongest plausible explanation that the candidate is acceptable and the strongest that it is not with the smallest independent evidence.
+8. Decide the exact candidate for the requested next action. Do not introduce new findings while writing the handoff.
+
+Finding one blocker does not end review of independent surfaces that can still change minimum acceptance conditions or material residual risk. Stop auditing a surface when its removal makes derivative issues irrelevant, when the candidate is no longer a useful basis, or when further inspection cannot change the decision. Disclose any decision-relevant boundary not reviewed.
+
+If the candidate or a material premise changes, invalidate only dependent findings and evidence, reconstruct the affected required-versus-actual relationship, and reassess the same candidate before claiming acceptance.
+
+## Form Findings and Decide Acceptance
+
+Admit a finding only when it lies on an actual or required path or material delivered surface; violates or leaves unestablished an accepted result, authorized scope, active contract, implementation-integrity condition, or gate requirement; rests on traceable evidence or a precisely bounded unknown; and has a concrete consequence for acceptance, minimum remediation, or material residual risk.
+
+Use the proof chain that matches the conclusion:
+
+- **Delivery defect:** `verified delivered fact -> missing, incorrect, excess, unsound, or unsafe predicate -> protected result, contract, scope, or invariant -> concrete consequence -> minimum acceptance condition`.
+- **Implementation-quality defect:** `delivered structure -> actual owner, invariant, consumer, current requirement, or committed change -> ambiguity, duplication, or propagation -> material correctness, verification, or maintenance consequence -> acceptance effect`.
+- **Scope excess:** `delivered surface -> absence of current obligation -> material long-lived burden -> deletion preserves accepted guarantees -> removal or explicit acceptance condition`.
+- **Evidence gap:** `delivery claim -> missing or insufficient evidence -> competing outcomes -> smallest discriminating validation -> affected next action`.
+
+An unknown is not a defect. A route deviation is not a defect unless its delivered consequence changes accepted scope, behavior, contracts, authority, risk, reversibility, or required evidence. When correction requires a foundational new owner, contract, state model, boundary, or external relationship, reject or keep open the delivered candidate and return that future choice to its owning design decision; do not design the replacement here.
+
+The candidate is acceptable for the next action when required normal and failure results are reachable through real paths; material delivered surfaces are authorized or necessary; retained implementation ownership, state, contracts, failure semantics, and transition are coherent; no material unsupported burden remains; and decision-changing claims have evidence proportionate to that action.
+
+## Output
+
+Use the user's language and lead with whether the exact candidate satisfies the stated next action and why. State an inferred action as an assumption and give bounded decisions if distinct plausible actions require different evidence.
+
+Order material findings by causal consequence, not by the failure-mode catalog. For each, give the narrowest useful location, verified fact or grounded unknown, protected result or boundary, causal consequence, and minimum condition for acceptance. Do not prescribe exact file moves, replacement architecture, or opportunistic cleanup.
+
+Close with the evidence boundary: what material surfaces and active paths were reviewed, what remains unreviewed or unestablished, which unknowns can change the decision, and which candidate the evidence covers. A rejection does not imply unreviewed surfaces are acceptable.
+
+If no issue clears the admission threshold, say that the candidate satisfies the next action, summarize the discriminating evidence, state any material evidence limit, and stop. Do not output the internal workflow, fixed dimension sections, compliance checklists, scores, strengths for balance, nits, or optional cleanup suggestions.

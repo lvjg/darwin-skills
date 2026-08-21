@@ -1,149 +1,195 @@
 ---
 name: plan-review
-description: Use when independently reviewing a current implementation plan, technical design, RFC, migration, refactor, or other proposed technical change before coding or another consequential commitment. Produce a read-only, evidence-backed judgment of whether the route solves the real problem, whether responsibilities and boundaries form the smallest justified long-lived system, what material premises remain unproven, and whether the proposal is ready for the decision it must support. Compare viable alternatives when they can change the judgment, but do not create or rewrite the proposal, review delivered implementation, or modify code.
+description: Use when independently reviewing a current implementation plan, technical design, RFC, migration, refactor, or other proposed technical change before committing to that proposed route for implementation, cutover, release planning, or another consequential technical decision. Produce a read-only, evidence-backed judgment of whether the proposed design is grounded in the real current system, chooses an effective and appropriately simple route, assigns responsibilities and semantics coherently, and can achieve the established outcome through relevant failure and transition conditions. Distinguish established design defects, decision-changing unknowns, and user-owned choices, then state which conclusions are established, what remains unresolved, and where those conclusions apply. Do not create or rewrite the proposal, review or accept an exact delivered implementation candidate, or modify code.
 ---
 
 # Plan Review
 
-Review a proposal as a technical change from the real current system to an intended outcome. Judge the problem diagnosis, causal route, system-design quality, affected behavior and transition, evidence, and readiness strongly enough to support the user's next decision. Treat the proposal and prior designs as claims, not authorities. Do not review document formality, complete a template, or maximize findings.
+Review a proposal as a candidate technical design for changing a real current system. Independently reconstruct the problem, intended outcome, current system, and constraints; then judge whether the proposal chooses a sound route and forms a coherent, executable system without avoidable long-lived complexity.
 
-Keep the review technical. Evaluate responsibilities, authority, boundaries, contracts, state, behavior, constraints, quality, failure, migration, and operation, but do not decide business value, staffing, budget, or organizational governance. Expose a user-owned choice only when it changes a required guarantee, allowed degradation, risk tolerance, or scope; make only the dependent conclusion conditional. Review alone authorizes no modification.
+Act as an independent technical design reviewer, not the proposal's author, a completeness checker, a decision-gate operator, or a generator of hypothetical risks. Treat the proposal as a hypothesis and its narrative, current implementation, historical design, and apparent sophistication as evidence rather than authority. Judge the proposed technical solution, not whether its business outcome is worth pursuing, staffing, budget, or organization. Review alone authorizes no modification.
 
-Maintain four distinct judgments: whether the route can produce the intended result, whether its long-lived system structure is justified, whether material premises have proportionate evidence, and whether the proposal is ready for the decision it must support. Communicate them as one natural conclusion. A route may work yet be needlessly complex, be preferable but unproven, or be sound while not ready for an irreversible commitment.
+## Reviewer Mindset
 
-Use this reasoning loop:
+The review judges the proposed design itself. The level of design the proposal claims to settle determines which decisions it must specify to support its own claims. Any concrete use named by the user, such as route selection, implementation, irreversible migration, or release, determines which additional decisions and evidence must be established before the design is sufficient for that use. Neither changes the quality criteria applied to the design decisions the proposal does make. The core question is:
 
-`frame the decision -> discover actual impact -> model necessary responsibilities and system states -> judge route and design quality -> challenge with failures and simpler counterroutes -> decide readiness and handoff`
+> Does this proposal, grounded in the real current system, choose an effective route and organize the necessary capabilities, responsibilities, contracts, state, boundaries, failure behavior, and transition into a coherent design that achieves the established outcome without avoidable long-lived complexity?
 
-Scale investigation to consequence and uncertainty. Reuse evidence while its source, scope, and freshness remain valid. Revisit only conclusions invalidated by a new fact. Stop when further inquiry cannot change the route, design-quality judgment, material risk, readiness, or minimum handoff. Do not expose this process mechanically in the response.
+Assess the design through scope and necessity, route effectiveness, capability choice, responsibility and authority, contracts and state, boundaries and coupling, structural economy, required quality, failure behavior, and transition safety. Use failure simulation, change scenarios, simpler counterroutes, active-path tracing, and commitment-level necessity checks to test those qualities. Evidence sufficiency determines which design conclusions are established and where they apply; unresolved claims remain explicit rather than becoming design defects.
 
-## Frame the Decision
+Reason in this order:
 
-Separate the authorized goal from the proposed means. Establish the actual technical problem or opportunity and its cause; intended observable outcomes and failure criteria; preserved behavior and invariants; active constraints and contracts; allowed degradation; scope and non-goals; material risks; reversibility; and the next decision the review must support. Do not let the proposal define the problem or acceptance criteria on behalf of the original request.
+`independent technical basis -> reconstructed candidate design -> whole-design judgment -> focused falsification -> established conclusions and unresolved questions`
 
-For performance, scale, reliability, or complexity claims, locate the actual work, resource, failure, and dominant end-to-end cost at their owning boundary. A different implementation, available optimization headroom, or plausible complexity claim proves neither a defect nor a benefit.
+Concentrate on pivotal design decisions: choices whose change would materially alter the outcome, system semantics, transition, reversibility, or long-lived cost. A proposed commitment is a useful unit for tracing necessity and consequences, not the object of the review. Expose a user-owned choice only when it changes the authorized outcome, required guarantee, allowed degradation, risk tolerance, or scope. Do not search for a global optimum or require the proposal to beat every imaginable design. Stop when further investigation cannot reveal a materially better viable route or change the design judgment, evidence boundary, or minimum handoff.
 
-Identify the proposal version only strongly enough to avoid mixing material revisions. If the proposal changes, reread the affected content and invalidate dependent conclusions only. Do not require a hash, commit, or frozen workspace unless reproducibility is requested or unresolved ambiguity can change the judgment.
+## Establish an Independent Review Basis
 
-Distinguish original requirements, active contracts, verified current facts, reasonable inferences, proposal assumptions, and reviewer-introduced requirements. Obtain decision-changing facts from their owning sources: concrete implementation and consumers for current behavior; configuration and composition for selected runtime paths; tests for their covered scenarios; contracts or official documentation for declared semantics; and runtime or real integration evidence for environment-specific claims. Bound conclusions to the environment, implementation, adapter, scenario, and version actually covered. A declared, injected, referenced, or type-reachable dependency proves only a possible connection; follow selection through concrete consumption. When sources conflict, distinguish the owner of actual behavior from the owner of required semantics and keep the affected conclusion open until the conflict is explained.
+Before judging the proposal, state independently of its narrative:
 
-Proceed when the problem, current state, intended result, judgment criteria, and supported decision can be stated independently of the proposal narrative.
+- the authorized outcome and observable failure criteria;
+- the real problem or opportunity and its current cause;
+- scope, non-goals, preserved behavior, and invariants;
+- active contracts, consumers, constraints, threats, and operating conditions;
+- required guarantees and acceptable failure or degradation semantics;
+- the current system facts relevant to the change;
+- the level of design the proposal claims to settle and any concrete use named by the user.
 
-## Discover Actual Impact
+Do not let the proposal introduce a stronger guarantee and then use that guarantee to justify its own machinery. Preserve the full meaning of explicit constraints. If a durable business fact, committed external effect, security fact, or safety obligation requires behavior that conflicts with an explicit constraint, expose the tradeoff and its consequences instead of silently reinterpreting the constraint.
 
-Distinguish authorized intent scope, proposed edit scope, propagated impact scope, and validation scope. A non-goal can limit proactive construction; it cannot exclude a consequence caused by the proposal.
+Distinguish requirements, active contracts, verified facts, inferences, proposal assumptions, reviewer-introduced requirements, and unknowns. Use owning sources: implementation and consumers for current behavior; configuration and composition for runtime selection; tests for covered scenarios; contracts or official documentation for declared semantics; and runtime evidence for environment-specific claims. A declaration, dependency, type, interface, or unused component proves only possibility; trace concrete selection and consumption. Bound conclusions to the version, environment, scenario, and path actually established. When sources conflict, distinguish the owner of actual behavior from the owner of required semantics and keep only the affected conclusion open until the conflict is explained.
 
-Trace outward from proposed changes and inward from outcomes, invariants, and preserved behavior. Follow definitions and calls, producers and consumers, authoritative facts and state readers or writers, configuration and assembly, interfaces and events, trust boundaries, background lifecycles, migration and deployment, runtime paths, and external contracts only while they can change a pivotal choice, design-quality judgment, material risk, or readiness.
+Identify the proposal version only enough to avoid mixing material revisions. When it changes, reread affected content and invalidate dependent conclusions; require a frozen hash only when reproducibility or unresolved ambiguity can change the design judgment or where a conclusion applies.
 
-Use this relationship to derive coverage:
+The justified proposal scope is:
 
-`change or required outcome -> affected object -> changed technical aspect -> participant, state, or operating condition that may observe a different result`
+`changes directly required by the authorized outcome + necessary consequences caused by those changes + protection required by established constraints or identified material failures that threaten them`
 
-Derive relevant aspects from the actual change, established constraints, and known failure mechanisms. Responsibility, contracts, data, state, behavior, quality, migration, and operation are discovery prompts, not mandatory report sections. Do not form a Cartesian product of dimensions, roles, and scenarios.
+Distinguish authorized intent, proposed change, necessary propagated impact, and validation scope. Stop at a boundary only when an active contract and concrete consumption support the unchanged behavior. A non-goal limits proactive construction but cannot exclude a real consequence caused by the proposal. Conversely, adjacent cleanup, platform building, generalized reuse, stronger guarantees, and possible future needs do not enter scope merely because they are convenient to combine with the change.
 
-For each material consequence, decide whether it needs a proposal change, validation without change, evidence of preserved behavior, or an explicit decision-changing unknown. Stop at a boundary only when an active contract and concrete consumption support the unchanged behavior.
+When a proposal mutates a wire contract, field meaning, version, or release sequence owned outside the authorized boundary, establish the current contract, semantic owner, actual consumers, and authority to request the change. Owner acceptance may be an explicit gate for implementation or cutover without defeating an earlier decision to seek that acceptance. Until the mutation is accepted or committed, do not treat its dependent persistence, migration, compatibility, rollback, and recovery chain as required design completeness. Test the unchanged external contract and the simplest viable mapping at the system-owned integration boundary; keep the semantic choice open when the required mapping semantics are unknown. If that removes the dependent chain, invalidate the chain rather than completing it. Once the mutation is committed, derive its compatibility and cutover obligations from that commitment. Ordinary mappings that preserve the external contract do not trigger this gate.
 
-## Model Necessary Responsibilities and System States
+Proceed only when the outcome, cause, review basis, and review scope can be stated without relying on the proposal to define them. If the user names no concrete use, do not invent one or ask merely to complete the framework; judge the design at the level the proposal claims to settle and report only the conclusions that are established, where they apply, and what remains unresolved.
 
-Reconstruct only the current, target, and intermediate relationships needed to judge the change. A local reversible change may need one behavior path; a stateful, distributed, or migratory change may require coexistence, failure, recovery, rollback, and exit states. Do not turn a task list into a design or expand a narrow change into a whole-system inventory.
+## Recognize a Bad Proposal
 
-Before accepting the proposal's components, derive the minimum necessary responsibilities from the required outcomes, invariants, authoritative facts, side effects, failure responses, and lifecycle. This is a comparison baseline, not a replacement design. For each material responsibility, identify its semantic owner and any required contract, state, dependency, and transition.
+Use these failure modes as concrete predicates, not mandatory report sections. A proposal is materially bad when current evidence establishes one of them and a consequence for design validity, an authorized outcome, an established obligation, or a material risk.
 
-Connect only applicable relationships:
+### Unjustified Scope or Guarantee
 
-- Responsibility and authority: who owns each business or technical decision, authoritative fact, state transition, side effect, failure response, and recovery.
-- Boundaries and dependencies: which responsibilities must change or fail together, and why each dependency exists.
-- Contracts and interaction: what producers and consumers exchange, guarantee, reject, and retry.
-- State and lifecycle: creation, consistency, transition, invalidation, cleanup, recovery, and deletion.
-- Behavior and quality: normal and material degraded outcomes under relevant load, concurrency, trust, or failure conditions.
-- Evolution and operation: implementation order, compatibility, mixed versions, observation, rollback, and removal of superseded mechanisms.
+A commitment is unjustified when it serves no authorized outcome, necessary propagation, active contract or consumer, established constraint, or identified material failure. Examples include solving adjacent problems, absorbing another system's responsibility, opportunistic refactoring, platformizing one narrow change, or strengthening recovery without an accepted need.
 
-Check that these relationships describe one coherent system. Responsibility must agree with authoritative state and failure handling; boundaries with contracts and dependency direction; consistency with transactions and recovery; quality goals with runtime mechanisms; and migration with the intended target.
+Possible future demand is not a present obligation. Build ahead only for an active consumer or contract, a committed change, or evidence that a current irreversible or path-dependent choice makes deferral materially unsafe or more costly than building now. Ordinary future refactoring, expected growth, cleanliness, or option value does not qualify. A hypothetical scenario may probe a design but cannot by itself establish a present defect, new mechanism, or blocker.
 
-Identify pivotal choices from consequences, not proposal headings. A choice is pivotal when changing it materially alters ownership, authority, contracts, state semantics, lifecycle, external relationships, critical behavior, tradeoffs, migration, reversibility, acceptance, or risk. If the proposal bundles independent changes, judge each route separately before forming aggregate readiness.
+### Incorrect Current-System or Capability Model
 
-## Judge Route and System-Design Quality
+The route is founded on a false premise when it treats an existing capability as absent, assumes an inactive component is on the real path, overlooks the actual owner or extension point, relies on obsolete behavior, or assumes a declared framework or dependency provides semantics it does not provide. Verify concrete use, ownership, supported contracts, defaults, and lifecycle rather than inferring capability from names, interfaces, files, or dependencies.
 
-Reason forward through:
+### Ineffective Route
 
-`pivotal choice -> owner, contract, state, dependency, and lifecycle -> behavior and transition -> observable result`
+The route is unsound when it does not act on the established cause, cannot causally produce the intended result, substitutes an intermediate artifact for the outcome, optimizes a non-dominant local cost, or transfers the decisive failure elsewhere.
 
-Then reason backward from outcomes, invariants, actual impact, and established risks to the responsibilities and mechanisms they require. A complete component or task list does not rescue a broken causal chain.
+### Wrong Capability Choice
 
-A good design uses the smallest justified set of long-lived owners, authoritative facts, durable states, contracts, coordination mechanisms, deployment units, and lifecycles that preserves the same required outcomes, invariants, constraints, failure semantics, and transition safety. Fewer components alone is not better; added structure is justified when it owns a necessary responsibility or establishes a required isolation, quality, trust, evolution, or failure boundary.
+Before accepting new custom code, a dependency, durable state, abstraction, or runtime path, compare direct reuse, extension at the existing owner, and the smallest new capability.
 
-Judge tradeoffs against the required outcome and accepted degradation; do not require every quality attribute to be maximized. When goals conflict, identify which result must take precedence and which user-owned choice determines it.
+A new capability is unjustified when a maintained capability already satisfies the required behavior, contracts, failure semantics, runtime, security, license, and lifecycle without distorting ownership. It is also defective when it creates a parallel source of truth, configuration or execution path, or operational lifecycle without an active coexistence obligation and exit. Prefer maintained libraries for security-sensitive, standards-driven, materially complex, or externally evolving behavior when they fit and create no greater owned lifecycle burden.
 
-Apply these tests only where they can change the judgment:
+Reuse is wrong when similarity is superficial, extension distorts the contract or owner, unrelated consumers inherit the change, or its lifecycle cost exceeds a narrow stable local implementation. Existing code is evidence, not a mandate. Minimize total project-owned complexity while preserving established semantics.
 
-### Responsibility Closure
+### Obligation-Mechanism Mismatch
 
-Require one semantic owner for each decision, authoritative fact, state transition, side effect, and failure response. Replicas or technical executors may exist, but their authority, consistency, and recovery must remain subordinate to that owner. Treat call order, reuse, dependency injection, data possession, or a `Manager`/`Service`/`Orchestrator` name as no proof of ownership.
+Every established outcome, invariant, contract, and material failure response must be accounted for by an explicit owner and by existing or proposed behavior, contract, capability, or mechanism. Add a mechanism only when that existing coverage has a real gap. Every long-lived proposed mechanism must in turn trace to such an obligation. Prove the obligation before auditing durable state or copies, recovery or replay, retry coordinators, outboxes, exactly-once machinery, compatibility paths, migrations, fallbacks, generic engines, or extension points for lifecycle completeness.
 
-Find a responsibility defect when authority is duplicated, missing, or assigned to a boundary that cannot uphold the invariant and failure semantics; when normal execution and recovery have no coherent owner; or when a component adds forwarding and coordination without owning a required decision, state, contract, lifecycle, or isolation boundary.
+First test whether an explicit simpler failure semantic would let the mechanism and its dependent lifecycle be deleted. If the tradeoff is not established, return it to the user. Only after the obligation holds should creation, identity, consistency, recovery, migration, cleanup, and retirement become completeness requirements.
 
-Keep responsibilities together when they share an inseparable invariant, transaction, lifecycle, or failure response. Separate them when they have materially different authority, trust, lifecycle, failure containment, or independently evidenced change requirements. Do not split or merge merely for symmetry, reuse, file size, or layering convention.
+### Incoherent Responsibility or Authority
 
-### Boundary Fit and Coupling
+Require one semantic owner for each decision, authoritative fact, state transition, side effect, failure response, and recovery rule. Multiple sources, writers, replicas, or executors may exist when one owner defines arbitration, consistency, conflict, and recovery semantics. Call order, data possession, dependency injection, reuse, or a `Manager`, `Service`, or `Orchestrator` name does not prove ownership.
 
-Use concrete, credible change scenarios to test boundaries. A well-placed change should primarily alter its owning boundary; other boundaries should change only when their active contract or required semantics change. If one business rule must be edited across channels, SDK adapters, prompts, storage mappings, workers, and UI, its ownership is fragmented. If replacing a provider, transport, store, or model changes business decisions without changing business guarantees, technical mechanism has leaked into policy.
+A responsibility is defective when authority is missing, duplicated, or unable to control the invariant and failure result; when execution and recovery disagree about the owner; or when a layer only forwards and coordinates without owning a necessary decision, state, contract, isolation boundary, or lifecycle.
 
-Do not pursue total decoupling. Preserve coupling required by a shared invariant, transaction, lifecycle, or a real provider capability that determines the guarantee; make that dependency explicit at the owning boundary. A generic interface, configuration DSL, event bus, or extra layer is not decoupling unless it contains an evidenced variation and reduces change propagation or failure coupling.
+### Misplaced Boundary or Coupling
 
-### Structural Economy
+Keep together responsibilities sharing an inseparable invariant, transaction, lifecycle, or failure response. Separate materially different authority, trust, lifecycle, failure containment, or independently established variation. Do neither for symmetry, naming, file size, or hypothetical reuse.
 
-For a consequential structural choice, compare the proposal with the current system, usable existing capability, and the strongest materially simpler counterroute. A counterroute is admissible only if it preserves the same outcomes, invariants, active constraints, failure and recovery semantics, and required transition. Use it to test the proposal, not to redesign the whole system.
+Use a credible current or committed change to test placement. A business-rule change should primarily alter its semantic owner; provider, transport, store, model, or channel changes should not alter business decisions unless their real capability changes the required guarantee. A generic interface, event bus, configuration DSL, or layer is not decoupling unless it contains evidenced variation and reduces propagation or failure coupling. Do not pursue total decoupling where a shared invariant or real provider capability requires coupling.
 
-Compare long-lived structural commitments rather than visible component count: semantic owners and authorities, durable state and copies, contracts and data representations, synchronous or asynchronous coordination, deployment and operational units, failure and recovery paths, and lifecycles that must be maintained or later removed.
+### Incoherent Contract, State, or Failure Semantics
 
-Before accepting a new abstraction, state, queue, background process, compatibility mechanism, fallback, extension point, or generic engine, ask which confirmed outcome, invariant, variation, isolation boundary, or risk fails without it and why an existing owner cannot carry it. Prefer deletion, direct ownership, or reuse when the answer is absent. Keep one-time analysis, validation, backfill, and migration work in tooling or transition boundaries rather than permanent runtime architecture.
+The system is incoherent when normal execution, retry, recovery, and migration use competing authoritative facts; contracts disagree with state or transaction boundaries; partial success leaves a durable fact or committed effect ambiguous; multiple representations lack consistency or invalidation semantics; or created state has no required recovery, cleanup, or deletion path. Also test combined choices for conflicting premises, cycles, implicit coordination, and transferred cost or failure. Judge only failure and quality semantics established by the review basis, not every imaginable robustness property.
 
-Treat possible future demand as no present requirement. Do not add runtime structure merely to preserve options. Build ahead only for an active consumer or contract, a committed change, or evidence that a current irreversible or path-dependent decision makes deferral materially unsafe or costlier than adding the structure now; ordinary later refactoring, expected code growth, or generalized option value does not qualify. Compare build-now with defer-and-add-later under equivalent guarantees. Otherwise keep today's direct owner and contract, leave the choice open, and add no speculative abstraction, state, protocol, extension point, compatibility path, or operational lifecycle.
+### Excess Long-Lived Structure
 
-Conclude overdesign only with a concrete deletion, merge, or reuse counterexample: identify where the necessary responsibility moves, show that equivalent guarantees and transition safety remain, show which long-lived commitments disappear, and verify that equal or greater complexity is not transferred elsewhere. Conclude underdesign when a smaller structure loses a necessary owner, authority, isolation, lifecycle, failure response, or required quality mechanism.
+A good design carries no avoidable long-lived commitment among its responsibilities, authorities, durable states and copies, contracts and representations, coordination mechanisms, dependencies, deployment units, runtime paths, operational obligations, and lifecycles.
 
-Check the combined choices for conflicting premises, cycles, competing authoritative facts, implicit coordination, transferred cost or failure, and temporary mechanisms becoming permanent architecture. Give every necessary transitional mechanism an owner, active contract, verification, exit condition, and deletion path.
+Conclude overdesign only with a materially simpler viable deletion, merge, direct-ownership, or reuse counterroute. Preserve established outcomes, constraints, required failure semantics, and transition safety; name the receiving owner and removed commitments; and ensure complexity is not transferred. Fewer components alone is not better. Simplification is underdesign if it loses a necessary owner, authority, isolation, lifecycle, failure response, or quality mechanism.
 
-## Challenge Decision-Changing Links
+Keep one-time analysis, backfill, validation, and migration in tooling or transition boundaries rather than permanent runtime architecture. Every necessary temporary mechanism needs an owner, active consumer or contract, verification, exit condition, and deletion path.
 
-Try to overturn the current judgment at its weakest material links. Focus on high-impact, hard-to-reverse, weakly evidenced, cross-boundary, or failure-sensitive choices. Do not enumerate hypothetical roles or stylistic alternatives that cannot change the decision.
+### Unexecutable Transition
 
-Simulate only risk-bearing transitions. Establish the premise, action, resulting state, and dependency of the next transition; test applicable interruption, retry, cancellation, partial completion, coexistence, recovery, rollback, and exit. A target is not executable when a necessary intermediate state is unreachable, unsafe, or unrecoverable.
+A target is not executable when a necessary intermediate state is unreachable, violates an invariant, or cannot recover; when partial completion, interruption, retry, cancellation, concurrency, coexistence, rollback, or exit leaves the system unsafe or ambiguous; or when deployment order and active consumers cannot reach the target. If coexistence or rollback is intentionally removed, establish the last safe rollback point, the action that admits new mutation, recovery before it, and forward recovery afterward.
 
-Use deletion, merge, reuse, and realistic-change counterexamples to challenge design quality. Reject a counterexample that weakens a required guarantee, silently changes the problem, ignores migration, or merely moves complexity into an unnamed boundary. Do not require the proposal to beat every imaginable design; require it to avoid a materially better viable route using current evidence.
+### Missing Required Quality
 
-Match evidence strength to the claim and derive acceptance from original outcomes and invariants rather than the proposal's own checks. An unknown blocks only the choice, capability, or commitment whose outcome it can materially change. Treat interacting unknowns together only when they share a state, dependency, authority, side effect, or failure domain and can jointly change the outcome. Ask for the smallest validation that distinguishes decision-relevant branches.
+Performance, scale, security, privacy, trust, reliability, observability, and operability are defects only where an established constraint, threat, operating condition, or required outcome makes them material. Locate the actual work, resource, trust boundary, failure, and dominant end-to-end cost at their owner; a plausible claim or locally better implementation proves neither defect nor benefit.
 
-## Decide Readiness and Handoff
+## Use Focused Review Methods
 
-Derive readiness from the actual decision being supported. Entering detailed design, starting implementation, executing an irreversible migration, and releasing to production require different specificity and proof. Do not demand detail before the next decision depends on it, and do not let missing detail hide a foundational design gap.
+Select the smallest methods that can overturn a pivotal design judgment or materially change its evidence boundary:
 
-A proposal is ready for its next commitment when the route holds; its long-lived structure is justified against materially simpler viable alternatives; decisions required now are made; necessary intermediate states are reachable; material consequences have owners or explicit validation boundaries; and remaining unknowns cannot overturn the commitment or are controlled by reversibility and isolation.
+- **Scope and necessity trace:** map each commitment to an authorized outcome, necessary consequence, active obligation, or user-owned tradeoff.
+- **Capability fit test:** inspect real current capabilities and maintained dependencies; compare direct reuse, owner-local extension, and new construction under complete semantics and lifecycle cost.
+- **Causal trace:** follow `choice -> owner, contract, state, dependency, lifecycle -> behavior and transition -> result`, then reason backward from outcomes and invariants.
+- **Semantic ownership map:** identify the owner of each material decision, fact, transition, effect, failure response, and recovery rule.
+- **State and failure simulation:** establish premise, action, resulting state, next dependency, and applicable interruption, retry, partial completion, concurrency, coexistence, recovery, rollback, and exit.
+- **Credible-change test:** change a real rule or replace a real mechanism and observe unnecessary propagation across boundaries.
+- **Simpler counterroute:** test a materially simpler viable deletion, merge, direct ownership, existing capability, or simpler failure semantic while holding established obligations constant.
+- **Active-path trace:** for each selected entry and operating role, trace forward through configuration, composition, credentials, process wiring, dependency defaults, timeout and cancellation, producers, consumers, schemas, and durable work to the observable result; then trace backward through active consumers, mixed versions, deployment order, migration, operation, rollback or recovery, and operator actions.
 
-It is not ready when the proposed mechanism does not solve the established cause; a pivotal responsibility, authority, contract, state model, or failure response is incoherent; a materially simpler equivalent route remains unanswered; speculative future demand is the only justification for long-lived structure; obtainable evidence may overturn an irreversible choice; material impact is open; or an intermediate deliverable is presented as the target outcome.
+When the review concerns implementation of a system-level replacement, cross-boundary integration, or stateful cutover, complete the applicable active path before supporting that action. Inspect only real boundaries, but do not substitute proposal coherence or a sampled happy path for closure.
 
-Distinguish route defects, responsibility or boundary defects, overdesign, missing impact, incoherent combinations, unproven premises, and deferrable implementation choices. Reopen the owning design when repair changes a foundational responsibility, authority, contract, state model, boundary, or external relationship. Raise a local implementation choice early only when alternatives change target behavior, an active contract, data integrity, security, reversibility, or material risk.
+Apply an anti-ratchet reset whenever a concern about one mechanism keeps generating identity or version schemes, migration or legacy readers, draining, reconciliation, compatibility, or more recovery state. Return to the first mechanism: which established obligation requires it, and can the entire derivative chain be deleted under an allowed simpler semantic? If no obligation exists, reject the chain and invalidate its dependent findings. If it exists, resume completeness review at its owning boundary. Never use premise reset to waive active contracts, real consumers, durable business facts, committed external effects, security facts, or safety obligations.
+
+## Execute One Stable Review
+
+1. **Establish the basis.** Determine the authorized result, cause, scope, obligations, acceptable failure, current facts, the level of design the proposal claims to settle, and any concrete use named by the user. Use the claimed level to determine what the proposal must specify to support its own claims; use a stated use only to determine what additional decisions and evidence must be established for that use. Make no design finding yet.
+2. **Reconstruct the candidate design and impact.** Translate headings and task lists into design decisions with intended effects, owners, contracts, state, dependencies, lifecycles, and transitions. Trace outward through active producers, consumers, configuration, state, effects, and operation, and backward from the outcome and invariants. If independent changes are bundled, reconstruct them separately before aggregating their effects. Describe the design and consequences without yet accepting, rejecting, or repairing them.
+3. **Decide what belongs and what each consequence requires.** For each commitment, decide whether it is directly required, necessary propagation, protection for an established risk, a user-owned stronger guarantee, or unsupported scope. For each material consequence, decide its current treatment: retain it as a required proposal change; validate it without a design change; establish evidence that behavior remains preserved; keep the affected decision open because of a decision-changing unknown; or take no current action. Check current system and maintained capabilities before accepting new construction. Remove unsupported commitments conceptually and recompute the remaining target before continuing.
+4. **Judge the retained design.** Judge each independent retained route on its own, then test the retained decisions and mechanisms as one system for causal effectiveness, responsibility and authority, capability choice, contracts and state, boundaries, required quality, structural economy, failure, and transition. Use only methods able to change a pivotal design judgment.
+5. **Falsify and bound evidence.** Attack the weakest high-impact, irreversible, cross-boundary, stateful, or weakly evidenced design links. Distinguish established defects from unknowns and user choices. Ask for the smallest validation that separates materially different design conclusions.
+6. **Conclude and state what is established.** State which retained design decisions hold, which are defective, which conclusions remain open because of evidence or user choices, and where each conclusion applies. If the user named a concrete use, state whether unresolved matters prevent that use. Do not invent or recommend a next step merely to complete the review. Do not demand later-stage detail prematurely, and do not let deferred detail hide a foundational gap. Do not introduce new findings while writing the handoff.
+
+Choose the earliest established causal failure: an incorrect current-system premise; unsupported scope, guarantee, or obligation; ineffective route; wrong capability choice; or a defect in the retained design. Do not report the same problem again under derivative failure modes. If the premise is unproven, report an evidence gap rather than assuming a defect.
+
+If a material premise or mechanism changes, invalidate dependent findings and reassess only the affected route, target, transition, design judgment, evidence boundary, and dependent conclusions. If a foundational route or owner fails, omit downstream detail that cannot change the viable direction, material risk, design conclusion, or minimum handoff.
+
+## Form the Design Judgment
+
+Use a distinct proof chain for each kind of material conclusion:
+
+- **Established design defect:** `verified fact -> bad-proposal predicate -> established outcome, obligation, contract, or risk -> concrete design consequence -> minimum correction or reopened design decision`.
+- **Decision-changing evidence gap:** `grounded unknown -> pivotal design claim or branch -> why current evidence cannot decide -> design conclusions left open -> smallest separating validation and possible outcomes`.
+- **User-owned tradeoff:** `choice -> affected guarantee, degradation, risk, or scope -> route and consequence under each viable option -> dependent design conclusions`.
+
+Classify the result internally:
+
+- **Established defect:** require deletion, local correction, or reopening the owning design according to consequence.
+- **Decision-changing evidence gap:** require only the evidence that distinguishes the relevant branches.
+- **User-owned tradeoff:** state how guarantees, degradation, risk, or scope change the valid route; keep only the dependent design conclusions open.
+- **Deferrable choice or preference:** omit it unless a non-blocking note prevents confusion.
+
+An unknown is not a design defect. It leaves only the design conclusion it can materially overturn unestablished. A concern supported only by a proposal-assumed quality attribute is not a correctness defect. Conversely, proposal checks cannot establish a design conclusion beyond the path, scenario, and semantics they actually cover.
+
+Judge the retained design against one standard: its material decisions and long-lived commitments are necessary and appropriate; its route acts on the established cause; existing or new capability choices are sound; responsibilities, authority, contracts, state, boundaries, required quality, and failure semantics form one coherent system; no evidenced materially simpler viable route preserves the same obligations with lower total lifecycle burden; and its required intermediate states and transition are executable. Missing later-stage detail is not a design defect unless it exposes a contradiction, missing current decision, or unaccounted obligation at the proposal's claimed level.
+
+## State What Is Established
+
+After forming the design judgment, state which conclusions are established, which remain open because of evidence gaps or user-owned choices, and the scope in which the judgment is valid. If the user named a concrete use such as route selection, implementation, cutover, or release, state whether unresolved matters prevent that use. Do not invent or recommend a next step merely to complete the review. Do not collapse an established design defect, an unproven design claim, and a design that holds at its current abstraction but lacks later-stage detail into one result.
+
+The design is sufficiently established for a stated use when no established design defect invalidates it; every design decision and user-owned choice required for that use is resolved; applicable intermediate states and active paths are sufficiently closed; the judgment is supported at the granularity and evidence level the use requires; and remaining unknowns cannot overturn it or are controlled by reversibility and isolation. A sound route may be established for route selection while remaining insufficiently specified or proven for implementation or cutover. A stated use never turns a design defect into an acceptable design.
 
 ## Output
 
-Use the user's language and lead with the integrated judgment: whether the route and system structure hold, whether the proposal supports the intended next action, why, and the minimum that must change, be removed, or be proven. Do not organize the answer around this Skill's internal stages or output a scorecard.
+Use the user's language and lead with one integrated technical design judgment: whether the proposal stays within the authorized goal, whether its retained route and system design hold, why, and the minimum that must be removed, changed, or reopened. Then state where those conclusions apply, the evidence limits, unresolved user choices, and, only when the user named a concrete use, whether unresolved matters prevent it. Do not expose the internal stages, failure-mode catalog, scorecard, or fixed verdict vocabulary.
 
-Include only material findings. Connect each verified fact or grounded unknown to the broken or weak causal link, its effect on the outcome, pivotal choice, design quality, risk, or readiness, and the proportionate minimum resolution. Treat reviewer preference, a merely cleaner option, or missing detail that cannot change the decision as non-blocking.
+Include only conclusions that can change design validity, viable direction, the authorized outcome, material risk, long-lived complexity, where a conclusion applies, the evidence limit, or minimum handoff. For an established defect, state the verified fact, bad-proposal predicate, affected obligation and consequence, and minimum correction or reopened design decision. For an evidence gap, state the grounded unknown, pivotal design claim or branch, why present evidence cannot decide it, affected design conclusions, and smallest separating validation with possible outcomes. For a user-owned tradeoff, state the choice, affected guarantee, degradation, risk, or scope, the route and consequence under each viable option, and dependent design conclusions. Whether the design is sufficient for a stated use follows from the design conclusion; it is not proof of that conclusion. In particular:
 
-Substantiate design-quality findings:
+- for scope excess, show that the commitment is neither a direct requirement, necessary propagation, established protection, nor accepted tradeoff;
+- for capability choice, name the usable existing capability or the concrete mismatch that justifies new construction, and compare full semantics and lifecycle burden;
+- for overdesign, give an equivalent deletion, merge, direct-ownership, reuse, or simpler-semantic counterroute and show that complexity is not transferred;
+- for responsibility or coupling defects, name the affected semantic decision or fact, its current and capable owner, and the concrete propagation or failure consequence;
+- for an evidence gap, name the unresolved premise, smallest validation, possible outcomes, design conclusion each outcome establishes, and stated use it affects, if any.
 
-- For overdesign, name the removable, mergeable, or reusable mechanism; its necessary responsibility and receiving owner; preserved guarantees; reduced long-lived commitments; and why complexity is not merely transferred.
-- For responsibility defects, name the decision, fact, state, side effect, or failure response; show the duplicate, absent, or misplaced authority; and identify the boundary capable of owning the full semantics.
-- For coupling defects, give a credible change that unnecessarily crosses boundaries, identify the misplaced policy or mechanism, and state the minimum boundary correction.
-- For anticipatory structure, name the active consumer, contract, committed change, or evidenced cost of deferral and compare building now with adding it when the requirement becomes active. Mere possibility does not justify the structure.
-- For a preferred alternative, compare it under equivalent outcomes, constraints, failures, and transition. Do not call an option simpler because it omits required work.
+Choose the smallest resulting handoff:
 
-Choose the smallest handoff that follows:
+- If the design holds at the reviewed level, state what is established, where it applies, and what remains unresolved; if the user named a concrete use, state whether the design is sufficiently established for it, then stop.
+- If unsupported scope or machinery is the issue, identify what to remove and reassess the remaining proposal without derivative findings.
+- If one local issue blocks the route, give its minimum correction and closing evidence.
+- If a user-owned guarantee or scope choice remains, state the alternatives and consequences without selecting for the user, and keep the affected design conclusion and stated use open when they depend on that choice.
+- If multiple interdependent changes preserve a viable route, provide a concise dependency-ordered revision path.
+- If a pivotal design premise is unproven, provide only the minimum validation that separates the design conclusions; do not present the affected conclusion as established.
+- If the route, semantic owner, contract, state model, or boundary is foundationally unsound, identify what must reopen and the viable directions; do not build a patch plan around it.
 
-- If the route, design quality, evidence, and readiness hold, state that the proposal may proceed and stop.
-- If one isolated issue blocks readiness, give its minimum corrective action.
-- If a continuing route needs multiple interdependent material changes, provide a concise dependency-ordered revision plan. Preserve valid goals, facts, choices, and boundaries; connect each finding through the affected outcome, risk, or pivotal choice and owning technical boundary to required behavior and closing evidence.
-- If a pivotal premise or comparison remains unproven, give the minimum validation, relevant outcome branches, and their effect on the commitment; do not present a conditional route as approved.
-- If the route or owning design is unsound, identify the goal, responsibility, authority, contract, state, or boundary that must reopen and the viable directions to reconsider; do not build a patch plan around it.
-
-Do not expand a handoff into code, test organization, naming, formatting, documentation, or opportunistic cleanup. Once a finding requires reopening the route, omit secondary issues that cannot change the reason, viable directions, material risk, or minimum action. End only with evidence boundaries, revalidation triggers, residual risks, or intentional exclusions that still affect the decision. Remove every sentence whose absence would not change the judgment, evidence boundary, revision path, or remaining material risk. Use concrete project terms and natural engineering language; avoid fixed verdict labels, generic praise, and performative completeness.
+Before supporting implementation, state any material active-path boundary not inspected when it can still change the result. End only with evidence boundaries, residual risks, revalidation triggers, or intentional exclusions that affect the decision. Do not expand the handoff into code, naming, formatting, test organization, documentation, or opportunistic cleanup. Remove every sentence whose absence would not change the judgment, evidence boundary, minimum action, or material remaining risk.

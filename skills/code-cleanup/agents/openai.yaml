@@ -1,4 +1,4 @@
 interface:
   display_name: "Code Cleanup"
-  short_description: "Remove unsupported complexity and prove behavior"
-  default_prompt: "Use $code-cleanup to remove obsolete paths, unsupported defensive behavior, and unnecessary complexity from this authorized implementation, preserve confirmed behavior, and prove the final snapshot against an independently established outcome."
+  short_description: "Converge implementation and retire unsupported complexity"
+  default_prompt: "Use $code-cleanup to converge this authorized implementation on its confirmed outcome. Reconstruct affected responsibilities and every materially distinct active path; delete, reuse, realign, simplify, or retain each mechanism by evidenced necessity; close retired surfaces and their producers; preserve active contracts, failure semantics, and data; and prove behavior, retirement, and net simplicity on the final snapshot."
