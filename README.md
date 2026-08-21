@@ -49,19 +49,19 @@ Proofloop 是一组面向 Codex 的系统级工程 Skills。它们不追求增�
 查看仓库中的 Skills：
 
 ```sh
-npx skills add lvjg/skills --list
+npx skills add lvjg/proofloop --list
 ```
 
 将全部 Skills 全局安装给 Codex：
 
 ```sh
-npx skills add lvjg/skills --skill '*' --global --agent codex --yes
+npx skills add lvjg/proofloop --skill '*' --global --agent codex --yes
 ```
 
 只安装一个 Skill：
 
 ```sh
-npx skills add lvjg/skills --skill plan-review --global --agent codex --yes
+npx skills add lvjg/proofloop --skill plan-review --global --agent codex --yes
 ```
 
 如需项目级安装，去掉 `--global`。
