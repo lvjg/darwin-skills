@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Review"
-  short_description: "Judge whether a technical proposal is a sound design"
-  default_prompt: "Use $plan-review to independently judge whether this proposal forms a sound, coherent, executable technical design for the real system without avoidable long-lived complexity, identify established defects or decisive unknowns, and state which conclusions are established, what remains unresolved, and where those conclusions apply."
+  short_description: "Challenge whether a technical or behavioral design is sound"
+  default_prompt: "Use $plan-review to independently reconstruct the authorized outcome and real current system, trace pivotal commitments to established obligations before auditing their mechanisms, challenge the retained technical or behavioral route with relevant evidence and counterroutes, and report only established defects, decision-changing unknowns, and user-owned choices at the reviewed scope."

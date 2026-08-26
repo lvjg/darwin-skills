@@ -15,6 +15,8 @@ Completion means that every remaining element in the affected system is required
 
 Fix the target before editing. Accept it only from the user's stated result, a still-valid decision governing the affected contract, an active contract, or a traceable remediation outcome explicitly accepted by the user. The agent's diagnosis, current implementation and tests, historical plans, and unaccepted suggestions are evidence, not authority to establish the target.
 
+Judge completion against the authorized target on the final candidate snapshot, not on planned future changes.
+
 Express the required observable result, behavior and failure semantics that must remain, behavior or mechanisms intended to retire, and non-goals independently of the current implementation. Include the actual user-visible or business result when cleanup affects one. Record the authorized repository scope, comparison baseline, dirty-worktree state, delivery state, and boundaries requiring separate authority. Preserve unrelated changes.
 
 Do not edit through a material unresolved choice. If the requested result conflicts with an active contract, or cleanup would require a new product or architecture decision, leave that boundary unchanged and report the prerequisite.
@@ -24,6 +26,8 @@ Do not edit through a material unresolved choice. If the requested result confli
 Start from each required or preserved outcome and follow every materially distinct active path from entry or consumer to observable result. A path is materially distinct when it introduces a different contract, decision owner, authoritative state, side effect, dependency selection, failure or recovery behavior, ordering requirement, or resource lifecycle. Inspect runtime composition and configuration when they decide which implementation is active.
 
 Across those paths, identify the actual consumers and published contracts; where decisions are made; who writes and reads authoritative, derived, cached, or replicated state; where effects occur; which internal and external dependencies are required; how errors, cancellation, retries, compensation, concurrency, and resources behave when relevant; and which current surfaces carry the behavior. Current surfaces can include APIs, events, commands, jobs, registrations, configuration, flags, schemas, tests, documentation, prompts, scripts, generators, templates, build or deployment artifacts, telemetry, and visible output.
+
+For behavior or mechanisms intended to retire, also trace any target-relevant path or producer that can preserve, recreate, or re-enable them, even when unchanged by the candidate.
 
 Follow published or external consumers far enough to establish their binding contract; absence of an in-repository caller does not prove that a public surface is unused. Search hits, types, dependency injection, mocks, and passing tests prove only their direct scope. Check the owning contract and concrete runtime consumption whenever that distinction could change an edit.
 
@@ -83,10 +87,12 @@ Prove all three dimensions:
 - **Retirement:** superseded behavior, state, paths, surfaces, and their producers are absent, or each remaining residue has bounded ownership and an exit condition. Verify public or external obligations before treating repository absence as proof.
 - **Net simplicity:** the final system has no unexplained decision owner, state or synchronization relation, dependency, public surface, configuration, compatibility path, abstraction, or lifecycle. Any added structure demonstrably replaces greater total burden.
 
+Each dimension must be established. Evidence may overlap, but satisfaction of one dimension does not establish the others.
+
 For user-visible behavior, verify the actual observable result; a frontend simulation, backend-only exercise, or test derived from the implementation is not sufficient by itself. Distinguish working-tree behavior from what is tracked, built, deployed, or otherwise deliverable. If cleanup closes an acceptance condition or release gate, validate the causally affected final range against that condition.
 
 Stop when the target is met, the affected system is closed, and every remaining issue is unrelated, aesthetic, requires a separate decision or authority, or cannot change the completion judgment with further evidence. Make no edit when the implementation already satisfies the target.
 
 ## Response Contract
 
-Lead with whether cleanup completed. State the target source, changed surface, meaningful deletion, reuse or responsibility correction, closure of retired mechanisms, validation on the final snapshot, net effect on system complexity, preserved constraints, and unresolved boundaries. If no edit was needed, say so with evidence. Do not expose internal classifications, imply that unverified work is complete, or add ceremonial sections. Keep the response as short as the outcome allows.
+Lead with whether the authorized cleanup target completed and identify any target-relevant residue. State the target source, changed surface, meaningful deletion, reuse or responsibility correction, closure of retired mechanisms, validation on the final snapshot, net effect on system complexity, preserved constraints, and unresolved boundaries. If no edit was needed, say so with evidence. Do not expose internal classifications, imply that unverified work is complete, or add ceremonial sections. Keep the response as short as the outcome allows.

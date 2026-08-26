@@ -1,0 +1,4 @@
+interface:
+  display_name: "Workflow E2E"
+  short_description: "Derive minimal cases and accept real product journeys"
+  default_prompt: "Use $workflow-e2e to derive a minimal risk-complete case set and, when authorized capabilities allow, execute the actual product journey, verify visible and authoritative outcomes, and find evidence-backed experience defects."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Delivery Review"
-  short_description: "Find material delivery defects and decide acceptance"
-  default_prompt: "Use $delivery-review to reconstruct what this exact candidate was required to deliver and what it actually delivers, derive applicable project failure modes, verify material defects with focused evidence, and decide whether it is acceptable for my next action."
+  short_description: "Judge exact delivered outcomes and evidence"
+  default_prompt: "Use $delivery-review to decide whether this exact candidate delivers its required system and, where material, behavioral outcomes in the effective runtime with evidence sufficient for my next action."
