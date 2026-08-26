@@ -1,16 +1,11 @@
 ---
 name: plan-review
 description: >-
-  Use when independently reviewing a proposed technical change or maintained
-  behavioral design, such as a system design, migration, refactor, prompt,
-  Skill, agent, or workflow, before committing to that route for
-  implementation, cutover, release planning, or another consequential
-  decision. Reconstruct the authorized outcome and real current system,
-  challenge pivotal premises and commitments, judge the retained route and its
-  responsibilities, contracts, state, behavior, failure semantics, evidence,
-  and transition, and distinguish established defects, decision-changing
-  unknowns, and user-owned choices. Read-only: do not create or rewrite the
-  proposal, accept an exact delivered candidate, or modify code.
+  Use only when the user explicitly invokes $plan-review for an independent,
+  read-only decision on whether a proposed technical or maintained behavioral
+  route is sound enough for a consequential next step. Do not use to author or
+  rewrite the proposal, perform ordinary code review, accept a delivered
+  candidate, or modify files.
 ---
 
 # Plan Review
@@ -39,11 +34,22 @@ Reason in this order:
 
 `independent basis -> reconstructed proposal -> obligation decision -> retained-design judgment -> falsification -> bounded conclusion`
 
-1. **Establish an independent basis.** Determine the authorized outcome and observable failure criteria; the real cause; scope, non-goals, preserved behavior, and invariants; active contracts, consumers, constraints, threats, and operating conditions; required guarantees and allowed degradation; relevant current-system facts; the proposal's claimed level; and any concrete use named by the user. Make no design finding yet. Proceed once this basis, its authority, and its material unknowns can be stated without adopting the proposal's framing; keep only conclusions that depend on unresolved premises open.
+1. **Establish an independent basis.**
+   - Determine the authorized outcome and observable failure criteria; real cause; scope and non-goals; preserved behavior and invariants; active contracts and consumers; constraints, threats, and operating conditions; required guarantees and allowed degradation; relevant current-system facts; the proposal's claimed level; and any concrete use named by the user.
+   - Make no design finding yet.
+   - Proceed once the basis, its authority, and its material unknowns can be stated without adopting the proposal's framing. Keep only conclusions that depend on unresolved premises open.
 
-2. **Reconstruct the proposal without accepting it.** Translate headings, examples, and task lists into pivotal commitments with intended effects, owners, contracts, state, dependencies, lifecycles, transitions, and affected producers or consumers. For each pivotal commitment, record its available support and authority: an authorized requirement or explicit user choice; an active contract or consumer; a verified current fact; a proposal assertion, assumption, or example; or reviewer inference. If owning evidence has not been obtained or relevant sources conflict, keep the support unresolved. Do not record necessary propagation as a source; decide it only in the next step. Neither the support nor its evidence state by itself decides whether the commitment belongs. Describe independent bundled changes separately before aggregating their consequences.
+2. **Reconstruct the proposal without accepting it.**
+   - Translate headings, examples, and task lists into pivotal commitments with intended effects, owners, contracts, state, dependencies, lifecycles, transitions, and affected producers or consumers.
+   - For each pivotal commitment, record its available support and authority: an authorized requirement or explicit user choice; an active contract or consumer; a verified current fact; a proposal assertion, assumption, or example; or reviewer inference.
+   - If owning evidence has not been obtained or relevant sources conflict, keep the support unresolved.
+   - Do not record necessary propagation as a source; decide it only in the next step. Neither the support nor its evidence state by itself decides whether the commitment belongs.
+   - Describe independent bundled changes separately before aggregating their consequences.
 
-3. **Decide what belongs before auditing completeness.** Independently decide whether each pivotal commitment is directly required; a necessary consequence of an already retained upstream commitment; protection required by an established constraint or identified material failure; an explicit user-owned stronger guarantee; unsupported; or unresolved because the obligation itself is decision-changing and unknown. A necessary consequence is valid only when its upstream commitment already has authoritative support and the causal propagation is established. Current implementation, available capabilities, historical practice, examples, tests or mocks, proposal assumptions, and reviewer inference establish only their scoped facts; without this obligation trace they do not establish that a commitment belongs.
+3. **Decide what belongs before auditing completeness.**
+   - Classify each pivotal commitment as directly required; a necessary consequence of an already retained upstream commitment; protection required by an established constraint or identified material failure; an explicit user-owned stronger guarantee; unsupported; or unresolved because its obligation is decision-changing and unknown.
+   - Treat a consequence as necessary only when its upstream commitment already has authoritative support and the causal propagation is established.
+   - Treat current implementation, available capabilities, historical practice, examples, tests or mocks, proposal assumptions, and reviewer inference as evidence of their scoped facts only. Without the obligation trace, they do not establish that a commitment belongs.
 
    Remove an unsupported commitment and invalidate its dependent findings only when deletion preserves established outcomes and invariants. If deletion could affect an active contract, existing data, committed effect, security fact, safety obligation, or another established result, obtain the smallest evidence that distinguishes absence from an unresolved obligation. Recompute the remaining target before continuing.
 

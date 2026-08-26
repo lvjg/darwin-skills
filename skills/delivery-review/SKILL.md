@@ -1,6 +1,6 @@
 ---
 name: delivery-review
-description: Use when the user requests a read-only acceptance review of an exact delivered or partial candidate—code, configuration, migration, prompt, Skill, agent, workflow, or user-facing integration—or a follow-up after fixes. Decide whether its selected runtime paths deliver the required system and behavioral outcomes, remain within scope, preserve justified implementation and transition quality, and have evidence sufficient for the user's next action. Do not review the proposal, choose a replacement design, or modify the candidate without separate authorization.
+description: Use only when the user explicitly invokes $delivery-review for a read-only acceptance decision on a specific delivered or partial candidate. Do not use for an unimplemented proposal, open-ended critique without an acceptance decision, replacement design, or candidate modification.
 ---
 
 # Delivery Review
@@ -75,7 +75,16 @@ A required result is not delivered when its real path lacks a necessary owner, p
 
 Delivery is wrong when actual behavior violates an accepted result, active contract, invariant, authority, or failure semantic. Inspect source-of-truth selection, validation, authorization, data integrity, error projection, timeout, cancellation, retry, idempotency, concurrency, ordering, partial completion, and external-effect handling only where the real path or an applicable project rule makes them relevant. A mock, helper, or local implementation cannot establish semantics owned by another boundary.
 
-For behavior-dependent delivery, admit an incorrectness finding when intrinsic candidate facts or appropriately bound executions establish at least one acceptance-relevant breach: an established trigger or condition produces the wrong decision, action, non-action, or visible result; a decisive fact changes but the material decision does not; an irrelevant variation changes a decision that is required to remain semantically invariant; the path violates an established priority, confirmation, clarification, refusal, or stopping rule; it acts without authority; or it presents an unknown, intermediate, or partial effect as final. One credible, appropriately bound counterexample can disprove an absolute per-run requirement. Do not infer causal sensitivity or aggregate quality from a single stochastic contrast. A population-level, frequency, or aggregate-quality requirement is violated only by evidence capable of deciding its established success rule and threshold.
+For behavior-dependent delivery, admit an incorrectness finding only when intrinsic candidate facts or appropriately bound executions establish at least one acceptance-relevant breach:
+
+- an established trigger or condition produces the wrong decision, action, non-action, or visible result;
+- a decisive fact changes but the material decision does not;
+- an irrelevant variation changes a decision that must remain semantically invariant;
+- the path violates an established priority, confirmation, clarification, refusal, or stopping rule;
+- the path acts without authority; or
+- the path presents an unknown, intermediate, or partial effect as final.
+
+One credible, appropriately bound counterexample can disprove an absolute per-run requirement. Do not infer causal sensitivity or aggregate quality from a single stochastic contrast. A population-level, frequency, or aggregate-quality requirement is violated only by evidence capable of deciding its established success rule and threshold.
 
 ### Excess Delivery
 
@@ -142,7 +151,13 @@ Route each hypothesis by what determines the outcome. Use structural, contract, 
 
 Keep review probes read-only. Use existing evidence or safe isolated and non-mutating checks. Do not trigger a consequential external effect or modify live state without separate authorization; tool availability and a review request grant no such authority.
 
-Apply a delivery anti-ratchet rule. Once a delivered mechanism has no established obligation, conceptually remove it and reconstruct the remaining candidate before continuing. Findings that depend on that mechanism existing—such as additional identity, recovery, migration, compatibility, draining, reconciliation, or lifecycle machinery—no longer apply. Continue only where removal may affect an active consumer, existing data, committed external effect, security boundary, cleanup safety, or another independent delivered surface. Never use deletion to waive a real durable business fact, security guarantee, active contract, or committed external effect.
+Apply a delivery anti-ratchet rule:
+
+- Once a delivered mechanism has no established obligation, conceptually remove it and reconstruct the remaining candidate before continuing.
+- Discard findings that depend on that mechanism existing, including derivative identity, recovery, migration, compatibility, draining, reconciliation, or lifecycle machinery.
+- Continue only where removal may affect an active consumer, existing data, committed external effect, security boundary, cleanup safety, or another independent delivered surface.
+
+Never use deletion to waive a real durable business fact, security guarantee, active contract, or committed external effect.
 
 ## Execute One Stable Review
 

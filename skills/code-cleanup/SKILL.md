@@ -1,6 +1,6 @@
 ---
 name: code-cleanup
-description: Use when the user authorizes cleanup edits to an existing or partially delivered implementation with a confirmed outcome, including a feature, fix, refactor, migration, or accepted remediation. Converge it by removing unsupported or duplicate behavior, state or implementations, misplaced responsibility, unnecessary coupling, indirection or configuration, speculative defenses, obsolete compatibility, and mismatched active surfaces while preserving confirmed behavior, contracts, failure semantics, data, and unrelated work. Reconstruct distinct material paths, judge each mechanism by necessity, prefer deletion and fitting existing capabilities, close retired surfaces and producers, and prove behavior, retirement, and net simplicity. Do not use for read-only assessment, unresolved design, or refactoring without a confirmed target. Authority excludes user assets, persistent data, remote resources, production configuration, and irreversible migration unless separately authorized.
+description: Use only when the user explicitly invokes $code-cleanup for authorized cleanup of an existing implementation after the required outcome is confirmed. Remove or realign unsupported, duplicate, obsolete, or misplaced mechanisms without choosing a new design or expanding mutation authority.
 ---
 
 # Code Cleanup

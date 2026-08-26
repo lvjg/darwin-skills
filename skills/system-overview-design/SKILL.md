@@ -1,6 +1,6 @@
 ---
 name: system-overview-design
-description: Use when the user explicitly asks to create, complete, or rewrite a system-level architecture overview, target technical design, high-level design, system RFC, or comparable design artifact. Form an evidence-backed system judgment and, when change is required, the smallest complete design; do not use for a read-only review, implementation plan, code review, debugging session, or delivery-acceptance decision.
+description: Use only when the user explicitly invokes $system-overview-design to create, complete, or rewrite a system-level architecture or design artifact. Do not use for ad hoc explanation without a requested artifact, local implementation planning, read-only review, code review, debugging, or delivery acceptance.
 ---
 
 # System Overview Design
@@ -86,7 +86,13 @@ Select the best-supported smallest complete direction and form its operating mod
 
 **Establish completeness.** Use the Overall Design for the global operating model, cross-mechanism constraints, dependency direction, and handoffs. Use a Key Design only for an independent mechanism necessary to explain or produce a material outcome. It must have a clear input, result, responsibility, and operating boundary; a proposed Key Design must also own a necessary outcome, correctness condition, or material constraint that would otherwise be unsupported. A repository, service, table, interface, state store, or multiple consumers neither qualifies nor disqualifies it.
 
-Map every conclusion to its basis: explained behavior to the evidence, environment, and responsible mechanism or gap that establish it; every outcome, preserved behavior, and constraint to an owner, mechanism, and observable result; every proposed boundary, dependency, abstraction, state, representation, and compatibility path to an established obligation, change-containment need, active evolution need, or named risk. Remove anything without such a basis. When changing an existing system, derive the affected surface from semantics rather than a file list: applicable facts and triggers, contracts and consumers, information and state, effects, trust and permissions, failure and recovery, observability, deployment, migration, rollback, and acceptance.
+Map every conclusion to its basis:
+
+- Map explained behavior to the evidence, environment, and responsible mechanism or gap that establishes it.
+- Map every outcome, preserved behavior, and constraint to an owner, mechanism, and observable result.
+- Map every proposed boundary, dependency, abstraction, state, representation, and compatibility path to an established obligation, change-containment need, active evolution need, or named risk.
+
+Remove anything without such a basis. When changing an existing system, derive the affected surface from semantics rather than a file list. Cover applicable facts and triggers, contracts and consumers, information and state, effects, trust and permissions, failure and recovery, observability, deployment, migration, rollback, and acceptance.
 
 **Challenge decisive scenarios.** Use the few end-to-end scenarios most likely to disprove or materially change the judgment. Simulate actual facts, decisions, information changes, state transitions, responsibility handoffs, effects, and consumer-visible results across applicable success, failure, partial completion, concurrency, degradation, branches, re-entry, migration, rollback, and change propagation. Inspect only scenarios that can change a material conclusion. Bound unsupported behavior as unknown instead of completing it by inference.
 

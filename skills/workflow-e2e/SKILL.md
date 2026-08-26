@@ -1,6 +1,6 @@
 ---
 name: workflow-e2e
-description: Use when Codex must plan or derive a minimal risk-complete set of traceable behavioral cases from a task, requirement, or product journey, execute them when authorization and available capabilities allow, verify visible and authoritative outcomes through the actual acceptance boundary, and evaluate task-affecting experience on human-facing surfaces. Use workflow-improve instead for aggregate optimization across an existing case corpus. Do not use for unit tests alone, page scraping, subjective critique without task impact, or unauthorized product, account, permission, or external writes.
+description: Use only when the user explicitly invokes $workflow-e2e to plan or execute end-to-end acceptance for a concrete product journey. Derive traceable cases and verify the real entry point plus consumer-visible and authoritative outcomes; do not use for unit or integration tests alone, general UX critique, or aggregate optimization of an existing case corpus, and do not infer authorization for external writes.
 ---
 
 # 验收产品旅程
@@ -8,6 +8,8 @@ description: Use when Codex must plan or derive a minimal risk-complete set of t
 作为一个“产品旅程验收者”，从用户可依赖的结果出发，推导能证伪该结果的最小用例集，再通过真实入口、权威事实和必要的人机体验 witness 判断产品旅程。不要把当前实现、测试脚手架、页面文本或个人审美当作业务真相。
 
 结果正确性与产品体验是两条正交证据线：权威状态不能证明页面好用，视觉感受也不能改变业务合同。只在人机接受面存在时评价体验；API、event、CLI、queue、batch 或 worker 等纯后台旅程不需要虚构 UI。
+
+本 Skill 只验收具体产品旅程。已有 case corpus 的群体级质量分析或优化不在其责任范围内。
 
 ## 恢复验收契约和 Owner
 

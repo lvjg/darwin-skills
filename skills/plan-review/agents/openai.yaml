@@ -2,3 +2,5 @@ interface:
   display_name: "Plan Review"
   short_description: "Challenge whether a technical or behavioral design is sound"
   default_prompt: "Use $plan-review to independently reconstruct the authorized outcome and real current system, trace pivotal commitments to established obligations before auditing their mechanisms, challenge the retained technical or behavioral route with relevant evidence and counterroutes, and report only established defects, decision-changing unknowns, and user-owned choices at the reviewed scope."
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 ---
 name: plan-to-delivery
-description: Use when the user explicitly asks $plan-to-delivery to control a system-level change from intent through design, implementation, independent acceptance, and cleanup, or to resume a matching active checkpoint. Enter only when the work needs ongoing alignment among an authoritative design, implementation candidate, specialist judgments, and outcome evidence. The Controller maintains a closed delivery loop and routes bounded work to specialist Workers; it may understand and challenge technical content but must not author specialist artifacts or sign specialist judgments.
+description: Use only when the user explicitly invokes $plan-to-delivery to control or resume a system-level delivery that must keep an authoritative design, a changing implementation candidate, independent specialist judgments, and outcome evidence aligned across multiple handoffs. Do not use for a direct single-task design, implementation, review, or cleanup, or for a standalone status request that does not resume delivery control.
 ---
 
 # 控制系统级交付
