@@ -1,6 +1,0 @@
-interface:
-  display_name: "Plan to Delivery"
-  short_description: "Closed-loop control for system delivery"
-  default_prompt: "Use $plan-to-delivery to control or resume a system-level delivery. Restore the authorized outcome, checkpoint, authoritative objects, active execution, and evidence; identify the decisive open condition and its actual Owner; then route one guarded causal action to the appropriate isolated Worker or authority. Reobserve the result and repeat until the final state is proven."
-policy:
-  allow_implicit_invocation: false

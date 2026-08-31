@@ -1,0 +1,6 @@
+interface:
+  display_name: "Supervisor"
+  short_description: "Control and recover long-running tasks by evidence"
+  default_prompt: "Use $supervisor to control or resume this long-running task. Restore the outcome, authorization coverage, authoritative objects, evidence, open obligations, and active effects; identify the decisive gap and actual owner; take one guarded causal action; then reobserve until the final outcome is proven."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,27 @@
+name: Packaging
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Validate Skill packaging for pull request
+        if: github.event_name == 'pull_request'
+        run: ruby scripts/check-packaging.rb --base "${{ github.event.pull_request.base.sha }}"
+      - name: Validate Skill packaging on main
+        if: github.event_name == 'push'
+        run: ruby scripts/check-packaging.rb --base HEAD^

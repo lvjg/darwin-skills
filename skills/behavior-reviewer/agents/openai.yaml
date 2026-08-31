@@ -1,0 +1,6 @@
+interface:
+  display_name: "Behavior Reviewer"
+  short_description: "Accept or reject an exact behavioral candidate"
+  default_prompt: "Use $behavior-reviewer to decide whether this exact instruction-, agent-, model-, workflow-, tool-, or channel-mediated candidate behaves acceptably in its effective runtime composition for my next action."
+policy:
+  allow_implicit_invocation: false

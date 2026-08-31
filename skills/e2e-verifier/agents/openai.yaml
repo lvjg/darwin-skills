@@ -1,0 +1,6 @@
+interface:
+  display_name: "E2E Verifier"
+  short_description: "Prove functional journeys at their real boundaries"
+  default_prompt: "Use $e2e-verifier to bind the exact acceptance candidate and environment, derive a minimal risk-complete case set, and, when authorization and capabilities allow, execute the real journey, bind visible outcomes to authoritative state and effects, and report evidence-scoped Pass, Fail, Blocked, or Not Requested results."
+policy:
+  allow_implicit_invocation: false
