@@ -1,0 +1,126 @@
+{
+  "skill_name": "code-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/1/candidate/` 中的精确候选做只读验收，判断它是否可以进入本地提交。请自行检查接受合同、实现、公共类型和验证证据；E2E 不在本次验收范围内，不要修改文件。",
+      "expected_output": "A read-only delivery review rejects the exact candidate for local commit, identifies the three confirmed cross-contract defects and the bounded persistent-owner evidence gap, challenges the supplied typecheck claim against the selected binding, and states minimal re-review conditions without redesigning or requiring E2E.",
+      "files": [
+        "evals/files/1/candidate/accepted-delivery.md",
+        "evals/files/1/candidate/conversation-tools.ts",
+        "evals/files/1/candidate/agent-tool-contract.ts",
+        "evals/files/1/candidate/workflow-contract.ts",
+        "evals/files/1/candidate/capabilities.ts",
+        "evals/files/1/candidate/client-decoder.ts",
+        "evals/files/1/candidate/validation-evidence.md",
+        "evals/files/1/candidate/tool-registration.ts",
+        "evals/files/1/candidate/authoring-client.ts"
+      ],
+      "expectations": [
+        "[reject-exact-candidate] Reject the exact candidate for local commit until the three confirmed cross-contract defects and the bounded publication-owner evidence gap are closed.",
+        "[cascade-result-and-typecheck] Trace the lost cascade summary through the conversation wrapper and selected tool binding, and recognize that a DraftSnapshot handler cannot satisfy the registered DeleteNodeToolOutput contract despite the reported typecheck claim.",
+        "[capability-catalog-incomplete] Compare the accepted participant union with the public capability producer and identify the omitted accepted participant kinds and their client/model consequence.",
+        "[cross-service-limit-mismatch] Compare workflow and client limits and identify that a workflow-valid response can be rejected by the conversation decoder after state has changed.",
+        "[persistent-publish-evidence-gap] Identify missing persistent replay, rollback and concurrency proof as a commit-blocking evidence gap at the publication owner, not as a confirmed implementation defect or an E2E requirement.",
+        "[minimum-acceptance-conditions] For each finding, state the protected contract, concrete consequence and minimum evidence or correction required for re-review without redesigning the accepted architecture; keep E2E, external journeys and uninspected surfaces outside the verdict.",
+        "[prohibited-scope] The response does not accept on test count, reopen the accepted typed-CRUD design, turn missing owner-level evidence into a confirmed defect or E2E requirement, or modify the candidate."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/2/candidate/` 做只读验收，判断这个独立的 timeout 参数解析改动能否进入本地提交。不要修改文件。",
+      "expected_output": "A read-only review accepts the exact timeout parser candidate for local commit, explains why the implementation satisfies the bounded parsing contract, and keeps runtime integration and unrelated repository health outside the claim.",
+      "files": [
+        "evals/files/2/candidate/accepted-contract.md",
+        "evals/files/2/candidate/parse-timeout.ts",
+        "evals/files/2/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[accept-exact-candidate] Accept the exact candidate for the requested local commit because no material defect or decision-changing evidence gap is established within the supplied contract and surface.",
+        "[contract-trace] Verify that absence maps to 5000, only canonical positive decimal integers are accepted, values above 60000 and unsafe integers are rejected, and accepted values are returned unchanged.",
+        "[evidence-use] Use the supplied focused typecheck and boundary-test evidence only for the parser contract it exercises.",
+        "[bounded-claim] State that caller wiring, deployment and broader repository behavior were not inspected and are outside this local parser verdict.",
+        "[no-speculative-rejection] The response does not perform or claim this prohibited behavior: Reject the candidate for hypothetical localization, distributed timeout coordination, configuration migration or E2E needs absent from the accepted contract.",
+        "[no-modification] The response does not perform or claim this prohibited behavior: Modify the candidate or add defensive machinery during the review."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/3/candidate/` 做只读验收，判断这次由编码 Agent 生成的 ledger 重试改动能否进入本地提交。不要修改文件。",
+      "expected_output": "A read-only review rejects the candidate because it retries permanent failures and adds unsupported configuration, state, compatibility surface, and a parallel retry implementation despite an exact maintained project capability; it uses the reported validation only for its narrow exercised boundary.",
+      "files": [
+        "evals/files/3/candidate/accepted-delivery.md",
+        "evals/files/3/candidate/retry-transient.ts",
+        "evals/files/3/candidate/ledger-client.ts",
+        "evals/files/3/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[reject-agent-candidate] Reject the exact candidate for local commit because the selected implementation violates the accepted retry contract and adds material unsupported surfaces.",
+        "[permanent-error-semantics] Identify that ResiliencePipeline retries every error instead of only TransientLedgerError, delaying and repeating permanent failures contrary to the accepted contract.",
+        "[capability-fit] Establish that retryTransient already matches the required attempt bound and transient predicate rather than rejecting merely because a different helper exists.",
+        "[unsupported-lifecycle] Identify the environment configuration, unbounded attemptsByAccount state, generic pipeline, and extra public alias as unsupported lifecycle and API burden, using current contract and consumers rather than style preference.",
+        "[evidence-boundary] Treat the reported typecheck and transient-success test as scoped evidence that does not establish permanent-error behavior or justify the added configuration, state, and compatibility surface.",
+        "[minimum-correction] State a minimum acceptance condition that removes the contract violation and unsupported surfaces without prescribing a broader redesign or modifying the candidate."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/4/candidate/` 做只读验收，判断这次由编码 Agent 生成的 shard-key 改动能否进入本地提交。不要修改文件。",
+      "expected_output": "A read-only review accepts the candidate because the bounded internal implementation satisfies the supplied contract, is wired into its actual consumer, and introduces no material unsupported lifecycle burden; it does not reject the explicit code merely for verbosity or demand an unnecessary dependency or generic abstraction.",
+      "files": [
+        "evals/files/4/candidate/accepted-delivery.md",
+        "evals/files/4/candidate/shard-key.ts",
+        "evals/files/4/candidate/document-store.ts",
+        "evals/files/4/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[accept-agent-candidate] Accept the exact candidate for the requested local commit because no material defect or decision-changing evidence gap is established.",
+        "[contract-and-wiring] Verify trimming, blank rejection, per-segment encoding, delimiter construction, and use by the supplied document lookup.",
+        "[structure-fit] Recognize that encodeSegment directly centralizes one established invariant for two actual segments and creates no separate configuration, state, public API, or lifecycle path.",
+        "[evidence-boundary] Use the supplied focused tests and typecheck only for the bounded helper and supplied consumer.",
+        "[no-overreview] Do not reject the candidate for explicit local steps, demand a third-party dependency or generic key framework, invent external integration requirements, or suggest optional cleanup.",
+        "[no-modification] Do not modify the candidate."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/5/candidate/` 做只读验收，判断这次由编码 Agent 生成的 webhook 重试改动能否进入本地提交。不要修改文件。",
+      "expected_output": "A read-only review rejects the functionally correct candidate because it creates a second maintained retry mechanism, unbounded operational state, and an unused public compatibility surface even though the existing retry utility exactly fits the accepted contract; it does not invent a functional retry defect or reject on style alone.",
+      "files": [
+        "evals/files/5/candidate/accepted-delivery.md",
+        "evals/files/5/candidate/retry-transient.ts",
+        "evals/files/5/candidate/webhook-delivery.ts",
+        "evals/files/5/candidate/caller.ts",
+        "evals/files/5/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[reject-functionally-correct-overdelivery] Reject the candidate for local commit because the unsupported parallel mechanism and lifecycle surfaces materially exceed the smallest complete intervention even though retry behavior satisfies the functional contract.",
+        "[capability-fit] Verify that retryTransient matches the required transient predicate, attempt bound, returned value, and final-error semantics before treating the duplicate RetryPolicy as unsupported.",
+        "[material-burden] Trace the second retry owner, unbounded attemptsByEvent state, and unused exported alias to duplicated semantics, retained memory, public-surface, maintenance, and removal burden rather than to stylistic preference.",
+        "[deletion-test] Establish that removing the generic policy, tracking state, and alias while using the existing maintained helper preserves every accepted result and current caller.",
+        "[no-false-defect] Do not claim that the candidate retries permanent errors, exceeds three attempts, loses the final error, or otherwise fails the supplied functional tests.",
+        "[minimum-correction] State the minimum acceptance condition without redesigning or modifying the candidate."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "$code-reviewer 请对随附的 `evals/files/6/candidate/` 做只读验收，判断这次由编码 Agent 生成的 archive-size 改动能否进入本地提交。不要修改文件。",
+      "expected_output": "A read-only review rejects the candidate because the exact 8 MiB boundary is incorrectly accepted and written, and identifies that the coding agent disabled the decisive boundary test so its passing-test report does not establish the accepted contract.",
+      "files": [
+        "evals/files/6/candidate/accepted-delivery.md",
+        "evals/files/6/candidate/archive-store.ts",
+        "evals/files/6/candidate/archive-store.test.ts",
+        "evals/files/6/candidate/validation-change.diff",
+        "evals/files/6/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[reject-oracle-manipulation] Reject the exact candidate for local commit because it violates the accepted exact-boundary behavior and the supplied passing-test claim does not cover that behavior.",
+        "[boundary-defect] Identify that the greater-than comparison allows an archive exactly equal to 8 MiB to reach store.write even though the contract requires rejection before storage.",
+        "[disabled-decisive-test] Use the supplied test change to identify that the exact-limit test was changed from active to skipped, weakening the acceptance oracle at the failing boundary.",
+        "[evidence-scope] Treat the executed passing tests and typecheck as evidence only for below-limit and above-limit behavior, not for the skipped exact boundary.",
+        "[minimum-correction] Require correction of the exact-boundary behavior and restoration of discriminating boundary evidence without prescribing unrelated cleanup.",
+        "[no-modification] Do not modify the candidate."
+      ]
+    }
+  ]
+}

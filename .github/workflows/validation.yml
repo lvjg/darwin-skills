@@ -1,0 +1,50 @@
+name: Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  skill-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Validate Skill packages for pull request
+        if: github.event_name == 'pull_request'
+        run: ruby scripts/validate-skills.rb --base "${{ github.event.pull_request.base.sha }}"
+      - name: Validate Skill packages on main
+        if: github.event_name == 'push'
+        env:
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          base="$PUSH_BEFORE_SHA"
+          if [[ -z "$base" || "$base" =~ ^0+$ ]]; then
+            base=HEAD
+          fi
+          ruby scripts/validate-skills.rb --base "$base"
+
+  eval-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Install pinned Skill-Up validator
+        run: |
+          curl -fsSL -o /tmp/skill-up.tar.gz https://github.com/alibaba/skill-up/releases/download/v0.9.1/skill-up_0.9.1_linux_amd64.tar.gz
+          echo "6a60fa2b5167d30f7a23d5ba1cab327dbbcbd870d872b172db874dc540355db8  /tmp/skill-up.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/skill-up.tar.gz -C /tmp
+          /tmp/skill-up --version
+      - name: Validate Anthropic eval sets through Skill-Up
+        run: evals/run-evals --skill-up /tmp/skill-up --model ci-placeholder --dry-run

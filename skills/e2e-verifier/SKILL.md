@@ -1,6 +1,6 @@
 ---
 name: e2e-verifier
-description: Use only when the user explicitly invokes $e2e-verifier to derive or execute end-to-end acceptance for a concrete product or system journey. Prove functional outcomes through the real entry point, consumer-visible result, authoritative terminal state, and required effects. Do not use for product experience walkthroughs, unit or integration tests alone, general UX critique, aggregate optimization of an existing case corpus, or external writes not covered by authorization.
+description: Use only when the user explicitly invokes $e2e-verifier to derive an end-to-end acceptance case set for a concrete product or system journey or, when execution is requested and authorized, verify its functional outcome through the real entry point, consumer-visible result, authoritative terminal state, and required effects. Do not use for product experience walkthroughs, unit or integration tests alone, general UX critique, aggregate optimization of an existing case corpus, or external writes not covered by authorization.
 ---
 
 # E2E Verifier

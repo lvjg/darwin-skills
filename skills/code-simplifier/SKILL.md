@@ -1,98 +1,89 @@
 ---
 name: code-simplifier
-description: Use only when the user explicitly invokes $code-simplifier for authorized cleanup of an existing implementation after the target outcome and preserved behavior are decided or accepted. Remove or realign unsupported, duplicate, obsolete, or misplaced mechanisms without choosing a new design or expanding mutation authority.
+description: Use only when the user explicitly invokes $code-simplifier to optimize a bounded implementation candidate after its required behavior and preserved contracts are decided. Delete candidate surfaces without an established obligation, reuse existing capabilities and owners, and restructure required code to reduce coupling and total maintenance burden without choosing a new design, repairing unrelated defects, or expanding the authorized scope.
 ---
 
 # Code Simplifier
 
-Bring an authorized implementation to the smallest coherent system that satisfies its authorized target outcome. Preserve required behavior, active contracts, failure and recovery semantics, user data, and unrelated work. Cleanup removes unsupported responsibilities, behavior, state, paths, dependencies, and surface area; it does not invent requirements, choose an unresolved design, or optimize nearby code.
+Reduce a bounded implementation candidate to the lowest-total-burden complete implementation that delivers its decided behavior. Delete unsupported machinery; reuse, realign, directly simplify, or restructure required code so it fits established project responsibilities and contracts. Preserve required behavior, active contracts, affected failure semantics, user data, unrelated work, and distinctions that represent genuinely different policies.
 
-Completion means that every remaining element in the affected system is required by the target or a preserved obligation, sits at a fitting owner, and has no simpler supported replacement.
+Completion means that every material candidate surface is required by the result, a necessary consequence, or a preserved obligation; direct residue is closed; required code has fitting responsibility, cohesion, dependencies, and contracts; and the final candidate carries less total coupling, change propagation, implementation, and lifecycle burden without introducing a new design.
 
-`authorized target -> affected responsibilities and distinct paths -> necessity judgment -> delete / reuse / realign / simplify / retain -> close affected surfaces and retired producers -> behavior + retirement + net-simplicity proof`
+The sections below define required decisions and completion conditions, not a fixed execution sequence. Follow the candidate and its risks in whatever order yields the smallest complete intervention.
 
-## Confirm the Cleanup Contract
+## Fix the Candidate and Behavior
 
-Fix the target before editing. Accept it only from the user's stated result, a still-valid decision governing the affected contract, an active contract, or a traceable remediation outcome explicitly accepted by the user. The agent's diagnosis, current implementation and tests, historical plans, and unaccepted suggestions are evidence, not authority to establish the target.
+Identify the exact candidate and comparison base: a working-tree diff, commit, pull request, patch, or explicitly bounded files or module. Record relevant dirty state, the authorized repository scope, and unrelated changes that must remain untouched.
 
-Judge completion against the authorized target on the final candidate snapshot, not on planned future changes.
+Establish the required normal result, affected failure behavior, preserved contracts, intentional surface changes, and non-goals from the user's request, an accepted decision, or an active contract. Current code, tests, comments, implementation summaries, and historical plans are scoped evidence, not authority to define their own success.
 
-Express the required observable result, behavior and failure semantics that must remain, behavior or mechanisms intended to retire, and non-goals independently of the current implementation. Include the actual user-visible or business result when cleanup affects one. Record the authorized repository scope, comparison baseline, dirty-worktree state, delivery state, and boundaries requiring separate authority. Preserve unrelated changes.
+The candidate must be complete enough to establish the behavior being preserved. If optimization requires choosing new product behavior, architecture, state ownership, a public contract, or repairing a material defect independent of the optimization, leave that boundary unchanged and report the prerequisite. Optimization authority covers the candidate and its direct consequences, not adjacent debt or a general implementation task.
 
-Do not edit through a material unresolved choice. If the requested result conflicts with an active contract, or cleanup would require a new product or architecture decision, leave that boundary unchanged and report the prerequisite.
+## Account for the Candidate
 
-## Reconstruct the Affected System
+Read the candidate end to end. Inventory every material added, changed, or intentionally retired surface, including code, types, dependencies, configuration, flags, state, schemas, exports, registrations, tests, fixtures, scripts, generated artifacts, build or deployment wiring, and current documentation concepts that create maintenance obligations.
 
-Start from each required or preserved outcome and follow every materially distinct active path from entry or consumer to observable result. A path is materially distinct when it introduces a different contract, decision owner, authoritative state, side effect, dependency selection, failure or recovery behavior, ordering requirement, or resource lifecycle. Inspect runtime composition and configuration when they decide which implementation is active.
+For each material surface, establish which of the following requires it:
 
-Across those paths, identify the actual consumers and published contracts; where decisions are made; who writes and reads authoritative, derived, cached, or replicated state; where effects occur; which internal and external dependencies are required; how errors, cancellation, retries, compensation, concurrency, and resources behave when relevant; and which current surfaces carry the behavior. Current surfaces can include APIs, events, commands, jobs, registrations, configuration, flags, schemas, tests, documentation, prompts, scripts, generators, templates, build or deployment artifacts, telemetry, and visible output.
+- the decided result directly;
+- propagation needed to make that result real;
+- an active consumer, contract, constraint, threat, or failure policy that must be preserved;
+- a direct consistency consequence of the optimization.
 
-For behavior or mechanisms intended to retire, also trace any target-relevant path or producer that can preserve, recreate, or re-enable them, even when unchanged by the candidate.
+Trace from a candidate change to its consumers and effects only far enough to decide whether it can be removed, reused, realigned, directly simplified, restructured, or retained. Trace backward from a preserved result only far enough to prove that the selected runtime path and its contract remain intact. Inspect runtime composition and resolved configuration when they select the active implementation.
 
-Follow published or external consumers far enough to establish their binding contract; absence of an in-repository caller does not prove that a public surface is unused. Search hits, types, dependency injection, mocks, and passing tests prove only their direct scope. Check the owning contract and concrete runtime consumption whenever that distinction could change an edit.
+Absence of an in-repository caller does not prove that a published or external surface is unused. Search hits, types, injection, mocks, and passing tests prove only their direct scope. Obtain the smallest owning contract or runtime evidence that can change the edit; if a material obligation remains unknowable within scope, retain that boundary and report it rather than guessing.
 
-Coverage is sufficient when examining another plausible active path no longer reveals a new consumer, contract, decision owner, state authority, effect, failure semantic, or lifecycle relevant to the target. Keep unrelated debt outside the cleanup boundary.
+Stop discovery when another plausible candidate surface or causal path cannot reveal a new obligation or change a removal, reuse, ownership, scope, or validation decision. Keep unrelated debt outside the task.
 
-## Derive Necessary Cleanup
+## Reduce and Restructure the Required Implementation
 
-Judge every behavior, decision, state, dependency, abstraction, defensive mechanism, compatibility path, and active surface in the affected system by necessity:
+Apply a deletion test before improving a mechanism: what decided result, necessary propagation, active consumer, contract, constraint, threat, or failure policy would fail if the whole mechanism disappeared? If none is established, delete it rather than renaming, splitting, documenting, or replacing it.
 
-- Which target result, preserved contract, constraint, threat, or failure policy requires it?
-- Who consumes it, and is it owned where its decision, state, effect, and lifecycle can be enforced?
-- Does another location make the same decision, store the same fact, perform the same effect, or expose an equivalent capability?
-- Does the project, framework, standard library, or an installed dependency already provide a responsibility- and contract-matching capability?
-- Does it leak internals, create a cycle or hidden ordering, share mutable state, broaden an interface, or force unrelated modules to change together?
-- Is it only a wrapper, forwarding layer, historical compatibility mechanism, speculative extension point, or producer of a retired surface?
-- What authorized target result or preserved obligation would fail if it were removed?
+If a mechanism remains necessary, choose the smallest justified intervention. These are alternatives that may be combined when each is required, not an ordered ladder:
 
-For each validation, guard, retry, fallback, default, broad catch, adapter, timeout, limit, cache, synchronization path, or compatibility branch, identify the untrusted boundary, active consumer or contract, reproduced failure, performance constraint, or explicit degradation policy that requires it. Do not preserve or add one because a scenario can merely be imagined. Do not infer that security, data integrity, or public compatibility code is unnecessary from local silence; verify the authority that owns the obligation.
+- Reuse a project, framework, standard-library, or installed dependency capability whose responsibility, contract, failure behavior, version, and lifecycle fit.
+- Return duplicated decisions, state, or effects to an already established owner.
+- Make necessary control flow, data flow, dependencies, and public surface direct.
+- Restructure required code when the candidate makes unrelated responsibilities change together, leaks implementation knowledge across an owning contract, shares mutable state, creates hidden ordering, or propagates low-level failure details.
+- Add, reshape, or retain structure only when it centralizes an established invariant, serves actual consumers under one contract, or isolates a real protocol, security, error, state, or resource-lifecycle boundary, and demonstrably removes more coupling, change propagation, responsibility, concepts, or lifecycle burden than it introduces.
 
-When the basis is unclear and removal could change material behavior, investigate until the evidence can distinguish removal from retention. If the boundary remains unknowable within scope, retain it as an explicit unresolved boundary rather than claiming it was cleaned. Before wrapping or reimplementing an existing capability, verify the installed version, supported contract, relevant source or runtime behavior, and ownership fit.
+Do not invent a new owner, source of truth, adapter, canonical state, projection, or synchronization path merely to make the candidate look organized. If the correct owner or contract is itself undecided, stop at that design boundary.
 
-## Choose the Smallest Convergence
+Increase cohesion by keeping code that owns the same decision, state, effect, or lifecycle together. Do not split by syntax, file size, naming preference, or the number of methods. Reduce coupling at the contract that owns the leaked knowledge or dependency; interfaces, injection, adapters, events, or additional modules are means, not evidence that coupling fell.
 
-Resolve confirmed cleanup needs in this order:
+Apply these checks only when the candidate introduces or changes the mechanism:
 
-1. **Delete** behavior, state, paths, dependencies, and surfaces with no confirmed obligation.
-2. **Reuse** an existing capability when its responsibility, contract, failure behavior, and lifecycle fit.
-3. **Realign** a decision, state, or effect to the boundary that owns it.
-4. **Simplify** necessary control flow, data flow, dependencies, and public surface.
-5. **Retain** a mechanism only with an evidenced obligation and clear owner.
+- Configuration needs behavior that must vary without code changes, plus a consumer, owner, default, and validation.
+- Persistent state needs an established fact that must outlive its creating operation, with an authoritative owner, explicit writers and readers, recovery behavior, and a retirement condition.
+- Cached, derived, or replicated state needs an actual consumer or constraint, an authoritative source, defined refresh or reconciliation and failure behavior, and a bounded lifecycle.
+- Validation, retry, timeout, fallback, broad catch, default, limit, or other defensive behavior needs a real untrusted boundary, active obligation, reproduced failure, constraint, threat, or explicit degradation policy.
+- Compatibility or transition behavior needs an identified active consumer, responsible owner, verification, and explicit removal trigger; without that obligation, remove the superseded path rather than creating a replacement.
+- A thin adapter or separate path may be added, reshaped, or retained when it owns a real protocol, security, error, compatibility, or lifecycle boundary; do not merge genuinely different policies to reduce line count.
 
-Assign one decision owner only where conflicting inputs require one decision or policy. Do not create canonical state, projections, synchronization, adapters, or a new “source of truth” merely to satisfy an ownership preference. Local, derived, cached, or replicated state is valid when the target needs it and its authority, lifecycle, refresh or reconciliation, and failure behavior are explicit.
+Treat candidate-authored tests, mocks, snapshots, and validation scripts as evidence of their direct scope, not independent proof of the behavior they encode. Never preserve an unsupported production mechanism only because a test asserts its implementation shape, and never weaken a protected behavior merely to make the optimized candidate pass.
 
-Add or retain structure only when all of the following hold: a confirmed responsibility or constraint requires it; it has a real consumer; its owner and lifecycle are clear; no existing capability fits; and it replaces more responsibility, state, paths, change propagation, or lifecycle burden than it introduces. A cleanup that adds concepts without a demonstrated net reduction has not converged.
+## Close Direct Consequences
 
-Validate untrusted input and external failure at their owning boundary. Inside a controlled path, rely on explicit contracts and let invariant violations fail visibly. Do not make tests pass through shallow fallbacks, silent defaults, swallowed exceptions, speculative retries, duplicate validation, or silent truncation, dropping, or coercion. Make intentional limits and degradation explicit, observable, owned, and verified. Preserve compatibility only for an evidenced active obligation with an owner, verification, and exit condition.
+Make the smallest complete edits across the candidate and the callers, imports, exports, contracts, configuration, registrations, dependencies, tests, fixtures, scripts, artifacts, current documentation, and visible output directly affected by those edits. Remove candidate-authored tests or artifacts only when their protected surface is intentionally removed and no independent behavior obligation remains.
 
-Do not force reuse across the wrong owner, merge genuinely different policies, split and wrap code mechanically, or turn naming and style preferences into a broader refactor. Keep necessary control and data flow direct and readable without erasing required distinctions.
+When the candidate actually replaces an active mechanism, verify that the superseded entry, runtime selection, state, and any generator, template, registry, default, build composition, or deployment wiring that would recreate it are removed or explicitly bounded. Do not perform migration or system-wide retirement work when the candidate does not create that obligation.
 
-## Apply and Close the System
+Inspect the evolving diff against the base, target, and authorized scope. Leave out formatting, naming, cleanup, or refactoring that does not reduce target-relevant responsibility, behavior, state, dependency, surface, or lifecycle burden. Preserve unrelated user changes.
 
-Make the smallest complete edits and align only their causal consequences across callers, consumers, exports, contracts, state, configuration, registrations, current documentation, tests, prompts, scripts, artifacts, operations, and visible output. Remove superseded active code, decisions, state, routes, adapters, flags, tests, names, and concepts. Preserve historical records unless the user authorizes changing them.
+## Verify the Final Candidate
 
-Close both the retired surface and every active mechanism that would recreate or re-enable it, including generators, templates, registries, defaults, migrations, synchronization scripts, build composition, and deployment wiring. Bound anything that must remain with its consumer, reason, verification, and removal condition.
+After the last relevant edit, inspect the final diff and establish all four results:
 
-Treat tests as protection and evidence, not a default cleanup target. Change setup only for an authorized surface change, and change assertions only when the independent outcome or protected contract changes; never weaken or delete them merely to accept the implementation.
+- **Same behavior:** the decided normal result, preserved contracts, and affected failure semantics still work at the boundary that determines them.
+- **Candidate closure:** unsupported candidate surfaces and their direct references or producers are absent; any retained residue has an established obligation and boundary.
+- **Structural fit:** required responsibilities are cohesive; dependencies, knowledge, state, and low-level failures cross only fitting contracts; any added or reshaped abstraction has an established invariant, consumer, or boundary.
+- **Less burden:** the final candidate has less target-relevant coupling and change propagation and fewer unnecessary decision locations, states, branches, dependencies, configurations, public surfaces, abstractions, or lifecycle obligations, without replacing them with equivalent new machinery.
 
-Inspect the evolving diff against the baseline and target. If an edit expands beyond the established causal system, prove that it is necessary to complete the outcome or leave it out. Moving or renaming code without reducing unsupported behavior, responsibility, state, dependency, concepts, or change propagation is not cleanup.
+Use the smallest validation that distinguishes success from failure, then rerun checks invalidated by the final edits. Prefer an existing contract, real consumer, boundary execution, or discriminating counterexample when candidate-authored tests merely restate the implementation. Include data preservation, ordering, concurrency, idempotency, cancellation, resource lifetime, security, performance, migration, or external validation only when the candidate exposes those risks.
 
-## Prove Final Convergence
-
-Judge the final snapshot against the independent outcome, not the implementation's preferred behavior. During editing, run the smallest check that distinguishes the current hypothesis. After the last relevant edit, rerun checks invalidated by it and broaden validation only when affected contracts or risk justify it.
-
-Prove all three dimensions:
-
-- **Behavior:** required success, preserved behavior, and affected failure or recovery semantics work at the boundary that determines the result. Include data preservation, ordering, concurrency, idempotency, cancellation, resource lifetime, security, and performance only when the changed system exposes those risks.
-- **Retirement:** superseded behavior, state, paths, surfaces, and their producers are absent, or each remaining residue has bounded ownership and an exit condition. Verify public or external obligations before treating repository absence as proof.
-- **Net simplicity:** the final system has no unexplained decision owner, state or synchronization relation, dependency, public surface, configuration, compatibility path, abstraction, or lifecycle. Any added structure demonstrably replaces greater total burden.
-
-Each dimension must be established. Evidence may overlap, but satisfaction of one dimension does not establish the others.
-
-For user-visible behavior, verify the actual observable result; a frontend simulation, backend-only exercise, or test derived from the implementation is not sufficient by itself. Distinguish working-tree behavior from what is tracked, built, deployed, or otherwise deliverable. If cleanup closes an acceptance condition or release gate, validate the causally affected final range against that condition.
-
-Stop when the target is met, the affected system is closed, and every remaining issue is unrelated, aesthetic, requires a separate decision or authority, or cannot change the completion judgment with further evidence. Make no edit when the implementation already satisfies the target.
+Make no edit when the candidate already is the lowest-total-burden complete implementation. Do not claim repository-wide simplicity, external behavior, deployment, or release readiness beyond the evidence actually obtained.
 
 ## Response Contract
 
-Lead with whether the authorized cleanup target completed and identify any target-relevant residue. State the target source, changed surface, meaningful deletion, reuse or responsibility correction, closure of retired mechanisms, validation on the final snapshot, net effect on system complexity, preserved constraints, and unresolved boundaries. If no edit was needed, say so with evidence. Do not expose internal classifications, imply that unverified work is complete, or add ceremonial sections. Keep the response as short as the outcome allows.
+Lead with whether the bounded candidate was optimized without changing its decided behavior. State the candidate and base, meaningful deletion, reuse, responsibility or structural correction, direct consequence closure, final validation, net burden reduction, preserved constraints, and any unresolved boundary. If no edit was needed, say so with evidence. Keep the response as short as the outcome allows.

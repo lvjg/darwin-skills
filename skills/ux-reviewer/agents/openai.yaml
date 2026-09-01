@@ -1,6 +1,6 @@
 interface:
   display_name: "UX Reviewer"
-  short_description: "Walk real user paths and find experience defects"
-  default_prompt: "Use $ux-reviewer to walk this human-facing product from the target user's task, inspect content, hierarchy, navigation, interaction, feedback, layout, accessibility, and recovery at decisive checkpoints, and report reproducible evidence-backed experience defects, risks, and preferences within the actual surface reviewed."
+  short_description: "Assess experience quality along real user paths"
+  default_prompt: "Use $ux-reviewer to assess this human-facing product from the target user's task, inspect content, hierarchy, navigation, interaction, feedback, layout, accessibility, and recovery at decisive checkpoints, and report reproducible evidence-backed defects, risks, preferences, or a bounded no-material-issue conclusion within the actual surface reviewed."
 policy:
   allow_implicit_invocation: false

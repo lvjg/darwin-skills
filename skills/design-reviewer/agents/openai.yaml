@@ -1,6 +1,6 @@
 interface:
   display_name: "Design Reviewer"
-  short_description: "Challenge whether a technical or behavioral design is sound"
-  default_prompt: "Use $design-reviewer to independently reconstruct the authorized outcome, design problem, and relevant real-world starting conditions, including the current system when one exists; trace pivotal commitments to established obligations before auditing their mechanisms; challenge the retained technical or behavioral route with relevant evidence and counterroutes; and report only established defects, decision-changing unknowns, and user-owned choices at the reviewed scope."
+  short_description: "Assess technical and Agent/Harness designs independently"
+  default_prompt: "Use $design-reviewer to decide independently whether this submitted technical or Agent/Harness design supports the stated next decision. Establish the problem, real starting conditions, constraints, and evidence without adopting the proposal's framing; bind the judgment to the applicable proposal revision; identify and challenge the pivotal design judgments; and report the decision, achieved independence, evidence limits, established defects, decision-changing unknowns, and user-owned choices without rewriting the proposal."
 policy:
   allow_implicit_invocation: false

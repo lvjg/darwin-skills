@@ -1,0 +1,175 @@
+{
+  "skill_name": "code-simplifier",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$code-simplifier 请按 `evals/files/1/project/cleanup-contract.md` 简化随附的 Ruby 候选。逐项处理候选引入的 timeout 结构，只修改候选及其直接后果；完成后运行项目指定的边界验证。",
+      "expected_output": "The candidate-added provider, service, flag, duplicate parsing branch and shape test are removed; the CLI uses the established Config owner directly; actual CLI success and failure behavior passes the supplied boundary verifier; and no replacement layer or unrelated cleanup is introduced.",
+      "files": [
+        "evals/files/1/project/cleanup-contract.md",
+        "evals/files/1/project/lib/config.rb",
+        "evals/files/1/project/lib/timeout_service.rb",
+        "evals/files/1/project/lib/timeout_provider.rb",
+        "evals/files/1/project/bin/show-timeout",
+        "evals/files/1/project/test/config_test.rb",
+        "evals/files/1/project/test/timeout_service_test.rb",
+        "evals/files/1/project/test/verify_cleanup.rb"
+      ],
+      "expectations": [
+        "[account-for-candidate] Account for the provider, service, environment switch, duplicate parser, fallback and candidate-authored shape test as material candidate surfaces rather than reviewing only the main runtime file.",
+        "[remove-overbuild] Delete lib/timeout_provider.rb, lib/timeout_service.rb and test/timeout_service_test.rb because no supplied behavior, consumer or contract requires them.",
+        "[reuse-established-owner] Update bin/show-timeout to require lib/config.rb and call Config.timeout directly, leaving parsing, default and invalid-input behavior with the existing owner.",
+        "[boundary-validation] Run ruby test/verify_cleanup.rb after the final edit and report its actual result; the verifier executes the CLI with default, valid and invalid input.",
+        "[no-replacement-layer] The response does not perform or claim this prohibited behavior: Replace the deleted surfaces with another adapter, factory, flag, registry or abstraction.",
+        "[no-scope-drift] The response does not perform or claim this prohibited behavior: Redesign Config, alter CLI behavior or clean unrelated project code."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$code-simplifier 请按 `evals/files/2/project/cleanup-contract.md` 简化随附的 Ruby 候选，目标是删除 `PublicToken.parse` 转发层。只修改候选及其直接后果，不引入新的兼容机制。",
+      "expected_output": "The simplifier makes no code change because the supplied evidence does not resolve an active public compatibility obligation, and reports the narrow ownership decision needed before deletion without inventing a shim.",
+      "files": [
+        "evals/files/2/project/cleanup-contract.md",
+        "evals/files/2/project/lib/public_token.rb",
+        "evals/files/2/project/consumer-inventory.md"
+      ],
+      "expectations": [
+        "[no-edit-while-obligation-unknown] Leave lib/public_token.rb unchanged because the supplied inventory establishes a published API but not whether active external consumers still depend on it.",
+        "[decision-changing-unknown] Identify external-consumer and compatibility ownership as a decision-changing unknown rather than treating the lack of in-repository callers as deletion proof.",
+        "[minimum-prerequisite] State the minimum prerequisite for retrying the simplification: authoritative evidence that the public contract has no active obligation, or an owner-approved transition and removal trigger.",
+        "[no-speculative-compatibility] The response does not perform or claim this prohibited behavior: Add a deprecation flag, adapter, alias, registry entry or compatibility shim without an established transition contract.",
+        "[no-unrelated-change] The response does not perform or claim this prohibited behavior: Modify unrelated token parsing behavior or project files."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$code-simplifier 请按 `evals/files/3/project/candidate-contract.md` 检查这个 slug 候选是否还需要简化。只有存在可证明的候选冗余时才修改，并运行现有测试。",
+      "expected_output": "No edit is made: the candidate is already a direct, minimal implementation of the decided behavior, its test passes, and the response avoids ceremonial extraction, renaming or abstraction.",
+      "files": [
+        "evals/files/3/project/candidate-contract.md",
+        "evals/files/3/project/lib/slug.rb",
+        "evals/files/3/project/test/slug_test.rb"
+      ],
+      "expectations": [
+        "[evidence-based-noop] Leave lib/slug.rb and test/slug_test.rb unchanged because every candidate line directly implements the supplied contract.",
+        "[validate-noop] Run ruby test/slug_test.rb and report the actual result.",
+        "[no-ceremonial-refactor] The response does not perform or claim this prohibited behavior: Extract a helper, add configuration, rename working code or introduce an abstraction merely to show activity.",
+        "[bounded-claim] Report only that this bounded candidate needs no simplification, not that the repository is globally simple or production-ready."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "$code-simplifier 请按 `evals/files/4/project/candidate-contract.md` 简化 timeout gateway 候选。注意判断这个单消费者薄层是否真的没有责任，并运行现有测试。",
+      "expected_output": "No edit is made because the thin gateway owns the required vendor-error translation boundary; the test passes; and the response does not inline the vendor dependency into the policy owner merely to reduce a file or call.",
+      "files": [
+        "evals/files/4/project/candidate-contract.md",
+        "evals/files/4/project/lib/timeout_gateway.rb",
+        "evals/files/4/project/lib/policy_loader.rb",
+        "evals/files/4/project/test/timeout_gateway_test.rb"
+      ],
+      "expectations": [
+        "[retain-owned-boundary] Retain TimeoutGateway even though it has one consumer because the contract assigns it vendor protocol and error-translation responsibility.",
+        "[preserve-policy-owner] Keep PolicyLoader responsible only for choosing the timeout policy and do not make it depend on the vendor exception type.",
+        "[validate-retained-boundary] Run ruby test/timeout_gateway_test.rb and report the actual result.",
+        "[no-line-count-collapse] The response does not perform or claim this prohibited behavior: Inline the gateway solely to remove a file, class or call."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "$code-simplifier 请按 `evals/files/5/project/candidate-contract.md` 简化 report formatter 候选。候选的主路径能工作，但还可能留下未接入的结构；处理所有候选实质改动并运行指定验证。",
+      "expected_output": "The unused registry, configuration and registry-only test are deleted while the formatter and its behavior test remain unchanged; the supplied verifier passes; and no replacement registration mechanism is introduced.",
+      "files": [
+        "evals/files/5/project/candidate-contract.md",
+        "evals/files/5/project/lib/report_formatter.rb",
+        "evals/files/5/project/lib/report_registry.rb",
+        "evals/files/5/project/config/reporting.yml",
+        "evals/files/5/project/test/report_formatter_test.rb",
+        "evals/files/5/project/test/report_registry_test.rb",
+        "evals/files/5/project/test/verify_cleanup.rb"
+      ],
+      "expectations": [
+        "[find-off-path-residue] Identify the unused registry, its configuration and its shape-only test as candidate surfaces even though they are off the working formatter path.",
+        "[delete-residue-and-consequences] Delete lib/report_registry.rb, config/reporting.yml and test/report_registry_test.rb together.",
+        "[preserve-decided-behavior] Leave lib/report_formatter.rb and test/report_formatter_test.rb behaviorally unchanged.",
+        "[validate-closure] Run ruby test/verify_cleanup.rb after the final edit and report its actual result.",
+        "[no-replacement-registration] The response does not perform or claim this prohibited behavior: Replace the deleted registry with another plugin map, loader, flag or configuration path."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "$code-simplifier 请按 `evals/files/6/project/candidate-contract.md` 检查两个看起来重复的 timeout 解析路径。只有在不丢失已决定的失败策略时才合并，并运行现有测试。",
+      "expected_output": "No edit is made because the web and job paths intentionally implement different invalid-input policies; the tests pass; and the response does not merge them based on syntax similarity alone.",
+      "files": [
+        "evals/files/6/project/candidate-contract.md",
+        "evals/files/6/project/lib/web_timeout.rb",
+        "evals/files/6/project/lib/job_timeout.rb",
+        "evals/files/6/project/test/timeout_policy_test.rb"
+      ],
+      "expectations": [
+        "[preserve-distinct-policies] Keep the separate web and job timeout paths because invalid input must raise for one and default for the other.",
+        "[validate-counterexample] Run ruby test/timeout_policy_test.rb and report the actual result, including the distinct invalid-input cases.",
+        "[no-syntax-only-abstraction] The response does not perform or claim this prohibited behavior: Merge the paths or add a shared parser solely because their happy-path syntax is similar.",
+        "[no-policy-change] The response does not perform or claim this prohibited behavior: Normalize both paths to the same fallback or exception behavior."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "$code-simplifier 请按 `evals/files/7/project/candidate-contract.md` 简化 checkpoint 候选。区分必须跨进程存续的权威状态与候选附加的内存影子，关闭直接后果并运行指定验证。",
+      "expected_output": "The authoritative file-backed CheckpointStore and its write, resume, recovery and retirement behavior are retained; the unsupported in-memory cache and its shape-only test are removed; the supplied verifier passes; and no alternate state or synchronization layer is introduced.",
+      "files": [
+        "evals/files/7/project/candidate-contract.md",
+        "evals/files/7/project/lib/checkpoint_store.rb",
+        "evals/files/7/project/lib/checkpoint_cache.rb",
+        "evals/files/7/project/test/checkpoint_store_test.rb",
+        "evals/files/7/project/test/checkpoint_cache_test.rb",
+        "evals/files/7/project/test/verify_cleanup.rb"
+      ],
+      "expectations": [
+        "[retain-required-persistent-state] Keep CheckpointStore and its file-backed state because the supplied contract requires the completed offset to survive process restarts.",
+        "[preserve-state-lifecycle] Preserve the established writer and reader behavior, missing-or-corrupt recovery to zero, and clear-on-completion retirement behavior.",
+        "[remove-unsupported-shadow] Delete lib/checkpoint_cache.rb and test/checkpoint_cache_test.rb, then remove every cache require, instance, write, read and clear consequence from CheckpointStore.",
+        "[validate-state-boundary] Run ruby test/verify_cleanup.rb after the final edit and report its actual result.",
+        "[no-alternate-state] The response does not perform or claim this prohibited behavior: Replace the deleted cache with another in-memory shadow, synchronization path, database, registry or configuration mechanism.",
+        "[no-state-overdeletion] The response does not perform or claim this prohibited behavior: Remove the required persistent checkpoint or weaken its restart, recovery or retirement semantics merely to reduce code."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "$code-simplifier 请按 `evals/files/8/project/candidate-contract.md` 优化 delivery planner 候选。候选行为正确但泄漏了 vendor 协议和错误；只处理候选及其直接后果，并运行指定验证。",
+      "expected_output": "A minimal ShippingRateGateway is added to own the real vendor protocol and error translation, DeliveryPlanner depends only on the internal gateway contract, quote success and failure behavior passes the supplied verifier, and no factory, registry or interface hierarchy is introduced.",
+      "files": [
+        "evals/files/8/project/candidate-contract.md",
+        "evals/files/8/project/lib/parcel_cloud.rb",
+        "evals/files/8/project/lib/delivery_planner.rb",
+        "evals/files/8/project/test/verify_optimization.rb"
+      ],
+      "expectations": [
+        "[add-real-boundary] Add lib/shipping_rate_gateway.rb because the supplied contract establishes a real vendor protocol and error-translation responsibility that must not remain in DeliveryPlanner.",
+        "[decouple-domain] Change DeliveryPlanner to depend on the gateway's internal fetch contract without referencing ParcelCloud, its exception type or fetch_rate.",
+        "[translate-vendor-failure] Keep ParcelCloud::Unavailable handling inside ShippingRateGateway and translate it to RateUnavailable without changing the message.",
+        "[validate-added-boundary] Run ruby test/verify_optimization.rb after the final edit and report its actual result.",
+        "[no-framework] The response does not perform or claim this prohibited behavior: Add a factory, registry, generic provider hierarchy, feature flag or multiple speculative implementations.",
+        "[no-behavior-change] The response does not perform or claim this prohibited behavior: Change the quote result, swallow vendor failure or modify the supplied vendor contract."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "$code-simplifier 请按 `evals/files/9/project/candidate-contract.md` 优化 API 和 Job 的 limit 候选。判断这里是否是同一规则的真实重复，完成必要的结构优化并运行指定验证。",
+      "expected_output": "The duplicated limit decision is centralized in one minimal LimitPolicy owner, the required ApiLimit and JobLimit entry contracts delegate to it, all valid and invalid behaviors pass the supplied verifier, and no configuration, strategy hierarchy or unrelated interface merge is introduced.",
+      "files": [
+        "evals/files/9/project/candidate-contract.md",
+        "evals/files/9/project/lib/api_limit.rb",
+        "evals/files/9/project/lib/job_limit.rb",
+        "evals/files/9/project/test/verify_optimization.rb"
+      ],
+      "expectations": [
+        "[extract-established-invariant] Add one minimal lib/limit_policy.rb owner for the established maximum, parsing and invalid-input rule shared by both consumers.",
+        "[preserve-required-entry-contracts] Keep ApiLimit.apply and JobLimit.apply as required entry contracts and make both delegate to LimitPolicy without retaining duplicate decisions.",
+        "[reduce-change-propagation] Leave the maximum, parsing, clamp and fallback decision in exactly one production location.",
+        "[validate-shared-policy] Run ruby test/verify_optimization.rb after the final edit and report its actual result.",
+        "[no-speculative-variants] The response does not perform or claim this prohibited behavior: Add configuration, a strategy hierarchy, dependency injection, factories or separate policy variants.",
+        "[no-interface-merge] The response does not perform or claim this prohibited behavior: Merge or rename the required API and Job entry contracts or clean unrelated project code."
+      ]
+    }
+  ]
+}

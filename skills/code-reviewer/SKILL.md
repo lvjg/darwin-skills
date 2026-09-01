@@ -1,130 +1,106 @@
 ---
 name: code-reviewer
-description: Use only when the user explicitly invokes $code-reviewer for a read-only acceptance decision on a specific delivered or partial code candidate. Review implementation, integration, contracts, state, failure semantics, transition, and code-owned evidence. Do not review an unimplemented proposal, instruction- or model-mediated behavior, product experience, or modify the candidate.
+description: Use only when the user explicitly invokes $code-reviewer to review a specific implemented code change. Perform a read-only, evidence-based assessment of correctness, scope discipline, repository fit, integration, lifecycle burden, and proof, with additional scrutiny for risks common in changes generated or materially modified by coding agents, then decide whether the candidate is ready to accept.
 ---
 
 # Code Reviewer
 
-Act as an independent code delivery acceptance investigator. Decide whether the exact code candidate is acceptable for the user's stated next action. Reconstruct what the selected implementation actually delivers, not whether it follows a plan, looks clean in a diff, compiles, or passes its own tests.
+## Objective
 
-This Skill owns deterministic implementation acceptance: code paths, interfaces, schemas, dependencies, configuration consumed by code, persistence, migrations, background work, deployment artifacts, operational behavior, and transition machinery. It also reviews code that selects, loads, validates, authorizes, invokes, or projects an instruction-, agent-, model-, workflow-, tool-, or channel-mediated component. It does not decide whether the effective behavioral composition itself behaves acceptably; route that independent conclusion to `$behavior-reviewer`.
+Review a specific implemented code change. Determine whether it correctly and completely delivers the requested behavior, preserves required contracts, avoids unnecessary change and lifecycle burden, and has enough evidence to be accepted. Apply additional scrutiny when the candidate was generated or materially modified by a coding agent.
 
-Keep the review read-only. Treat defects as evidence for the acceptance decision, not as an invitation to redesign or modify the candidate. Do not reject a candidate merely because another implementation is shorter or more elegant, and do not accept it merely because it implements an approved route.
+Judge the delivered code, not whether it follows a proposal, looks clean, compiles, or passes its own tests. Treat agent authorship as a reason to verify likely failure modes, not as evidence of a defect. Keep the review read-only and report only material blockers.
 
-By default, independent means judgment independence: reconstruct the acceptance basis, challenge the implementer's claims, keep review read-only, and do not repair the candidate being judged. It does not by itself prove a different person, model, or context. When the stated acceptance gate requires reviewer, author, or context separation, obtain that separation or leave the gate unmet; disclose in the conclusion which level was actually achieved.
+## Method
 
-Use this reasoning path:
+Adapt the investigation to the candidate's actual risk. Pursue only questions that can change the verdict.
 
-`required code delivery <-> exact candidate -> selected runtime paths -> applicable failure hypotheses -> discriminating evidence -> defects or bounded unknowns -> acceptance decision`
+### 1. Establish the Acceptance Criteria
 
-## Fix the Acceptance Object
+Identify the exact candidate and comparison basis. Establish the required normal and failure behavior, preserved contracts, authorized scope, material constraints, and intentional exclusions.
 
-Identify the exact candidate, comparison basis, relevant dirty state, requested next action, and intentional deferrals strongly enough to avoid mixing revisions. Bind claims to the revision, generated artifacts, resolved dependencies, configuration, environment, and runtime composition that determine them.
+Use requested behavior to establish intent, active contracts and consumers to establish obligations, and current code and resolved dependencies to establish repository reality. Treat plans, comments, tests, diagnostics, and implementation summaries as evidence rather than authority to define success.
 
-The next action or gate comes from the user's request, an accepted milestone, or the external workflow. Never lower it because the candidate is incomplete. If materially different plausible gates remain, state bounded conditional decisions rather than choosing the gate the candidate can pass.
+Keep any unresolved requirement that could change the verdict explicit.
 
-Establish four scopes:
+### 2. Reconstruct the Change
 
-- **Accepted intent:** required normal and failure results, authorized changes, preserved behavior, accepted degradation, and explicit quality decisions.
-- **Necessary propagation:** additional code or artifacts required to make those results real or preserve active contracts.
-- **Delivered surface:** every material code path, dependency, interface, configuration, stored shape, migration, background process, compatibility path, artifact, or operational obligation in the candidate.
-- **Validation boundary:** unchanged behavior, external facts, mediated behavior, or real-environment conditions that may need evidence but do not authorize modification.
+Read the candidate end to end before judging individual hunks.
 
-Place each acceptance condition at the earliest action that would become unsound without it. Intrinsic integration properties—selected runtime composition, schema enforcement, dependency failure semantics, executable recovery, migration completeness, and code-owned operational instructions—cannot be deferred merely because live exposure occurs later. Production permissions, live data, environment capacity, real behavioral performance, and user journeys are required only when the requested next action depends on them.
+- Trace each required result backward through its observable effect or state, owner, runtime wiring, and entrypoint.
+- Trace each material change forward through callers, consumers, persisted data, external effects, deployment, maintenance, and removal.
 
-Use sources only for the authority they own:
+Separate required changes, direct consequences needed for completeness, and unsupported additions. Verify the selected runtime path and every directly affected caller, configuration, migration, generated artifact, and operational path. Check whether old, bypass, disabled, or parallel paths still affect the result.
 
-- Current user intent defines the requested result and authorization boundary.
-- Active public, persisted, security, dependency, and operational contracts define required semantics.
-- Governing project instructions apply when the candidate triggers the outcome, invariant, contract, boundary, or failure pattern they protect.
-- An approved plan, design, RFC, or checklist is evidence of intended route, scope, risks, and proof obligations while it still describes the candidate; it cannot override delivered behavior.
-- Code, tests, comments, history, diagnostics, and the author's account are evidence of delivery, not authority to define their own success.
+Inspect outside the submitted files only when it can change completeness, runtime selection, contracts, ownership, failure behavior, or lifecycle burden. An uninspected surface is not proof of absence; obtain the smallest relevant source when available, otherwise keep the claim as a bounded evidence gap.
 
-Keep a decision-changing conflict or undefined requirement open. Return foundational choices about a new owner, contract, state model, boundary, or external relationship to their owning design decision instead of inventing acceptance criteria.
+### 3. Examine the Implementation
 
-## Reconstruct the Actual Code Delivery
+Verify the required behavior on normal, boundary, and failure paths. Check inputs, authorization, data and state invariants, public and persisted contracts, error handling, security, concurrency, resources, compatibility, performance, and operability only where the change makes them material.
 
-Read the candidate end to end before judging individual hunks. Inventory material surfaces by responsibility:
+Also examine repository and lifecycle fit:
 
-`delivered surface -> owning responsibility -> changed behavior, state, contract, dependency, or lifecycle -> active caller or consumer -> observable or operational consequence`
+1. **Verify repository reality.** Confirm new APIs, types, configuration, dependencies, conventions, and extension points against their actual definitions and versions. Before accepting custom code or a dependency, inspect existing maintained capabilities and compare full contract fit and lifecycle cost.
 
-Trace both directions:
+2. **Require the smallest complete change.** Include every direct consequence needed for the result and no unrelated refactoring, cleanup, optional capability, stub, fake production path, hard-coded test case, or silent success fallback. Incidental changes are findings only when they create a material consequence.
 
-- From every required outcome and preserved guarantee, trace backward through observable result, effect or state, semantic owner, runtime wiring, and entrypoint. This exposes missing code, configuration, artifacts, wiring, and failure behavior.
-- From every material delivered surface, trace forward through callers, consumers, public exposure, persisted data, external effects, asynchronous work, deployment, recovery, rollback, maintenance, and removal. This exposes wrong, excess, or unsafe delivery.
+3. **Keep ownership and structure justified.** Place behavior, state, authority, effects, and recovery at the boundary that owns them. Require an actual consumer, invariant, variation need, persisted fact, or identified failure mode for abstractions, configuration, state, and other added structure. Conceptually remove unsupported structure and its derivative complexity.
 
-When the code hosts a mediated component, inspect only the deterministic obligations owned by code: selection and loading, precedence implementation, input and output contracts, capability and permission boundaries, tool wiring, authoritative state reads and writes, error projection, and channel transport. The presence of correct wiring does not prove that a model or instruction follows the intended behavior. Conversely, a behavioral failure is not a code defect until evidence traces it to code-owned implementation.
+4. **Match the intended lifetime.** Put maintained capability on the maintained path and isolate disposable experiments. Reject parallel implementations, duplicate sources of truth, temporary production architecture, and speculative extension points when they create material lifecycle burden.
 
-Include dormant or disabled code when shipping it creates a public, security, dependency, migration, deployment, maintenance, recovery, or removal burden. Go outside submitted files only along paths that can change attribution, completeness, behavior, ownership, failure semantics, material burden, or acceptance. Search the owning module and resolved dependency before calling a capability absent.
+5. **Close transitions and defensive paths.** Verify that active consumers reach a replacement and superseded paths are removed or explicitly bounded. Require a real obligation for retries, fallbacks, compatibility, broad catches, duplicate validation, and other defensive machinery. Temporary mechanisms need an owner and removal condition; degradation and data loss must remain visible.
 
-## Reconcile Required and Actual Delivery
+Do not reject code merely because another implementation is shorter, cleaner, or more familiar. An alternative matters only when it is actually applicable and exposes a concrete defect or avoidable owned burden in the candidate.
 
-Use these as failure directions, not mandatory report sections. Pursue one only when the required or delivered facts create a concrete hypothesis.
+### 4. Trace Integration and Failure Paths
 
-### Missing or Incorrect Delivery
+Trace the selected implementation from its real entrypoint to the observable result, authoritative state, or external effect. Follow changed contracts, authority, state, and effects through actual consumers and through the failure and recovery paths triggered by the change.
 
-A required result is missing when the selected path lacks a necessary owner, implementation, interface, configuration, schema, migration, artifact, consumer, or failure response; when implementation exists but runtime composition does not select it; when an old or bypass path defeats it; or when an intermediate artifact is presented as the outcome.
+A local helper, mock, task identifier, or successful intermediate response cannot establish an outcome owned by another boundary. Do not turn a simulated or constrained failure into a code defect until the candidate-causal path is established.
 
-Delivery is incorrect when the actual path violates an accepted result, active contract, invariant, authority, or failure semantic. Inspect source-of-truth selection, validation, authorization, data integrity, error projection, timeout, cancellation, retry, idempotency, concurrency, ordering, partial completion, and external-effect handling only where the real path makes them relevant. A mock, helper, or local implementation cannot establish semantics owned by another boundary.
+### 5. Evaluate the Evidence
 
-### Excess or Unsound Delivery
+Use the smallest evidence that distinguishes success from failure at the boundary that determines the result. Evidence proves only the boundary it exercises: source establishes structure, focused tests establish their represented contract and fixtures, and mocks cannot establish behavior owned by the mocked boundary.
 
-A surface is excess when it is neither accepted intent, necessary propagation, protection for an established failure or boundary, nor an explicit user-owned tradeoff, and removing it preserves accepted guarantees and transition safety. This includes unrelated refactoring and speculative interfaces, dependencies, abstractions, state, configuration, background work, fallback, compatibility, or generic capability that creates material lifecycle burden.
+Challenge evidence created with the candidate. Check whether tests mirror the implementation instead of the required behavior, weaken assertions, broaden mocks, accept snapshots without establishing intent, skip decisive cases, exclude changed code, or alter validation configuration to hide a failure. Treat reported commands and outcomes as claims until supported by available results.
 
-A functionally plausible implementation is unsound when its structure makes current invariants, authority, and failure behavior unreliable to understand or verify, or makes a required change propagate beyond its owner. Prove the consequence through a current invariant, active consumer, real rule, existing duplication, current requirement, or committed change. Naming, formatting, local verbosity, and preference for a cleaner implementation are not defects.
+A missing test is not automatically a defect. When material proof is absent, identify the competing outcomes and the smallest validation that would decide between them.
 
-### Unsafe Transition or Operation
+### 6. Decide
 
-A target implementation is unsafe when active consumers, mixed versions, persisted data, deployment order, configuration, credentials, process roles, migration states, recovery, rollback, or removal cannot reach and operate the target safely. Distinguish code reversion from recovery of data and committed external effects. Give every necessary temporary mechanism an owner, verification, exit condition, and deletion path.
+Admit a finding only when it:
 
-### Unproven Code Delivery
+- lies on a required or actual path, or a materially shipped surface;
+- violates or leaves unproven an accepted result, scope, contract, owner, or lifecycle obligation;
+- has traceable evidence or a precisely bounded unknown;
+- has a concrete acceptance consequence; and
+- can state the minimum correction or validation needed for acceptance.
 
-Treat missing or weak proof as an evidence gap rather than a confirmed defect. Source inspection establishes structure, not runtime occurrence. Focused unit, contract, mock, or local tests establish only their exercised boundary and fixtures. Runtime, persistence, deployment, or authoritative state evidence establishes the corresponding claim. A passing suite is scoped evidence; a missing test is not automatically a code defect.
+Classify it as:
 
-For a failure observed only in a constrained, simulated, or non-authoritative environment, first establish a causal path from the candidate. Without candidate-causal evidence, keep it as an action-specific evidence gap and request the smallest authoritative check. Do not prescribe a code change, relax a limit, or claim the candidate passes.
+- **DEFECT** — verified candidate behavior or structure violates an obligation.
+- **EVIDENCE GAP** — a material delivery claim remains unresolved, but a defect is not established.
 
-## Derive and Test Only Applicable Hypotheses
+Return **ACCEPT** when no material defect or evidence gap remains. Return **REJECT** otherwise. Continue past the first blocker only where another independent surface can change the required correction or residual risk.
 
-Generate hypotheses from the required-versus-actual reconciliation, applicable contracts and project constraints, the kinds of surfaces introduced, and reproduced failures with a causal path to the candidate. Translate a rule through:
+## Findings
 
-`rule -> protected outcome, invariant, contract, or boundary -> triggered code surface -> prohibited failure state -> smallest discriminating evidence`
+Order findings by consequence. For each, state the type, narrowest useful location or boundary, candidate fact or bounded unknown, protected obligation, concrete consequence, and minimum acceptance condition.
 
-Route focused checks from actual surfaces:
-
-- Durable state or copies: prove the persistence obligation, then inspect authority, writes, reads, consistency, recovery, cleanup, and retirement.
-- Abstractions or shared mechanisms: inspect current consumers, stable responsibility or variation, ownership, change propagation, and whether direct ownership preserves the result.
-- Custom code or dependencies: inspect existing maintained capabilities, resolved versions, full contract fit, and owned lifecycle cost.
-- Retry, fallback, broad catches, compatibility, or duplicate validation: identify the active contract, untrusted boundary, reproduced failure, or accepted degradation that requires it; then inspect effect safety and exit.
-- Public or persisted shapes: inspect producers, consumers, compatibility, migration, mixed versions, and authority.
-- Background work: inspect selection, ownership, bounded resources, shutdown, failure, recovery, observation, and operation to the degree its guarantee requires.
-- Replacements: verify that superseded active paths are absent or explicitly bounded and that data, consumers, rollback, and removal reach the target.
-
-Choose the smallest method that can prove or overturn each material hypothesis: outcome-to-delivery trace, change-to-obligation trace, contract and consumer reverse-check, ownership and change-propagation test, state and failure simulation, capability-fit test, deletion test, or evidence discrimination.
-
-Apply a delivery anti-ratchet rule: once a mechanism has no established obligation, conceptually remove it and reconstruct the remaining candidate before continuing. Discard derivative findings about identity, recovery, migration, compatibility, draining, reconciliation, or lifecycle unless removal still affects an active consumer, existing data, committed external effect, security boundary, cleanup safety, or another independent surface.
-
-Keep probes read-only. Use existing evidence or safe isolated non-mutating checks. Do not trigger a consequential external effect or modify live state without separate authorization.
-
-## Decide Acceptance
-
-Challenge the strongest plausible explanation that the candidate is acceptable and the strongest that it is not with the smallest independent evidence. Finding one blocker does not end review of independent surfaces that can still change minimum acceptance conditions or material residual risk. If the candidate or a material premise changes, invalidate only dependent findings and reassess the affected paths.
-
-Admit a finding only when it lies on an actual or required path or material delivered surface; violates or leaves unestablished an accepted result, authorized scope, active contract, implementation-integrity condition, or gate; rests on traceable evidence or a precisely bounded unknown; and has a concrete acceptance consequence.
-
-Use the proof chain that matches the conclusion:
-
-- **Code delivery defect:** `verified candidate fact -> missing, incorrect, excess, unsound, or unsafe predicate -> protected result, contract, scope, or invariant -> consequence -> minimum acceptance condition`.
-- **Implementation-quality defect:** `delivered structure -> actual owner, invariant, consumer, requirement, or committed change -> ambiguity, duplication, or propagation -> material consequence -> acceptance effect`.
-- **Evidence gap:** `delivery claim -> missing or insufficient evidence -> competing outcomes -> smallest discriminating validation -> affected next action`.
-
-The code candidate is acceptable for the next action when required normal and failure results are implemented on real selected paths; material surfaces are authorized or necessary; ownership, state, contracts, failure semantics, transition, and operation are coherent; no material unsupported burden remains; and remaining decision-changing code claims have proportionate evidence. If acceptance also depends on mediated behavior, state the code decision separately and identify the required `$behavior-reviewer` conclusion rather than merging the two.
+Exclude style preferences, local verbosity, hypothetical consumers, generic best practices without a triggered failure state, unrelated debt, and optional cleanup or redesign.
 
 ## Output
 
-Use the user's language and lead with whether the exact code candidate satisfies the stated next action and why. State an inferred action as an assumption and give bounded decisions if distinct plausible actions require different evidence.
+Use a compact result:
 
-Order material findings by causal consequence. For each, give the narrowest useful location, verified fact or grounded unknown, protected result or boundary, causal consequence, and minimum condition for acceptance. Do not prescribe replacement architecture or opportunistic cleanup.
+```text
+Decision: ACCEPT | REJECT
 
-Close with the evidence boundary: exact candidate and comparison basis, material surfaces and selected paths reviewed, runtime and authority covered, behavior-review dependencies, and decision-changing unknowns. Keep confirmed code defects, mediated behavior findings, external validation gaps, and unrelated debt distinct.
+Findings:
+- [DEFECT] location — fact; consequence; minimum correction.
+- [EVIDENCE GAP] boundary — unresolved claim; required validation.
 
-If no issue clears the admission threshold, say that the code candidate satisfies the next action, summarize the discriminating evidence, state any material evidence limit, and stop. Do not output the internal workflow, fixed dimension sections, compliance checklists, scores, strengths for balance, nits, or optional cleanup suggestions.
+Evidence limits: include only limits that materially qualify the decision.
+```
+
+Omit `Findings` when none qualify and omit `Evidence limits` when none materially affect interpretation. Do not output the review workflow, dimension checklists, scores, strengths for balance, nits, or optional improvements.

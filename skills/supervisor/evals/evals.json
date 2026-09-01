@@ -1,0 +1,122 @@
+{
+  "skill_name": "supervisor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$supervisor 请读取随附的 `evals/files/1/context/`，恢复并继续这项更正后的交付任务。只允许更新 `controller-checkpoint.md`；这个原子 case 在真正派发前停止，不要修改其他文件、调用 Worker 或运行 E2E。",
+      "expected_output": "The restored checkpoint advances from revision 7, invalidates stale conclusions, preserves still-valid obligations, binds the installed overview design capability, and records exactly one guarded design-rewrite action with owner, inputs, artifact, stop condition, and re-entry evidence, stopping before dispatch.",
+      "files": [
+        "evals/files/1/context/root-intent.md",
+        "evals/files/1/context/current-system.md",
+        "evals/files/1/context/accepted-corrections.md",
+        "evals/files/1/context/controller-checkpoint.md"
+      ],
+      "expectations": [
+        "[authoritative-rebaseline] Update controller-checkpoint.md from revision 7 and treat the user corrections as invalidating the old route and its dependent design and delivery-acceptance conclusions; stop future work on that source-evidence and full-replacement chain.",
+        "[preserve-still-valid-obligations] Carry forward into the updated checkpoint the generic capability outcome, service ownership, publication prohibition, typed resource decisions and non-E2E delivery boundary.",
+        "[decisive-gap] Identify the earliest current gap as the absence of a rewritten authoritative design that incorporates the accepted corrections.",
+        "[specialist-routing] Bind the installed overview design capability because it matches the current design obligation, express the delegated action with explicit `$overview-designer` invocation, and explicitly require the delegated executor to read it completely before execution; the pre-dispatch Controller need not preload the specialist method and must not turn installed Skills into a fixed pipeline.",
+        "[one-guarded-action] Specify exactly one guarded design-rewrite action against the actual Design Owner, including precise inputs, sole writable artifact, expected result, stop condition and evidence required for re-entry.",
+        "[later-boundary] Keep implementation and any later review or behavioral proof conditional on the rewritten state, carry the explicit E2E exclusion, and do not claim those actions already occurred or manufacture an unestablished fixed stage.",
+        "[controller-boundary] Modify only controller-checkpoint.md, return its stable reference, new revision, state and next action, and do not write design/implementation, reuse stale acceptance, dispatch a Worker, ask the user to reconfirm recorded choices or specify parallel delivery actions."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$supervisor 请读取 `evals/files/2/context/`，从当前检查点继续这项预览部署任务。本原子 case 在任何外部查询或写入前停止；不要调用外部系统或修改文件。",
+      "expected_output": "A restored checkpoint keeps the existing deployment active and prepares exactly one ordinary-Worker read-only authoritative status query for the known operation, with a stable action identity, owner, object identity, possible outcomes, stop conditions and re-entry evidence, stopping before dispatch or execution.",
+      "files": [
+        "evals/files/2/context/root-intent.md",
+        "evals/files/2/context/deployment-checkpoint.md"
+      ],
+      "expectations": [
+        "[preserve-active-operation] Keep the known deployment operation active because a wait timeout supplies no terminal fact.",
+        "[decisive-gap] Identify the earliest gap as the unknown authoritative terminal state and effects of operation deploy-842, not a need to create another deployment.",
+        "[one-authoritative-query] Specify exactly one read-only query to the deployment owner for deploy-842, assign it to an ordinary Worker with an action ID and input checkpoint revision because no professional judgment is required, and include the bound internal-preview environment, revision, supplied terminal/active states and evidence returned.",
+        "[outcome-branches] State how succeeded, failed, still-running and an unavailable/not-found or otherwise undecidable result change re-entry without executing any branch now.",
+        "[guard-and-stop] Preserve the no-duplicate-deploy constraint, perform no external call or domain query in the Controller, dispatch no Worker in this case, and stop after the action specification.",
+        "[prohibited-control-shortcuts] The response does not treat timeout as failure, redispatch deployment before a safe terminal fact, or add unrelated design/review/E2E/cleanup stages."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$supervisor 请读取 `evals/files/3/task/`，接纳普通 Worker 已交回的部署状态结果并从检查点继续到证据支持的终态。只允许修改 `checkpoint.md`；不要亲自运行状态查询、发起部署、访问网络或修改其他文件。",
+      "expected_output": "The supervisor validates the ordinary Worker's action and input-revision binding, merges the authoritative deployment result, updates the checkpoint to a non-resumable Complete revision with the decisive evidence, and stops without performing domain work, redispatching, or adding unrelated stages.",
+      "files": [
+        "evals/files/3/task/root-intent.md",
+        "evals/files/3/task/checkpoint.md",
+        "evals/files/3/task/thread-summary.md",
+        "evals/files/3/task/deployment-state.json",
+        "evals/files/3/task/worker-return.md"
+      ],
+      "expectations": [
+        "[return-binding] Accept the returned observation only after matching action query-deploy-913 and input checkpoint revision 3 to the Waiting checkpoint; preserve the ordinary Worker reference and do not treat an unbound chat claim as evidence.",
+        "[bind-terminal-evidence] Verify that the owner result is succeeded and healthy for both the requested and running revision c31fe42, using the returned deployment-state evidence rather than Worker completion alone as deployment proof.",
+        "[checkpoint-authority] Recover from checkpoint.md revision 3 as the sole current snapshot, do not let the older chat summary override it, and keep the stable checkpoint reference in the final status.",
+        "[checkpoint-completion] Modify only checkpoint.md so its revision increases, its control state is Complete and non-resumable, and it records the operation identity, requested and running revisions, health and status evidence used for convergence.",
+        "[stop-at-terminal-state] Stop after the root intent is satisfied; do not invent a later review, E2E, cleanup or monitoring stage.",
+        "[no-redispatch] The response does not perform or claim this prohibited behavior: Start or recommend another deployment after the existing operation is confirmed successful.",
+        "[controller-only] The Controller does not run a status command or otherwise perform the deployment-domain query itself, silently delegate new work, access the network, modify deployment-state.json or any file other than checkpoint.md, or claim external production validation."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "$supervisor 请读取 `evals/files/4/task/`，为这项需要跨交接恢复的设计更正任务建立持久检查点，并通过一次真实的专业 Worker 交接完成当前设计义务：Controller 只能写 `checkpoint.md`，专业 Worker 只能写 `design.md`。必须等待并合并绑定的 Worker 交回后再判断是否收敛；不要执行实现、独立评审、E2E 或外部操作。",
+      "expected_output": "The supervisor persists a guarded action, actually delegates the design rewrite to an isolated Worker with explicit `$overview-designer` invocation, merges the bound return, and completes the checkpoint only after the Worker-owned design artifact supplies the authorized result and evidence.",
+      "files": [
+        "evals/files/4/task/root-intent.md",
+        "evals/files/4/task/current-state.md",
+        "evals/files/4/task/design.md"
+      ],
+      "expectations": [
+        "[durable-pre-dispatch-state] Before delegation, create checkpoint.md with stable task and checkpoint references, a monotonic revision, Active state, root result, authorization, exact object versions, the stale replacement design as the decisive obligation, and one guarded action bound to an action ID and input checkpoint revision; persist the Waiting transition rather than using chat as the checkpoint.",
+        "[actual-specialist-dispatch] Actually dispatch an isolated professional Worker for that action, explicitly invoke `$overview-designer` in the handoff even though the Session initial Available skills snapshot omits it, and require the Worker to read the installed sibling Skill completely before acting; a proposed handoff or Controller role-switch does not satisfy this expectation.",
+        "[complete-handoff-context] Give the Worker the checkpoint and action bindings, exact design baseline, accepted correction, outcome, scope, authorization, preserved behavior, sole writable artifact, stop conditions, expected design evidence and return contract.",
+        "[worker-owned-artifact] The professional Worker, not the Controller, rewrites design.md to use the existing owner-controlled in-place mutation, preserve template identity and inbound references, increment revision on successful mutation, and distinguish the proposed design from implementation or external validation; it modifies no other task artifact.",
+        "[bound-return-and-convergence] Wait for the Worker, require a return bound to the action ID and input checkpoint revision with artifact version or diff, evidence, side effects, unknowns and invalidated conclusions, then validate and merge it into a later checkpoint revision. Mark the task Complete and non-resumable only if the authorized design result is actually present; otherwise record the supported Active or Blocked state.",
+        "[no-fixed-pipeline] Keep independent design review and implementation conditional, record E2E, external calls and product writes as unauthorized, and do not manufacture or dispatch later stages merely because their Skills are installed.",
+        "[authorized-effects-only] Only the Controller writes checkpoint.md and only the delegated Design Worker writes design.md; neither actor modifies root-intent.md or current-state.md, performs implementation or review, or accesses an external system."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "$supervisor 请读取 `evals/files/5/task/`，从当前检查点继续并通过一次真实的普通 Worker 交接完成已经成立的实现义务。Controller 只能更新 `checkpoint.md`；普通 Worker 可以修改 `lib/policy_config.rb`、`test/policy_config_test.rb` 并运行聚焦测试。必须等待并合并绑定的 Worker 交回后再判断终态；不要调用专业 Skill、执行外部操作或增加后续阶段。",
+      "expected_output": "The supervisor recognizes that no callable professional Skill owns general implementation, actually delegates the bounded change and focused proof to an ordinary Worker, merges its bound return, and completes only when the authorized code and tests satisfy the accepted contract.",
+      "files": [
+        "evals/files/5/task/root-intent.md",
+        "evals/files/5/task/implementation-contract.md",
+        "evals/files/5/task/checkpoint.md",
+        "evals/files/5/task/lib/policy_config.rb",
+        "evals/files/5/task/test/policy_config_test.rb"
+      ],
+      "expectations": [
+        "[established-obligation] Preserve the accepted parser contract, exact writable objects, behavior constraints, authorization and test evidence as the current implementation obligation rather than inventing a design, review, cleanup or E2E stage.",
+        "[durable-pre-dispatch-state] Advance checkpoint.md before delegation with one guarded implementation action, a stable action ID, input checkpoint revision, ordinary Worker reference, exact objects and baseline, expected proof, stop conditions and re-entry evidence; persist the Waiting transition rather than treating chat as the checkpoint.",
+        "[actual-ordinary-worker-dispatch] Actually dispatch an ordinary Worker because neither the repository built-ins nor the Session-initial professional Skills owns general implementation; do not misuse `$code-simplifier`, `$code-reviewer`, or another specialist, and do not merely describe a prospective handoff.",
+        "[complete-handoff-input] Give the Worker the task and checkpoint references, action and input-revision bindings, exact writable objects and baseline, accepted contract, root result, scope, authorization, preserved behavior, expected artifacts and evidence, and completion and stop conditions.",
+        "[worker-owned-implementation] The ordinary Worker, not the Controller, updates lib/policy_config.rb and test/policy_config_test.rb so absent input remains advisory, strict and advisory values are accepted, malformed JSON or values raise PolicyConfigError, and the focused Ruby test distinguishes all four paths. It runs the focused test and modifies no other task artifact.",
+        "[bound-return] Require the Worker return to bind the action ID and input checkpoint revision and report artifact diff or version, the focused test command and result, side effects and active operations, unknowns, invalidated conclusions, and context needed by a next Worker; prohibit checkpoint writes, route decisions and silent redelegation.",
+        "[controller-convergence] The Controller validates and merges the bound return, advances only checkpoint.md to a later non-resumable Complete revision when the implementation and focused proof are present, clears the active action, and does not perform code inspection, implementation or test execution itself.",
+        "[no-invented-stages] Do not create or dispatch design, review, cleanup, E2E, release or external work that the current task has not established."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "$supervisor 请读取 `evals/files/6/task/`，从当前检查点继续这项精确运行行为验收任务。只允许更新 `checkpoint.md`；这个原子 case 在真正派发前停止，不要调用 Worker、运行评测、修改其他文件或执行外部操作。",
+      "expected_output": "The supervisor preserves the exact runtime-composition acceptance boundary and prepares one ordinary-Worker offline evaluation action because no current professional Skill owns exact runtime-behavior acceptance, without misrouting the obligation to design, code, E2E, UX, or simplification work.",
+      "files": [
+        "evals/files/6/task/root-intent.md",
+        "evals/files/6/task/behavior-contract.md",
+        "evals/files/6/task/checkpoint.md"
+      ],
+      "expectations": [
+        "[preserve-runtime-boundary] Advance checkpoint.md from revision 6 while preserving that the decision concerns the observed behavior of the exact prompt-r17, model-snapshot-m4, tool-policy-8 and adapter-2 composition against behavior-contract.md, not a future design, code candidate or product journey.",
+        "[no-retired-or-adjacent-specialist] Recognize that no current repository or Session-initial professional Skill directly owns exact runtime-behavior acceptance; do not invoke or route to a retired behavior reviewer, `$design-reviewer`, `$code-reviewer`, `$e2e-verifier`, `$ux-reviewer`, `$overview-designer` or `$code-simplifier`.",
+        "[ordinary-worker-routing] Bind exactly one ordinary Runtime Evaluation Worker action with a stable action ID, input checkpoint revision 6 and Worker reference; do not require a professional Skill merely to fill the retired capability slot and do not mark Needs Capability because the supplied ordinary evaluator has the required local capability and isolation.",
+        "[guarded-evaluation-action] Define the later action to run the authorized intercepted-tool offline harness against both contract cases and create only runtime-evaluation.md, binding each observation to the exact runtime composition and reporting tool attempts, receipts, user-visible responses, unknowns and evidence limits.",
+        "[evidence-boundary] Require evidence that distinguishes both contract paths without treating source inspection, design intent, code review, fixture success or two observations as proof of broader population reliability or an external product E2E result.",
+        "[controller-boundary] Modify only checkpoint.md, persist the guarded pre-dispatch action and return its stable checkpoint reference, increased revision, Active state and next action; do not dispatch a Worker, run the harness, create runtime-evaluation.md, perform domain judgment or add later design, review, E2E, UX, cleanup or release stages."
+      ]
+    }
+  ]
+}

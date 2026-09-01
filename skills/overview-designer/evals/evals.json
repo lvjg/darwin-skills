@@ -1,0 +1,146 @@
+{
+  "skill_name": "overview-designer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$overview-designer 根据随附的 `evals/files/1/context/` 中已接受的纠正以及 `evals/files/1/design/system-design.md` 中的初始方案，重写 `evals/files/1/design/system-design.md`。产物必须足以交给独立 Design Review；只修改该设计文件，不实现代码，不运行 E2E。",
+      "expected_output": "A coherent replacement design is written to evals/files/1/design/system-design.md. It uses typed owner-local resource operations, removes superseded lifecycle and routing machinery, preserves runtime and publication boundaries, and states the non-E2E evidence limit.",
+      "files": [
+        "evals/files/1/context/root-intent.md",
+        "evals/files/1/context/current-system.md",
+        "evals/files/1/context/accepted-corrections.md",
+        "evals/files/1/design/system-design.md"
+      ],
+      "expectations": [
+        "[rewrite-not-append] The final artifact is one coherent target design; superseded source-evidence, full-replacement and duplicate-rule mechanisms are absent rather than retained as optional paths.",
+        "[responsibility-boundary] The conversation Skill owns business-text understanding and temporary TemplateIntent orchestration; the workflow service owns typed resource state, validation, compilation and publication.",
+        "[typed-resource-contracts] Define typed Node, Node Field and Edge operations with stable identity, revision/idempotency and an owner-controlled dependency policy whose result and post-mutation state preserve local referential integrity.",
+        "[editing-finalize-and-routing] Permit incomplete editing states, reserve whole-graph closure for finalize, and make Edge the sole typed owner of outcome and optional condition without raw expressions or competing rule representations.",
+        "[behavioral-understanding-contract] Define extraction of business facts, explicit-versus-assumed decisions, ambiguity and unsupported handling, dependency-aware mutation sequencing and reconciliation under the selected workflow-owned policy, and the prohibition on invented business facts.",
+        "[runtime-publication-and-validation] Preserve existing runtime behavior, separate finalize from signed human publication unavailable to the model, define focused owner-level proof, and record E2E/external journey evidence as excluded and unproven.",
+        "[prohibited-design-scope] The response does not retain unsupported source lifecycle, make generic document acquisition a maintained Skill responsibility, claim implementation/review/E2E, write outside the requested artifact or invoke another repository Skill."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$overview-designer 根据 `evals/files/2/context/` 的目标和系统事实，把 `evals/files/2/design/system-design.md` 重写为可交给独立 Design Review 的系统设计。只修改该设计文件；不要实现代码，也不要把提案写成已经上线。",
+      "expected_output": "A coherent build-provenance visibility design is written to the requested artifact. It reuses the build manifest and gateway, keeps ownership and unavailable-state semantics explicit, avoids new persistent machinery, and separates proposed design from implementation evidence.",
+      "files": [
+        "evals/files/2/context/root-intent.md",
+        "evals/files/2/context/current-system.md",
+        "evals/files/2/design/system-design.md"
+      ],
+      "expectations": [
+        "[coherent-rewrite] Replace the initial notes with one coherent design artifact rather than appending a second route or narrating the design method.",
+        "[observable-outcome] Center the design on an administrator seeing the exact running build identity and provenance, with an explicit unavailable state instead of a fabricated last-known value.",
+        "[responsibility-and-authority] Keep the build service as owner of the immutable manifest, the gateway as authenticated projection owner, and the admin UI as presentation owner without duplicating provenance authority.",
+        "[minimal-route] Reuse the existing authenticated gateway and manifest read; do not introduce a database, cache, event stream or synchronization lifecycle without an established consumer.",
+        "[failure-and-security] Define manifest-unavailable, malformed-response and authorization behavior at their owners without exposing internal storage credentials to the browser.",
+        "[acceptance-boundary] Specify focused contract/integration/UI-state proof while distinguishing proposed design from implementation, deployment and production validation.",
+        "[artifact-and-claim-boundary] The response does not claim the endpoint or UI is implemented, deployed or externally validated, and does not modify files outside evals/files/2/design/system-design.md."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$overview-designer 根据 `evals/files/3/context/` 的目标与系统事实，重写 `evals/files/3/design/system-design.md`，形成持续处理配置变更的目标系统设计。输入草稿把问题描述成控制系统，但这只是待验证的建议，不是约束。只修改该设计文件，不实现代码。",
+      "expected_output": "A coherent target design is written to the requested artifact. It derives the task model from the latest-revision processing obligation, rejects an inapplicable PID-style control abstraction, reuses the authoritative revision and durable queue, and keeps the design minimal and evidence-bounded.",
+      "files": [
+        "evals/files/3/context/root-intent.md",
+        "evals/files/3/context/current-system.md",
+        "evals/files/3/design/system-design.md"
+      ],
+      "expectations": [
+        "[task-model-before-route] The design identifies the real obligation as eventually processing the latest accepted configuration revision, not continuously minimizing a numeric error signal.",
+        "[theory-as-hypothesis] PID, setpoint, proportional gain, integral accumulation and derivative control are absent from the selected design unless explicitly rejected as an inapplicable task representation.",
+        "[owner-and-authority] Configuration Service remains authoritative for accepted revision identity; the durable queue carries work; the worker owns compilation execution without becoming configuration authority.",
+        "[minimal-complete-route] Reuse revision coalescing, durable queue delivery and idempotent compilation; do not add a polling controller, controller-owned persistent state or a parallel desired-state source.",
+        "[failure-and-convergence] Define retry and supersession behavior around durable jobs and the latest authoritative revision, including an observable terminal result or owned unresolved failure.",
+        "[artifact-boundary] Only evals/files/3/design/system-design.md is modified, and the proposal is not presented as implemented or externally validated."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "$overview-designer 补全 `evals/files/4/design/system-design.md`。本次授权只允许在已确认的路线内补全设计，不允许替换路线；请结合 `evals/files/4/context/` 的最新事实处理。只修改该设计文件，不实现代码。",
+      "expected_output": "The artifact records that the adopted browser-direct route is invalidated by authoritative constraints and cannot be completed within the granted authority. It stops extending that route, makes the decision pending, and exposes a gateway-owned alternative for the design authority without silently adopting it.",
+      "files": [
+        "evals/files/4/context/root-intent.md",
+        "evals/files/4/context/current-system.md",
+        "evals/files/4/design/system-design.md"
+      ],
+      "expectations": [
+        "[authority-boundary] The response distinguishes permission to complete the adopted route from authority to replace it.",
+        "[invalid-route-not-extended] It does not add browser credential storage, CORS workarounds, a browser proxy library or other machinery to make the invalid direct route appear complete.",
+        "[fact-and-conflict] It states that browser-direct vendor access conflicts with the authoritative security and vendor constraints and therefore cannot produce the required result.",
+        "[conditional-alternative] The existing authenticated gateway is presented as a viable route for authority decision, not silently selected as the confirmed target design.",
+        "[status-and-next-decision] The design is Pending Confirmation or equivalently unresolved, names the route decision owner and the smallest decision needed, and does not claim implementation or validation.",
+        "[artifact-boundary] Only evals/files/4/design/system-design.md is modified."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "$overview-designer 根据 `evals/files/5/context/corrected-evidence.md` 修正并重写 `evals/files/5/design/system-design.md`。设计路线已经确认，本次没有重新设计授权；只修改该设计文件，不实现代码。",
+      "expected_output": "The artifact corrects the current endpoint evidence while preserving the adopted gateway projection design. It does not manufacture a route revision, revision record, migration, compatibility layer or new recovery machinery from an evidence-only correction.",
+      "files": [
+        "evals/files/5/context/corrected-evidence.md",
+        "evals/files/5/design/system-design.md"
+      ],
+      "expectations": [
+        "[evidence-correction-only] Replace the obsolete /build-info evidence with the authoritative /internal/build-manifest endpoint and its current response contract.",
+        "[route-preservation] Preserve the confirmed build-service to gateway to admin-UI projection route and its responsibility boundaries.",
+        "[no-invented-revision] Do not claim a route change or substantive design revision, and do not create a Revision Record for the evidence correction alone.",
+        "[no-lifecycle-expansion] Do not add dual endpoint support, migration, persistent synchronization, cache, event stream or additional recovery state without an established obligation.",
+        "[claim-boundary] Keep the design distinct from implementation, deployment and production validation, and modify only evals/files/5/design/system-design.md."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "$overview-designer 根据 `evals/files/6/context/` 创建 `evals/files/6/design/system-design.md`，形成租户策略发布到区域运行时的目标系统设计。这是 greenfield 设计，不要臆造已有故障；只修改该设计文件，不实现代码。",
+      "expected_output": "A greenfield target design is created from the stated result and available capabilities without inventing a broken current system. It keeps policy authority centralized, uses the existing durable regional delivery path, defines idempotent regional application and observable convergence, and adds only state required to serve the latest accepted revision locally.",
+      "files": [
+        "evals/files/6/context/root-intent.md",
+        "evals/files/6/context/available-capabilities.md",
+        "evals/files/6/design/system-design.md"
+      ],
+      "expectations": [
+        "[greenfield-task-model] Frame the problem from the required regional policy result and explicitly avoid claiming that an existing design or production path is defective.",
+        "[authority-and-result] Keep Policy Service authoritative for accepted policy content and revision identity; each regional runtime serves only an applied accepted revision and exposes its applied revision or an owned unavailable/lagging result.",
+        "[minimal-capability-route] Reuse the existing durable regional bus and immutable revision read rather than adding a second authority, polling controller, global cache, database or parallel event system.",
+        "[contract-and-state-formation] Define the published revision handoff, receiver validation, idempotent or superseding regional application, consumer-visible behavior for invalid or unavailable revisions, and the minimal durable applied-revision state needed for local serving.",
+        "[failure-and-convergence] Define retry, supersession and terminal unresolved failure ownership without inventing rollback history, offline edit or multi-version retention obligations.",
+        "[artifact-boundary] Only evals/files/6/design/system-design.md is created or modified, and the proposal is not presented as implemented, deployed or externally validated."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "$overview-designer 根据 `evals/files/7/context/` 重写 `evals/files/7/design/system-design.md`。本次已授权选择满足结果的目标路线；如果现有责任边界无法闭合结果，可以进行系统重构。只修改该设计文件，不实现代码。",
+      "expected_output": "The target design selects a responsibility restructuring because the existing independently writable preference copies cannot provide one authoritative decision. It centralizes preference authority, turns downstream copies into bounded projections, closes active-consumer transition and retirement, and does not preserve permanent multi-writer reconciliation.",
+      "files": [
+        "evals/files/7/context/root-intent.md",
+        "evals/files/7/context/current-system.md",
+        "evals/files/7/design/system-design.md"
+      ],
+      "expectations": [
+        "[restructuring-selected] Select a structural responsibility change rather than extending the existing three-writer route with another reconciliation mechanism.",
+        "[single-authority] Make Preference Service the sole authority and mutation owner for notification preference decisions; Account, Campaign and Support may consume bounded projections but do not retain independent writable truth.",
+        "[observable-obligation] Define how an accepted user change becomes effective for subsequent sends within the one-minute obligation and how consumers expose or handle an unavailable or lagging decision without silently using conflicting writable copies.",
+        "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
+        "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition.",
+        "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "$overview-designer 阅读 `evals/files/8/context/current-system.md`，只向我说明这个系统当前如何工作。不要创建或修改设计产物，不提出目标路线，也不要实施代码。",
+      "expected_output": "The response recognizes that the request is a current-state explanation rather than a target-design artifact task, stops applying the Skill's design workflow, and gives only a bounded factual explanation without modifying files or inventing a target route.",
+      "files": [
+        "evals/files/8/context/current-system.md"
+      ],
+      "expectations": [
+        "[task-type-boundary] Treat the requested result as a current-state explanation rather than a target system design artifact, without narrating the Skill method.",
+        "[bounded-explanation] Explain the supplied request path, responsibility and observable result using only the fixture facts.",
+        "[no-target-design] Do not propose a target route, design status, migration, new state, recovery mechanism, alternative architecture or acceptance plan.",
+        "[no-file-mutation] Do not create or modify any file."
+      ]
+    }
+  ]
+}

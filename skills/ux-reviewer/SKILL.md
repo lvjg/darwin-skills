@@ -1,6 +1,6 @@
 ---
 name: ux-reviewer
-description: Use only when the user explicitly invokes $ux-reviewer to walk through a human-facing product experience and identify evidence-backed problems in content, information hierarchy, navigation, interaction, feedback, layout, accessibility, or recovery. Do not use for backend or system E2E acceptance, unit or integration testing, code review, generic visual taste, or functional correctness claims beyond the observed experience.
+description: Use only when the user explicitly invokes $ux-reviewer to assess a human-facing product experience from the target user's task and report evidence-backed findings about content, information hierarchy, navigation, interaction, feedback, layout, accessibility, or recovery. Do not use for backend or system E2E acceptance, unit or integration testing, code review, generic visual taste, or functional correctness claims beyond the observed experience.
 ---
 
 # UX Reviewer
@@ -91,4 +91,4 @@ Product Walker 不修改被走查产品，不通过改文案、隐藏分支、�
 2. 已走查路径是否发现阻断或实质体验缺陷；
 3. 哪些路径、设备、身份、状态或真实客户端仍未覆盖。
 
-没有发现缺陷时，只能表述为“在声明的用户、路径、客户端和状态范围内未发现实质体验缺陷”，不能宣称整个产品体验通过。发现功能异常时保持为有边界观察，不把产品走查写成后台或系统 E2E 资格证明。
+没有发现缺陷时，只能表述为“在声明的用户、路径、客户端和状态范围内未发现实质体验缺陷”，不能宣称整个产品体验通过。这个结论仍须逐项绑定决定风险是否闭合的实际 witness，例如对象与后果是否明确、危险动作的默认焦点或防误触状态、以及提交后的对象化反馈；不能用“可完成”或一组笼统优点替代关键 checkpoint。发现功能异常时保持为有边界观察，不把产品走查写成后台或系统 E2E 资格证明。

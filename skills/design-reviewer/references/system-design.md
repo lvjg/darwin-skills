@@ -16,7 +16,7 @@ Reuse is wrong when similarity is superficial, extension distorts the owner or c
 
 ## Scope, Contract, and Authority
 
-Trace each external contract change to its semantic owner, actual consumers, and authority to request or commit the change. When a proposal changes a wire field, field meaning, version, or release sequence outside the authorized boundary, do not assume its dependent persistence, migration, compatibility, rollback, and recovery chain is required until that mutation is accepted or committed.
+Trace each external contract change to the boundary responsible for its final meaning and conflict resolution (its semantic owner), actual consumers, and authority to request or commit the change. When a proposal changes a wire field, field meaning, version, or release sequence outside the authorized boundary, do not assume its dependent persistence, migration, compatibility, rollback, and recovery chain is required until that mutation is accepted or committed.
 
 First test the unchanged external contract and the simplest viable mapping at the system-owned integration boundary. If mapping semantics are unknown, keep that choice and only its dependent conclusions open. Once a contract mutation is committed, derive compatibility, coexistence, cutover, and retirement obligations from the real consumers and release sequence. Ordinary mappings that preserve the external contract do not trigger a migration design by themselves.
 
@@ -32,7 +32,7 @@ Keep responsibilities together when they share an inseparable invariant, transac
 
 Use a credible current or committed change to test placement. A business-rule change should primarily alter its semantic owner; a provider, transport, store, model, or channel change should not alter business decisions unless its real capability changes the required guarantee. An interface, event bus, configuration language, or extra layer reduces coupling only when it contains evidenced variation or failure propagation.
 
-Also test retained choices together for conflicting premises, cycles, implicit ordering or timeout protocols, and transferred cost or failure that no individual commitment exposes.
+Also test the proposal's interacting choices for conflicting premises, cycles, implicit ordering or timeout protocols, and transferred cost or failure that no individual judgment exposes.
 
 ## Obligation Before Mechanism
 
@@ -75,4 +75,4 @@ Select the smallest method that can overturn a pivotal judgment:
 - **Credible-change test:** apply a real or committed change and observe unnecessary propagation across boundaries.
 - **Simpler counterroute:** delete, merge, directly own, reuse, or adopt a simpler allowed semantic while holding established obligations constant.
 
-Do not complete every method as a checklist. Complete the applicable active path before supporting implementation, migration, or release of a system-level replacement or stateful cross-boundary change.
+Do not complete every method as a checklist. Complete the applicable active path before supporting implementation authorization or a migration or cutover design for a system-level replacement or stateful cross-boundary change. For release, judge only whether the design specifies the necessary prerequisites; acceptance of the delivered release belongs to a later delivery review.

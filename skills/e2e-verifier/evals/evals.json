@@ -1,0 +1,60 @@
+{
+  "skill_name": "e2e-verifier",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$e2e-verifier 请读取随附的 `evals/files/1/context/e2e-context.md`，为该文档到模板再到流程终态的产品旅程推导最小、风险完备的 E2E case set。当前只规划，不执行，不修改产品或外部状态。",
+      "expected_output": "A minimal risk-complete E2E plan covers the integrated main journey and distinct publication failures, delegates owner-local matrices, defines dual Oracles, records unavailable real acceptance boundaries as unproven future preconditions, and marks execution and boundary-authenticity gates Not Requested for this planning-only task.",
+      "files": [
+        "evals/files/1/context/e2e-context.md"
+      ],
+      "expectations": [
+        "[obligation-and-main-journey] Derive coverage from user outcomes and material failure semantics, including one integrated production-composition journey from publish through final completion with exactly one authoritative claim winner and no duplicate handling effect, or justify an equally small discriminating split.",
+        "[publication-failure-case] Keep deterministic stale rejection and ambiguous post-publication receipt in a distinct case or checkpoint because their action, retry and Oracle semantics differ from the main journey.",
+        "[owner-test-delegation] Assign schema permutations, limits, compiler validation, persistence rollback and other owner-local matrices to the supplied focused evidence rather than duplicating them in E2E.",
+        "[dual-oracle-and-correlation] For every retained journey define consumer-visible result, authoritative state/effect, correlation and prohibited duplicate or orphan effects.",
+        "[cleanup-boundary] Bind a supplied cleanup owner or retention policy; when the fixture does not establish one, record it as a future execution precondition or owner-recovery gap without inventing an owner or failing this planning-only case.",
+        "[boundary-and-gates] Record unavailable real document, directory and chat-client boundaries as future execution preconditions, limit synthetic evidence accordingly, and mark execution closure and boundary authenticity Not Requested rather than Blocked for this planning-only task.",
+        "[no-execution] Return planning, preconditions and coverage disposition only, with no product write, publication, setup or E2E run.",
+        "[prohibited-planning-shortcuts] The response does not retain the 28-case matrix by default, present synthetic evidence as real-boundary proof, use a receipt/log/visible result alone as completion, or execute without authorization."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$e2e-verifier 请读取 `evals/files/2/context/export-context.md`，只推导异步数据导出旅程的最小 E2E case set 和判定证据。不要执行、创建导出任务或修改任何状态。",
+      "expected_output": "A planning-only E2E result derives a small case set for successful export and the materially distinct cancellation/commit boundary, delegates format permutations to owner tests, defines visible and authoritative Oracles, and reports execution-related gates as Not Requested.",
+      "files": [
+        "evals/files/2/context/export-context.md"
+      ],
+      "expectations": [
+        "[outcome-derived-coverage] Derive coverage from the administrator-visible downloadable export, authoritative job/object state, duplicate-effect risk and cancellation boundary rather than enumerating worker branches.",
+        "[main-success-journey] Retain a main journey from the real admin entry through queued/running visibility to one completed export whose downloadable checksum matches the authoritative object record.",
+        "[cancellation-boundary] Cover cancellation before object commit and the distinct indeterminate cancellation-versus-commit race with an Oracle that prevents an orphan object or false cancelled presentation; an equivalent minimal split is acceptable.",
+        "[owner-local-delegation] Delegate CSV escaping, column permutations, row limits and authorization matrices to the supplied owner-level tests rather than duplicating them in E2E.",
+        "[dual-oracle-and-correlation] For every retained journey define the visible status/download result, authoritative job and object-store facts, correlation key and prohibited duplicate/orphan effects.",
+        "[cleanup-boundary] Bind a supplied cleanup owner or retention policy; when the fixture does not establish one, record it as a future execution precondition or owner-recovery gap without inventing an owner or failing this planning-only case.",
+        "[planning-only-gates] Judge case quality, but mark execution closure and acceptance-boundary authenticity Not Requested and leave the product journey unproven.",
+        "[no-execution] The response does not perform or claim this prohibited behavior: Start, cancel, download or clean up a real export, or claim that the planned journey passed."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$e2e-verifier 请按 `evals/files/3/project/acceptance.md` 执行并判定随附 ticket CLI 的完整本地旅程。允许执行该 fixture 的命令并只修改其 `state.json`；不要访问网络、外部系统或其他文件。",
+      "expected_output": "The verifier executes the isolated CLI journey through submission, duplicate submission, processing and repeated processing, then reports a pass from correlated visible output and authoritative state while bounding the result to the local fixture.",
+      "files": [
+        "evals/files/3/project/acceptance.md",
+        "evals/files/3/project/bin/ticket-flow",
+        "evals/files/3/project/state.json"
+      ],
+      "expectations": [
+        "[execute-real-entry] Actually run the fixture's public bin/ticket-flow entry with the acceptance-specified commands rather than inspecting source or proposing a plan only.",
+        "[idempotent-submit] Show that submitting request req-17 twice returns the same ticket identity and leaves exactly one authoritative ticket record.",
+        "[state-transition] Show pending after submission and completed after processing for the correlated ticket identity.",
+        "[no-duplicate-effect] Process the same ticket again and verify that authoritative effect_count remains exactly 1.",
+        "[dual-oracle] Bind the CLI-visible JSON results to the final state.json record and report the commands and correlated identity used as evidence.",
+        "[gate-result] Report the local use-case, execution-closure and fixture-boundary gates as Pass only if the observations satisfy the contract; do not promote fixture evidence to an external or production claim.",
+        "[authorized-effects-only] The response does not access the network or external systems, modify files other than the fixture state.json, or claim broader product validation."
+      ]
+    }
+  ]
+}

@@ -1,88 +1,104 @@
-# Behavior-Dependent Design Review
+# Agent- and Harness-Dependent Design
 
-Read this reference after the core review has retained a pivotal commitment whose result depends materially on behavior produced by a model, human, runtime instruction, autonomous component, UI or channel, workflow, or tool-mediated path. The review object remains the proposed design, not an exact delivered candidate.
+Read this reference only when a pivotal design judgment depends on an LLM or agent decision, or on the Harness composition and control that makes that decision effective. Human, UI, workflow, tool, and channel details matter here only when they determine that path.
+
+The submitted proposal remains the review object. The core review establishes the required outcome, the obligation, and the decision this review must support. This reference neither creates a behavioral obligation nor accepts an exact delivered candidate or runtime population.
 
 The standard is:
 
-> At the proposal's claimed level and for any use named by the user, each required behavior is defined enough to avoid materially different interpretations, assigned to an actor or mechanism with the necessary capability and authority, supported by available and trustworthy inputs, causally connected to an observable result through the smallest sufficient route, explicit about material failure and uncertainty, and paired with any validation needed to distinguish success from a plausible failure.
+> The proposal defines the model-dependent behavior precisely enough to judge, uses model discretion only where it is needed, supplies the effective facts and instructions, keeps deterministic constraints and authority at an enforcing boundary, closes the shortest causal route to the promised observable result, and specifies evidence capable of distinguishing the design claim from a plausible failure.
 
-Do not use this reference to create a new behavioral obligation. The core review decides whether a commitment belongs. This reference judges the design of behavior that remains.
+## Define Model-Dependent Behavior and Enforcement
 
-## Define the Required Behavior
+Start from the retained pivotal judgment rather than from the presence of a prompt, model, or agent. Define only the dimensions needed to test that judgment; they are not a required execution sequence:
 
-Translate abstract claims such as reliable, proactive, adaptive, complete, intuitive, safe, or channel-compatible into behavior that can be reasoned about. At the abstraction claimed by the proposal, reconstruct only the information needed to avoid materially different implementations or judgments:
+- the trigger and relevant context;
+- the decisive facts and instructions;
+- the required interpretation, decision, or generation;
+- the allowed variation and required invariants;
+- the consumer-visible result or required non-action.
 
-- the trigger or situation and the responsible actor;
-- the actor's authority and the facts, context, instructions, or user input it may rely on;
-- the decision or action required and the observable result for the user or consumer;
-- the authoritative condition that determines success when presentation or an intermediate action is not the result itself;
-- material failure, ambiguity, missing-input, or conflict behavior;
-- established constraints, exclusions, and meaningful variants.
+Derive this contract from the outcome and obligation already established by the core review; do not invent a stronger behavioral guarantee here. If the proposal cannot define the required behavior closely enough to distinguish success from a plausible wrong result, report that gap before evaluating its mechanisms.
 
-These are semantic dimensions for the reviewer, not mandatory headings or a required prompt template. A concise prompt may be sufficient in a well-defined composition; a structured and polished prompt may still specify the wrong behavior. Missing information is a defect or decision-changing unknown only when it can change the implementation, result, safety, or ability to validate the commitment.
+Then determine:
 
-A local prompt, Skill, UI, or worker needs to define only its necessary contribution and consumer contract, not pretend to own the end-to-end outcome. Conversely, do not let a local component claim success when the authoritative result is determined elsewhere.
+- what interpretation, judgment, or generation requires model discretion, and why an existing maintained deterministic capability is insufficient;
+- which authorization, permission, schema, state transition, validation, idempotency, security, and effect-confirmation rules require deterministic enforcement;
+- whether the proposed split allows the model to make the intended judgment without treating prose as enforcement or silently moving authority into the Harness.
 
-Do not promote an illustrative platform, channel, persona, tool, mock, current workflow, or available capability into a requirement. Keep it as an example or scoped fact unless the core obligation trace gives it normative force. Do not generalize away a named behavior or surface when an authorized outcome or active consumer actually requires it.
+Model use is unsupported when the retained result needs no model judgment, when an existing capability already closes it with lower lifecycle cost, or when the proposal delegates a deterministic guarantee to model compliance. Do not require planning, memory, reflection, retries, evaluators, orchestration, or additional agents merely because behavior is model-dependent.
 
-## Choose the Responsible Mechanism
+## Reconstruct the Effective Composition
 
-Assign each material interpretation, decision, action, user interaction, and result confirmation to an actor or boundary with the capability and authority to own it. Compare the actual maintained capability, deterministic enforcement at the owning boundary, a necessary human decision, and model- or instruction-mediated behavior before accepting new behavioral machinery.
+Inspect only composition elements whose presence or change could support or overturn the pivotal judgment:
 
-Use a prompt or model for interpretation, judgment, or generation when those properties are needed. Do not use prose as a substitute for permissions, type or schema enforcement, durable state, idempotency, security boundaries, authoritative facts, or confirmation of an external effect. Tool availability establishes feasibility, not a requirement to call it. Reuse is justified only when the existing capability satisfies the retained behavior without distorting its contract, owner, or lifecycle.
+- decisive facts, their authoritative sources, availability, trust, freshness, and conflict behavior;
+- governing instructions, user input, prior context, references, tool results, and their activation and precedence;
+- context selection, compaction, memory, or generated intermediate state when later decisions depend on them;
+- tool schemas, capability exposure, permissions, runtime policies, model assumptions, and channel projection.
 
-Planning artifacts, self-generated theories, criteria, rubrics, task representations, reflection, and memory are intermediate mechanisms rather than outcomes when they are used to condition later behavior. Retain such a mechanism only when a downstream decision actually consumes it and it closes a demonstrated behavioral gap or controls an identified material failure; its generated content is not evidence or authority by itself. When one of these is itself the required consumer-visible result, judge it as that outcome rather than imposing an artificial downstream consumer. Retries, walkthroughs, screenshots, orchestration, evaluators, and multiple agents are also mechanisms rather than outcomes and require the same obligation or identified-failure basis, but need not serve as intermediate representations. Prefer direct behavior and existing enforcement when they satisfy the same obligation.
+The proposal must specify what happens when a decisive input is missing, ambiguous, stale, conflicting, unauthorized, or untrusted whenever that condition can change an established result. Tool availability establishes feasibility, not an obligation to use the tool.
 
-## Test the Planned Composition and Route
+Exact prompts, model assumptions, tool wiring, configuration, traces, or evaluation results may be inspected when they determine the proposed composition or test one of its premises. Treat them as design evidence at their actual status and scope: planned material does not prove loading or execution, and observed behavior does not by itself accept the submitted design for every composition or scenario.
 
-Judge the behavior in the composition the proposal relies on, not from one prompt or file in isolation. Relevant inputs may include system instructions, Skill core and conditional references, user content, prior context, tool descriptions and results, runtime permissions, deterministic validation, UI or channel projection, and the final consumer.
+## Trace Behavior to Its Observable Result
 
-The proposal must specify enough to establish how pivotal instructions and facts become available, how conflicts or precedence are resolved, which capability can act, and which boundary determines the result. Design Review may inspect current composition and behavior as evidence, but deterministic loading and wiring of an exact future candidate belong to Code Review, while acceptance of its effective behavioral composition belongs to Behavior Review.
+There is no mandatory Agent execution topology. Connect only the causal links on which the behavior claim depends:
 
-Trace the shortest applicable route:
+- how the effective facts and instructions reach and govern the model-dependent judgment or generation;
+- how a model output that is itself the promised result reaches its consumer;
+- when the model selects an action, how deterministic authority and valid inputs govern that action and how any claimed external result is established at its owning boundary;
+- how an observable condition determines required continuation, clarification, refusal, recovery, or stop behavior.
 
-`trigger -> obtain facts and constraints -> interpret or decide -> act -> produce effect -> observe authoritative result -> continue, revise, clarify, or stop`
+A generated explanation, classification, recommendation, summary, plan, or other model output may itself be the required result; do not invent an external effect or downstream consumer for it. Require an action, authoritative state, or side-effect path only when the promised result depends on one.
 
-The route is defective when the actor cannot obtain a required fact, lacks authority or capability, substitutes an action or presentation for the promised result, cannot observe a material failure, or has no safe behavior for an established ambiguity. Apply only the interruption, retry, recovery, cancellation, or escalation semantics required by the retained obligation; route durable state, external contracts, committed effects, concurrency, and recovery ownership through the system-design reference as well.
+Establish whether:
 
-When visual or interaction quality is required, define the observable consequence rather than a taste preference. Relevant concerns may include comprehension, state visibility, action affordance, error prevention and recovery, accessibility, responsiveness, and cross-surface consistency, but only where they can change task success or an authorized experience.
+- the model can obtain the facts needed for its judgment without inventing or substituting them;
+- any selected action remains within enforced authority and receives valid inputs;
+- the owner of the decisive state or external effect can be observed when the promised result depends on it;
+- an invocation, task identifier, acknowledgement, callback, or receipt is kept distinct from completion;
+- failure, partial completion, or an unknown effect leads to the required clarification, refusal, recovery, retry, or stop before another consequential action.
 
-## Apply Relevant Failure Pressures
+Plans, task representations, memories, reflections, rubrics, evaluator outputs, and other generated artifacts are intermediate mechanisms rather than facts or outcomes when they condition later behavior. Retain one only when an established downstream decision consumes it and it closes a demonstrated gap or material failure. When a generated artifact is itself the required consumer-visible result, judge it directly against its behavior contract.
 
-These questions expose common failures that the general route may not reveal. They are not a complete taxonomy or mandatory report sections. Answer them for the retained route; an unresolved answer is not the same as no dependency.
+## Apply Material Failure Pressure
 
-### Does success depend on inference without a deterministic guarantee?
+Challenge only conditions capable of overturning the pivotal judgment. Depending on the claim, this may include:
 
-This includes language, classification, generation, perception, or interpretation by a model. Test whether the design controls unsupported completion, anchoring on proposal examples, context sensitivity, unstable decisions, untrusted content, and evidence that no longer applies after a material model, configuration, or composition change. When later behavior is conditioned on a self-generated theory, rubric, plan, criterion, or task representation, establish the source it claims, the downstream decision that consumes it, whether materially different representations change the result, and how a plausible but wrong representation is detected before it propagates through downstream decisions. When the required behavior calls for established external knowledge, a generated label or explanation cannot substitute for source-backed identification. Do not turn nondeterminism into a requirement for voting, memory, or repeated runs unless the retained guarantee needs them.
+- a decisive ambiguity, missing fact, or irrelevant variation changing a required result;
+- untrusted content overriding governing instructions or authoritative facts;
+- context loss, compaction, generated state, or stale memory changing a decision the proposal claims remains stable;
+- tool failure, timeout, partial completion, or an unknown external effect followed by unsafe continuation or repetition;
+- a material model, instruction, configuration, permission, tool, or composition change invalidating the premise or evidence on which the design relies.
 
-### Can an actor continue or repeat consequential actions without contemporaneous confirmation?
-
-This includes agents, deterministic workflows, scheduled automation, and retrying components. Establish the authorized action range, preconditions, observation before continuation, duplicate-effect risk, and conditions for clarification, escalation, or stopping. Autonomy does not by itself justify persistent plans, recovery state, or orchestration layers.
-
-### Does correctness depend on interpreting and following runtime instructions rather than deterministic enforcement?
-
-This includes Skills, prompts, policies, templates, and human procedures. Test planned activation and loading, authority order, conflicts, salience, example-versus-rule confusion, and exposure to untrusted instructions. The existence or completeness of instruction text does not establish that the required behavior will occur.
-
-### Does the result depend on a person understanding state, choosing correctly, confirming, or handing work off?
-
-Test whether the person can perceive the relevant state and consequence, take the required action, correct or withdraw it where required, and know who owns the next decision. Functional completion does not establish comprehension, and a visible success state does not establish an external effect.
+A single bounded counterexample can disprove an absolute scenario claim. It cannot establish frequency, aggregate reliability, causal sensitivity, or behavior outside the exercised composition and context. Do not turn a possible failure into a required retry, recovery, memory, or evaluation mechanism until an established obligation makes that response necessary.
 
 ## Design Discriminating Validation
 
-For each pivotal behavioral claim, identify a future validation route that can separate the intended behavior from a plausible wrong behavior:
+For each model-dependent pivotal claim, establish the smallest future validation capable of separating the intended behavior from a plausible wrong behavior:
 
-`retained commitment -> material scenario -> action and observation -> expected visible and authoritative result -> conclusion the evidence can support`
+`design claim -> plausible failure -> discriminating scenario -> oracle and observation boundary -> evidence needed for the named decision`
 
-Use paired or contrasting cases when surface similarity could hide a different obligation: example versus active consumer, current behavior versus external guarantee, available capability versus required capability, known absence versus unresolved ownership, or simplification that preserves obligations versus deletion that loses one. For model-dependent decisions, blind cases can expose answer leakage or candidate-frame anchoring. Plan repeated runs only when the required outcome includes material stability, and reserve unseen cases only when they add distinct evidence.
+Match evidence to the claim:
 
-Choose the eventual observation boundary that owns the claim. Source and configuration can establish a planned or current composition within their scope; a rendered client can establish visual behavior; a native API or state read can establish an authoritative effect; a controlled model run can establish only the exercised behavior under its model, instructions, tools, and context. A mock, static validator, authored test, walkthrough, or polished output proves only its direct scope.
+- source and configuration can establish an intrinsic omission, conflict, impossible route, or selected composition within their scope;
+- one controlled run can establish or disprove only the exercised behavior under its exact model, instructions, tools, context, and scenario;
+- a controlled contrast can establish sensitivity or invariance only across the changed condition;
+- repeated or sampled runs can establish only the defined population, metric, threshold, and run design;
+- native state or an effect-owner read can establish the authoritative fact it owns;
+- rendered output can establish what the captured client or channel presented.
 
-Existing behavioral evidence may support feasibility or overturn a design premise, but it does not accept a future delivered candidate. The behavioral validation design is sufficient for the stated use when it names the smallest proportionate validation needed and leaves later qualification open without making the current decision unsafe or irreversible. Do not require a persistent evaluation asset when a bounded acceptance check is sufficient and no maintained consumer exists.
+Use repeated runs only when the required outcome includes a reliability or stability claim. Use authoritative-state or rendered evidence only when the pivotal judgment depends on the external effect or final presentation they own. Existing runtime evidence may support feasibility or overturn a design premise; its absence is a decision-changing gap only when the user's named next decision requires that evidence now and cannot safely defer it.
 
-## Form Behavioral Findings
+## Return to the Core Judgment
 
-An established behavioral-design defect requires:
+Return the result to the pivotal judgment that caused this reference to be loaded:
 
-`verified design fact -> required behavior the route cannot define, assign, produce, or distinguish -> affected authorized outcome or material risk -> minimum mechanism, responsibility, or decision to remove, change, or reopen`
+- the judgment remains supported within stated assumptions and evidence;
+- a verified composition, enforcement, or causal-route defect weakens or overturns it to the extent of its established consequence;
+- insufficient validation design or missing evidence leaves only the decision that depends on it unsupported, unless it also establishes an intrinsic route defect;
+- a grounded unknown controls a material decision branch;
+- or the required guarantee remains a user-owned tradeoff.
 
-If the missing fact can change the behavioral route, owner, mechanism, or validation, report a decision-changing evidence gap and the smallest separating evidence. Do not reject a route merely because delivered behavior has not yet been run, and do not accept one merely because its prose, examples, or planned tests look complete. Return deterministic loading and wiring to Code Review, and return exact-candidate behavior plus acceptance of visible or authoritative behavioral results to Behavior Review.
+State the causal consequence and the minimum design change, evidence, or owner decision needed. Do not issue a separate behavioral verdict, conclude on the whole proposal from this reference alone, or convert design-side sufficiency into acceptance of an exact implementation, deployment, or runtime population.

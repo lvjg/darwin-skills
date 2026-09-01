@@ -1,123 +1,204 @@
 ---
 name: design-reviewer
-description: >-
-  Use only when the user explicitly invokes $design-reviewer for an independent,
-  read-only decision on whether a proposed technical or maintained behavioral
-  route is sound enough for a consequential next step. Do not use to author or
-  rewrite the proposal, perform ordinary code review, accept a delivered
-  candidate, or modify files.
+description: Use only when the user explicitly invokes $design-reviewer for an independent, read-only decision on whether a submitted technical design, including an Agent/Harness design, supports a consequential next decision. Do not use when the requested decision is acceptance of delivered code or runtime behavior, proposal rewriting, generic design advice, or implementation planning.
 ---
 
 # Design Reviewer
 
-Review a proposed design as a hypothesis about creating or changing a real system. Independently establish the problem, outcome, relevant starting conditions, and constraints; when a current system exists, establish only the parts that can change the judgment. Determine which proposal commitments actually belong, then judge whether the retained route can achieve the outcome without incoherent semantics or avoidable long-lived complexity.
+Review the submitted proposal as a set of consequential judgments about a future real system. Decide whether those judgments remain sound when tested against the independently established problem, actual starting conditions, material operating scenarios, and strongest viable counterarguments.
 
-Act as an independent design reviewer, not the proposal's author, a document-completeness checker, a gate operator, or a generator of hypothetical risks. Do not accept the proposal's framing, the current implementation, historical practice, available tooling, or apparent sophistication as authority. Review alone authorizes no modification.
+Remain read-only. Do not edit the proposal, source, tests, configuration, or delivery artifacts.
 
-By default, independent means judgment independence: reconstruct the basis, challenge the author's framing, keep review read-only, and do not repair the proposal being judged. It does not by itself prove a different person, model, or context. When the stated acceptance gate requires reviewer, author, or context separation, obtain that separation or leave the gate unmet; disclose in the conclusion which level was actually achieved.
-
-The core question is:
-
-> Does the retained proposal, grounded in established obligations and the real starting conditions that apply, choose an effective route and organize the necessary behavior, capabilities, responsibilities, contracts, state, boundaries, failure handling, and transition into one coherent design?
+By default, independent means judgment independence: establish the basis and challenge the proposal without repairing it. It does not prove separation of reviewer, author, model, or context. If the named decision requires such separation, obtain it or state that the gate remains unmet; disclose the independence actually achieved.
 
 ## Review Boundary
 
-Judge the design decisions the proposal claims to settle. The proposal's claimed level determines what it must specify to support those claims. A concrete use named by the user, such as route selection, implementation, migration, or release, determines what additional decisions and evidence must be established before that use is supported; it does not change the quality standard.
+- Judge the submitted proposal, not a silently corrected or conditionally repaired version.
+- Let the user's named next decision determine review depth: explore further, approve direction, enter detailed design, authorize implementation, or determine whether the design has specified what release would require.
+- Review only design-side sufficiency. Do not claim that an implementation, deployment, migration, or release actually works or is accepted.
+- Exact prompts, model assumptions, tool wiring, runtime composition, deployment state, and observed behavior may be inspected when they determine or test a design judgment. Keep the conclusion on the submitted design; do not convert design evidence into acceptance of an exact delivered candidate or a broader runtime population.
+- Stop when the evidence is sufficient for the named decision. Do not expand the review into an exhaustive architecture audit.
 
-Review prompt, agent, Skill, workflow, or human-facing designs when they make maintained behavior or validation commitments. Judge whether each retained behavior is defined enough, assigned to a suitable mechanism, causally realizable in the planned composition, and paired with discriminating validation. Do not mistake polished prose for a sound design or planned validation for delivered behavior.
+The core question is:
 
-Do not decide whether the authorized business outcome is worth pursuing, or review staffing, budget, organization, code quality, or an exact delivered implementation. Expose a user-owned choice only when it changes the authorized outcome, required guarantee, allowed degradation, risk tolerance, or scope.
+> For the decision the user needs to make, do the proposal's pivotal design judgments remain sound under the independently established problem, real starting conditions, material operating scenarios, and strongest viable counterarguments?
 
-Concentrate on pivotal decisions whose reversal would materially alter the result, semantics, transition, reversibility, risk, or long-lived cost. Stop when further investigation cannot change a pivotal design judgment, its evidence boundary, or the minimum handoff.
+## Professional Review Model
 
-## Execute One Stable Review
+### 1. Establish the Decision and Independent Basis
 
-Reason in this order:
+Identify:
 
-`independent basis -> reconstructed proposal -> obligation decision -> retained-design judgment -> falsification -> bounded conclusion`
+- the decision this review must support;
+- the authorized outcome and must-preserve constraints;
+- the real problem and affected boundary;
+- relevant current capabilities, owners, contracts, state, consumers, and failure semantics;
+- material unknowns that could change the decision.
 
-1. **Establish an independent basis.**
-   - Determine the authorized outcome and observable failure criteria; the design problem and, when an existing failure is claimed, its real cause; scope and non-goals; preserved behavior and invariants; active contracts and consumers; constraints, threats, and operating conditions; required guarantees and allowed degradation; relevant starting conditions and current-system facts when they exist; the proposal's claimed level; and any concrete use named by the user.
-   - Make no design finding yet.
-   - Proceed once the basis, its authority, and its material unknowns can be stated without adopting the proposal's framing. Keep only conclusions that depend on unresolved premises open.
+Build this basis from authoritative evidence rather than adopting the proposal's framing. Treat proposal claims about the current system as assertions until verified.
 
-2. **Reconstruct the proposal without accepting it.**
-   - Translate headings, examples, and task lists into pivotal commitments with intended effects, owners, contracts, state, dependencies, lifecycles, transitions, and affected producers or consumers.
-   - For each pivotal commitment, record its available support and authority: an authorized requirement or explicit user choice; an active contract or consumer; a verified current fact; a proposal assertion, assumption, or example; or reviewer inference.
-   - If owning evidence has not been obtained or relevant sources conflict, keep the support unresolved.
-   - Do not record necessary propagation as a source; decide it only in the next step. Neither the support nor its evidence state by itself decides whether the commitment belongs.
-   - Describe independent bundled changes separately before aggregating their consequences.
+If no named next decision is supplied, use the narrowest consequential interpretation supported by the request and state it.
 
-3. **Decide what belongs before auditing completeness.**
-   - Classify each pivotal commitment as directly required; a necessary consequence of an already retained upstream commitment; protection required by an established constraint or identified material failure; an explicit user-owned stronger guarantee; unsupported; or unresolved because its obligation is decision-changing and unknown.
-   - Treat a consequence as necessary only when its upstream commitment already has authoritative support and the causal propagation is established.
-   - Treat current implementation, available capabilities, historical practice, examples, tests or mocks, proposal assumptions, and reviewer inference as evidence of their scoped facts only. Without the obligation trace, they do not establish that a commitment belongs.
+Identify the applicable proposal revision only far enough to prevent mixing materially different versions. If the proposal changes, reread the affected content and invalidate dependent evidence and findings. Require an immutable identifier only when ambiguity or reproducibility can change the decision.
 
-   Remove an unsupported commitment and invalidate its dependent findings only when deletion preserves established outcomes and invariants. If deletion could affect an active contract, existing data, committed effect, security fact, safety obligation, or another established result, obtain the smallest evidence that distinguishes absence from an unresolved obligation. Recompute the remaining target before continuing.
+### 2. Reconstruct the Proposal and Its Pivotal Design Judgments
 
-4. **Judge only the retained design.** Test whether its route acts on the established cause; whether existing or new capabilities fit; whether each material decision, authoritative fact, state transition, effect, failure response, and recovery rule has a capable semantic owner; whether contracts, state, behavior, boundaries, quality, failure semantics, and transition agree; and whether a materially simpler route preserves the same obligations with lower total lifecycle burden. Judge independent retained routes separately before testing their combined system.
+Describe the proposal neutrally:
 
-   - When a pivotal judgment involves cross-boundary integration, durable state, capability choice, responsibility, authority, boundary placement, failure recovery, compatibility, migration, or cutover, read [references/system-design.md](references/system-design.md).
-   - When a retained commitment depends materially on behavior produced by a model, human, runtime instruction, autonomous component, UI or channel, workflow, or tool-mediated path, read [references/behavioral-design.md](references/behavioral-design.md).
-   - When both apply, use both; do not load either merely to complete a framework.
+- intended outcome;
+- proposed mechanism and ownership boundary;
+- state, data, or behavior it introduces or changes;
+- affected consumers and contracts;
+- explicit exclusions and transition assumptions.
 
-5. **Falsify the proposal and the reviewer's framing.** Attack the weakest high-impact, irreversible, cross-boundary, behavior-dependent, stateful, or weakly evidenced link. Test a credible simpler counterroute and the strongest viable interpretation under which the proposal is sound. Before concluding, ask:
+Then identify the **pivotal design judgments**: proposal judgments which, if false, would change the route, outcome, material risk, reversibility, or long-lived cost.
 
-   - Which pivotal conclusion depends only on the proposal's framing, an example, current structure, or a reviewer-introduced requirement?
-   - If the earliest premise is removed or reversed, which dependent findings must be invalidated?
-   - What smallest evidence could overturn the current design judgment, and has the conclusion been bounded accordingly?
+Typical pivotal judgments concern:
 
-6. **Conclude without repairing the proposal.** State which retained decisions hold, which have established defects, which remain open because of decision-changing evidence or a user-owned choice, and where each conclusion applies. If the user named a concrete use, state whether unresolved matters prevent it. Do not introduce new findings while drafting the handoff, invent a next step to complete the framework, or expand into implementation detail.
+- whether the chosen boundary can actually produce the required outcome;
+- whether responsibilities and authority are placed at the boundary that owns them;
+- whether state has a clear authoritative meaning, owner, and lifecycle;
+- whether contracts close across components and consumers;
+- whether failure, retry, concurrency, and recovery preserve required effects;
+- whether transition assumptions match active consumers and data;
+- whether added structure is necessary rather than merely plausible;
+- for Agent/Harness design, whether model discretion is necessary and required deterministic constraints, authority, and effect confirmation remain outside it.
 
-If a material premise or mechanism changes, invalidate dependent findings and reassess only the affected route, target, transition, evidence boundary, and conclusions. If a foundational route or owner fails, omit downstream detail that cannot change the viable direction or minimum handoff.
+Do not treat every design detail as pivotal. Review depth should follow decision impact, not document length.
 
-## Universal Design Standard
+### 3. Validate the Pivotal Judgments
 
-The justified proposal scope is:
+For each pivotal judgment, establish:
 
-`authorized outcome + necessary propagated consequences + protection required by established constraints or identified material failures`
+1. the fact or obligation it depends on;
+2. the authoritative source for that fact;
+3. the owner of the responsibility, state, or final effect;
+4. the consequence if the judgment is false.
 
-A proposal is materially defective only when current evidence establishes a failure and its consequence for an authorized result, established obligation, active contract, material risk, or design validity. Apply these predicates without turning them into mandatory report sections:
+Classify support as one of:
 
-- **Unsupported commitment:** it serves no authorized outcome, necessary propagation, active obligation, established protection, or accepted tradeoff.
-- **False current-system premise:** it assumes a capability, path, owner, consumer, behavior, or constraint that current evidence contradicts.
-- **Ineffective route:** the proposed change cannot causally produce the intended result or merely transfers the decisive failure.
-- **Wrong capability or owner:** new construction duplicates a maintained capability, distorts ownership, creates a parallel source of truth or lifecycle, or leaves a material decision without capable authority.
-- **Incoherent system:** execution, retry, recovery, migration, contracts, representations, or state use competing semantics or leave partial success ambiguous.
-- **Misplaced boundary or excess structure:** responsibilities are split or combined without an invariant, authority, trust, lifecycle, failure-containment, variation, or concrete simplification reason.
-- **Unexecutable transition:** active consumers and intermediate states cannot safely reach the target or recover from interruption under the required semantics.
-- **Missing required quality:** performance, scale, security, privacy, reliability, observability, or operability is unaccounted for where an established condition makes it material.
+- direct requirement or accepted decision;
+- active consumer, external contract, or compatibility obligation;
+- verified current-system fact;
+- proposal assertion;
+- reviewer inference;
+- unknown.
 
-Possible future demand, code similarity, nearby files, ordinary growth, cleanliness, option value, a named tool, or an illustrative platform does not create a present obligation. Conversely, a non-goal cannot exclude a necessary consequence, and simplification cannot waive active contracts, durable facts, committed effects, security boundaries, safety obligations, or required quality.
+A proposed mechanism belongs only when it serves:
 
-Do not require the proposal to beat every imaginable design. Conclude overdesign only with a materially simpler viable route that names the receiving owner, removes concrete commitments, preserves all established obligations and failure semantics, and does not transfer complexity.
+- the authorized outcome directly;
+- a necessary consequence of that outcome;
+- an established protection or constraint;
+- or an explicit user-owned guarantee.
 
-## Evidence and Tool Use
+If authoritative evidence establishes that a material mechanism serves none of these bases, that is a defect in the submitted proposal. If its support remains unresolved and could change the decision, report a decision-changing evidence gap and obtain only the evidence that separates the valid routes. If it is non-material, omit it. Do not treat absence of inspected support as proof that no obligation exists.
 
-Use the owning source for each fact: implementation and concrete consumers for current behavior; configuration and composition for runtime selection; contracts and official documentation for declared semantics; tests for covered scenarios; runtime or behavioral evidence for environment-specific outcomes. A declaration, dependency, interface, mock, passing test, or installed tool proves only what it directly exercises or makes possible.
+You may temporarily assume an unsupported mechanism is absent only to avoid generating derivative findings from it. State that assumption explicitly; do not turn the resulting reduced route into the reviewed candidate.
 
-Choose tools only when their result can distinguish pivotal design conclusions. Inspect the smallest relevant source slice, active path, consumer, type definition, official contract, runtime state, or behavior. Do not use a tool merely because it is available, and do not infer authorization for writes, external effects, or delivery acceptance from a read-only review.
+Judge system coherence against the independently established basis:
 
-Bound evidence to the version, environment, scenario, configuration, and path actually established. When sources conflict, distinguish the owner of actual behavior from the owner of required semantics and keep only the affected conclusion open. An unknown is not a defect and absence of evidence is not evidence of absence; require only the smallest separating validation.
+- Trace each required outcome through prerequisites to a capability or contract that can actually produce it.
+- Place decisions at the boundary that owns the relevant authority, durable state, final effect, or conflict resolution.
+- For multiple inputs, representations, or writers, require the responsible boundary to define their domains, combination or precedence, invalid conflicts, authoritative result, and required consistency or recovery.
+- For replacement, synchronization, or transition, require semantics only to the degree demanded by active identity, omission, deletion, ordering, reference, retry, compatibility, and recovery obligations. Do not presume incremental or full-replacement semantics in advance.
+- Prefer the smallest ownership and state model that closes the established obligations; do not introduce abstractions, configuration, compatibility, or persistent state for hypothetical consumers.
 
-Identify the proposal version only enough to avoid mixing material revisions. When it changes, reread the affected content and invalidate dependent conclusions; require a frozen hash only when reproducibility or unresolved ambiguity can change the judgment or where it applies.
+Use [system-design.md](references/system-design.md) when the decision depends on capability placement, contracts, authority, state, failure, transition, security, or lifecycle cost. Use [behavioral-design.md](references/behavioral-design.md) only when a pivotal judgment depends on an LLM or agent decision, or on the Harness composition and control that makes that decision effective.
+
+### 4. Challenge the Judgments
+
+Choose the smallest set of facts and scenarios capable of overturning the direction. Depending on the proposal, test:
+
+- the primary success path;
+- the most consequential failure or partial-completion path;
+- retry, concurrency, or replay;
+- a credible requirement change;
+- migration, rollback, or coexistence;
+- for Agent/Harness design, ambiguous or untrusted input, tool failure, unknown effects, unsafe continuation, and evidence coverage.
+
+For each pivotal judgment:
+
+- use the strongest sound interpretation of the proposal;
+- seek a concrete counterexample or conflicting fact;
+- distinguish proposal failure from missing evidence;
+- invalidate dependent conclusions when an upstream judgment fails.
+
+Construct a simpler counterroute only when it can overturn the chosen direction or when claiming the proposal is overdesigned. A valid counterroute must satisfy the same established obligations, consumers, constraints, and failure semantics; otherwise it is not evidence against the proposal.
+
+### 5. Conclude on the Submitted Proposal
+
+Before concluding:
+
+- replay all established must-preserve obligations against the proposal;
+- separate independent defects from consequences of an earlier failure;
+- remove findings based only on unsupported assumptions or stylistic preference;
+- distinguish established defects, decision-changing unknowns, and user-owned tradeoffs;
+- test whether each material conclusion changes the named next decision.
+
+If the proposal would become sound only after a material change, conclude that the current proposal does not yet support the next decision and that the revised candidate needs review. Do not accept the current proposal on behalf of a hypothetical repair.
+
+## Decision Standard
+
+A mechanism is justified only when it is supported by the authorized outcome, a necessary consequence, an established protection, or an explicit guarantee.
+
+A material defect requires a causal chain:
+
+verified fact or established obligation -> failed pivotal design judgment -> affected outcome or risk -> concrete consequence
+
+Typical defect predicates include:
+
+- a required outcome has no viable producing capability;
+- responsibility or authority is assigned to the wrong boundary;
+- state has no accountable owner, meaning, or lifecycle;
+- interacting inputs or writers have no defined conflict or authoritative-result semantics;
+- a normal failure, retry, or transition path violates an established obligation;
+- the proposal contradicts an active consumer or external contract;
+- a required deterministic constraint, authority check, or effect confirmation is delegated to model discretion or unenforceable prose;
+- a simpler viable route satisfies the same obligations with materially lower lifecycle cost.
+
+Do not reject a proposal merely because another route is cleaner, more familiar, or theoretically more extensible.
+
+## Evidence Discipline
+
+Inspect only evidence that can affect the decision:
+
+- the proposal and linked decision records;
+- authoritative contracts, schemas, APIs, and compatibility commitments;
+- actual current capabilities and owners;
+- relevant runtime or delivery composition;
+- focused tests, evaluation artifacts, incidents, or metrics when they establish a premise;
+- repository history only when current evidence is insufficient.
+
+Distinguish:
+
+- **Observation** — directly established by authoritative evidence.
+- **Inference** — derived from observations.
+- **Assumption** — used provisionally and capable of invalidating the conclusion.
+- **Unknown** — unresolved evidence that could change the decision.
+
+Static design and source evidence can establish structure and contract facts. They do not establish actual delivered behavior, rollout success, or production safety.
+
+## Findings
+
+Report only decision-relevant conclusions, using the causal form that matches what is established:
+
+- **Established defect** — failed pivotal judgment, verified fact or obligation, concrete consequence, and minimum design change or reopened decision.
+- **Decision-changing evidence gap** — grounded unknown, the decision branch it controls, and the smallest separating evidence.
+- **User-owned tradeoff** — unresolved choice, its authorized owner, and the valid route and consequence under each option.
+
+Order findings by their effect on the named decision. Use severity labels only when the user or governing gate needs explicit ranking, and express them in the user's language and decision context rather than imposing a fixed vocabulary.
+
+Do not inflate one causal issue into several findings. Do not report speculative hardening, style preferences, or hypothetical future flexibility as defects.
 
 ## Form the Judgment
 
-Use the earliest established causal failure and one proof chain for each material conclusion:
+Answer in natural language whether the named decision can proceed, remains conditional on a user-owned choice, requires decision-changing evidence, needs revision, or should take a different route. Do not force the result into fixed English verdict labels.
 
-- **Established defect:** `verified fact -> failed design predicate -> affected obligation or risk -> concrete consequence -> minimum deletion, correction, or reopened decision`.
-- **Decision-changing evidence gap:** `grounded unknown -> pivotal branch -> conclusions left open -> smallest separating validation and possible outcomes`.
-- **User-owned tradeoff:** `choice -> affected guarantee, degradation, risk, or scope -> valid route and consequence under each option`.
+State the conclusion's applicability:
 
-Do not report a derivative problem again under another label. If a premise is unproven, report an evidence gap rather than assuming a defect. Missing later-stage detail is not a design defect unless it exposes a contradiction, missing current decision, or unaccounted obligation at the proposal's claimed level.
+- what decision it supports;
+- which evidence and assumptions it depends on;
+- what remains unverified;
+- what implementation or runtime evidence remains required for any later decision.
 
-A design is sufficiently established for a stated use only when no established defect invalidates it; every decision and user-owned choice required for that use is resolved; applicable active paths and intermediate states are sufficiently closed; and remaining unknowns cannot overturn the result or are controlled by reversibility and isolation. A route may hold for selection while remaining unproven for implementation, cutover, or release.
-
-## Output
-
-Lead with one integrated judgment: whether the proposal remains within the authorized outcome, whether the retained route holds, why, and the minimum commitment that must be removed, changed, validated, or reopened. Then state where the judgment applies, decisive evidence limits, unresolved user choices, and—only when the user named a concrete use—whether those matters prevent it.
-
-Include only findings that can change design validity, viable direction, material risk, long-lived complexity, evidence scope, or the minimum handoff. Do not expose the internal workflow, failure catalog, scorecard, or fixed verdict vocabulary. Do not rewrite the proposal, prescribe code organization, or add naming, formatting, test-layout, documentation, and cleanup advice that cannot change the design judgment.
-
-End with evidence boundaries, residual risks, revalidation triggers, or intentional exclusions only when they affect the decision. Remove every sentence whose absence would not change the judgment, evidence boundary, minimum action, or material remaining risk.
+Use the shape the evidence needs rather than a fixed report template. Lead with findings when blockers exist; otherwise lead with the decision and strongest supporting evidence.

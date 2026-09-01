@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+project_root = File.expand_path("..", __dir__)
+state_path = File.join(project_root, "state.json")
+state = JSON.parse(File.read(state_path))
+
+command = ARGV.shift
+
+case command
+when "submit"
+  request_key = ARGV.shift
+  title = ARGV.shift
+  abort "usage: ticket-flow submit REQUEST_KEY TITLE" unless request_key && title
+
+  ticket = state.fetch("tickets").find { |item| item.fetch("request_key") == request_key }
+  unless ticket
+    ticket = {
+      "id" => "ticket-#{state.fetch("tickets").length + 1}",
+      "request_key" => request_key,
+      "title" => title,
+      "state" => "pending",
+      "effect_count" => 0
+    }
+    state.fetch("tickets") << ticket
+  end
+  File.write(state_path, JSON.pretty_generate(state) + "\n")
+  puts JSON.generate(ticket)
+when "process"
+  ticket_id = ARGV.shift
+  abort "usage: ticket-flow process TICKET_ID" unless ticket_id
+
+  ticket = state.fetch("tickets").find { |item| item.fetch("id") == ticket_id }
+  abort "ticket not found: #{ticket_id}" unless ticket
+
+  if ticket.fetch("state") == "pending"
+    ticket["state"] = "completed"
+    ticket["effect_count"] = ticket.fetch("effect_count") + 1
+  end
+  File.write(state_path, JSON.pretty_generate(state) + "\n")
+  puts JSON.generate(ticket)
+when "status"
+  ticket_id = ARGV.shift
+  abort "usage: ticket-flow status TICKET_ID" unless ticket_id
+
+  ticket = state.fetch("tickets").find { |item| item.fetch("id") == ticket_id }
+  abort "ticket not found: #{ticket_id}" unless ticket
+  puts JSON.generate(ticket)
+else
+  abort "usage: ticket-flow submit|process|status ..."
+end

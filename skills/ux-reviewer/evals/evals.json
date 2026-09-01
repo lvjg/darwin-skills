@@ -1,0 +1,39 @@
+{
+  "skill_name": "ux-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$ux-reviewer 请只读审查 `evals/files/1/context/` 中记录的工作区删除体验。不要修改产品，也不要把体验观察写成后台 E2E 结论。",
+      "expected_output": "A bounded UX review identifies the generic destructive confirmation and destructive default focus as evidence-backed task risks, ties each to the recorded workspace-deletion path and owner, and avoids unsupported backend, accessibility or whole-product claims.",
+      "files": [
+        "evals/files/1/context/experience-contract.md",
+        "evals/files/1/context/walkthrough-witness.md"
+      ],
+      "expectations": [
+        "[walkthrough-boundary] Bind the review to the recorded administrator, secondary-workspace deletion task, browser/viewport/locale and exact observed path; state that the reviewer is assessing supplied witness rather than performing a fresh live walkthrough.",
+        "[generic-confirmation-finding] Identify that the modal omits the selected workspace name and uses generic Delete/Continue language, making wrong-object or misunderstood deletion materially more likely; do not claim irreversibility is omitted because the body states that the action cannot be undone.",
+        "[destructive-focus-finding] Identify that the destructive action receives initial focus and Enter immediately activates deletion, increasing accidental irreversible action risk at the decisive checkpoint.",
+        "[task-impact-and-owner] For each material finding state the shortest reproduction, expected basis, observed behavior, concrete administrator impact and the dialog/interaction owner responsible for revalidation.",
+        "[fidelity-limit] Do not infer screen-reader semantics, backend deletion correctness, authorization, data retention or other unobserved states from the supplied visible/keyboard witness.",
+        "[no-whole-product-pass] The response does not perform or claim this prohibited behavior: Generalize the two-checkpoint record into a verdict on the entire product experience.",
+        "[no-product-modification] The response does not perform or claim this prohibited behavior: Change copy, code, settings or product state during the review."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$ux-reviewer 请只读审查 `evals/files/2/context/` 中记录的密码重置链接发送体验，并给出是否存在需要阻断交付的体验问题。不要修改产品或执行新的走查。",
+      "expected_output": "A bounded UX review reports no material delivery-blocking issue in the supplied password-reset path, explains which task risks the witness closes, and avoids generalizing beyond the recorded session or inventing inaccessible evidence.",
+      "files": [
+        "evals/files/2/context/experience-contract.md",
+        "evals/files/2/context/walkthrough-witness.md"
+      ],
+      "expectations": [
+        "[bounded-no-finding] Report no material delivery-blocking UX issue for the exact recorded task and checkpoints rather than inventing a defect to ensure every review has findings.",
+        "[identity-and-effect-clarity] Recognize that the dialog binds the action to alex@example.com, distinguishes sending a link from changing the password, states expiry, and presents an explicit Send reset link action.",
+        "[safe-interaction-and-feedback] Recognize that initial focus is on Cancel and the post-action confirmation identifies the recipient and resend timing, closing the recorded accidental-action and outcome-ambiguity risks.",
+        "[evidence-limit] Bind the judgment to the supplied actor, browser, viewport, locale and path; keep screen-reader semantics, delivery of the email, backend mutation and whole-product quality unproven.",
+        "[no-modification-or-new-run] The response does not modify product state or files, perform a new walkthrough, or claim the supplied witness proves backend or external delivery behavior."
+      ]
+    }
+  ]
+}

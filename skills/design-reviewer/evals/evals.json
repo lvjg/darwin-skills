@@ -1,0 +1,202 @@
+{
+  "skill_name": "design-reviewer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$design-reviewer 请读取随附的 `evals/files/1/context/` 下的需求、当前系统事实和初始方案，独立判断该方案是否足以作为实现依据。只读，不修改文件。",
+      "expected_output": "A read-only design review rejects implementation readiness because the proposal leaves conflicting routing representations and outcome runtime semantics unresolved. It treats the persistent source lifecycle as an unresolved justification question rather than an automatic defect, does not reject full replacement merely for being non-incremental, and keeps the conclusion on the submitted proposal rather than accepting a repaired version.",
+      "files": [
+        "evals/files/1/context/root-intent.md",
+        "evals/files/1/context/current-system.md",
+        "evals/files/1/context/initial-route.md"
+      ],
+      "expectations": [
+        "[decision-and-independent-basis] Establish that the review supports implementation authorization, reconstruct the outcome and real starting conditions independently, and distinguish user decisions, verified facts, proposal claims and material unknowns.",
+        "[submitted-proposal-remains-object] Keep the verdict on the supplied proposal. A conditional analysis that ignores unsupported source state may suppress derivative findings but must not turn the reduced route into the accepted candidate.",
+        "[replacement-semantics-not-universalized] Do not reject whole-graph replacement merely because omission deletes resources, or require incremental editing and stable identity by default. Raise replacement concerns only when tied to an established active obligation or concrete failure consequence.",
+        "[source-lifecycle-judgment] Do not reject the persistent source lifecycle merely because there is no independent external consumer. Test whether it is required by the direct outcome, a necessary consequence, an established protection or an explicit guarantee; if that support cannot be established, keep its justification open or disprove it with an equivalent simpler route.",
+        "[route-conflict-semantics] Reject silent compiler selection between node-local and global conditions because the workflow owner does not define their domains, combination or precedence, invalid conflicts and authoritative result. Do not require one physical representation if owner-defined multi-input semantics could close the judgment.",
+        "[outcome-capability] Identify that the proposal exposes outcomes without establishing a runtime meaning for each supported outcome, and tie the missing owner contract to the promised generic template capability.",
+        "[facts-are-not-automatically-obligations] Distinguish current revision/idempotency and reference behavior from established must-preserve obligations. Preserve only the explicitly required existing published/runtime behavior, finalize/publish separation, signed publication and model prohibition on raw expressions or publication unless further evidence establishes additional obligations.",
+        "[causal-findings] Tie each material finding from verified fact or established obligation through the failed pivotal judgment to a concrete outcome or risk and the minimum decision, change or evidence needed.",
+        "[bounded-judgment] Decide whether implementation may proceed and state the scope and later delivery evidence boundary without authoring the replacement design.",
+        "[prohibited-review-scope] The response does not endorse machinery by default, substitute arbitrary JSON Path or raw expressions, claim access to later decisions, or write a replacement design/files."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$design-reviewer 请读取 `evals/files/2/context/` 中的目标、现状和方案，独立判断这个报表下载方案是否足以进入实现。只读，不重写方案。",
+      "expected_output": "A read-only design review accepts the direct report-download route for implementation, explains why existing ownership and maintained capabilities close the required result without new lifecycle machinery, and bounds the conclusion to the supplied internal-admin use.",
+      "files": [
+        "evals/files/2/context/root-intent.md",
+        "evals/files/2/context/current-system.md",
+        "evals/files/2/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[accept-for-implementation] Decide that the submitted proposal is sufficiently established for implementation because no supplied fact defeats a pivotal design judgment and no decision required for implementation remains unresolved.",
+        "[owner-fit] Preserve the report generator as owner of completed report artifacts and the API service as owner of admin authorization and latest-completed selection.",
+        "[maintained-capability-reuse] Recognize that the existing catalog and maintained object-store signer already satisfy the required state and delivery responsibilities.",
+        "[failure-semantics] Confirm that no-report, signing failure and expired-link behavior are explicit enough for the stated internal-admin use.",
+        "[bounded-evidence] Keep implementation correctness and real runtime behavior as later evidence boundaries rather than design defects.",
+        "[no-invented-machinery] The response does not perform or claim this prohibited behavior: Require a cache, event bus, new database, download proxy or background coordinator without an established obligation.",
+        "[no-rewrite] The response does not perform or claim this prohibited behavior: Rewrite the proposal or modify files during the review."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$design-reviewer 请读取 evals/files/3/context/ 中的目标、现状和方案，判断环境策略管理方案是否足以进入实现。只读，不修改或补写方案。",
+      "expected_output": "A read-only design review accepts the proposal for implementation. It recognizes that full-snapshot replacement and two writable policy domains are coherent here because the policy service owns both, defines omission, precedence, conflicts, atomicity and the authoritative effective result, while the gateway adds no competing state.",
+      "files": [
+        "evals/files/3/context/root-intent.md",
+        "evals/files/3/context/current-system.md",
+        "evals/files/3/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[accept-owner-defined-semantics] Decide that the submitted proposal is ready for implementation at the stated internal-admin scope.",
+        "[multiple-writable-domains-can-be-valid] Accept base rules and environment overrides as two writable domains because the responsible policy service defines their domains, precedence, invalid conflicts and authoritative effective result.",
+        "[full-replacement-can-be-valid] Accept complete draft-snapshot replacement because omission-as-deletion, atomic reference validation, compare-and-swap and isolation from published versions are established semantics matching the supplied obligations.",
+        "[ownership-fit] Keep authorization at the gateway and policy meaning, draft persistence, validation, publication and runtime resolution at the policy service; recognize that the proposal adds no parallel state owner.",
+        "[no-invented-requirements] Do not require incremental mutation, one physical representation, a new coordinator, compatibility layer or recovery store without an established obligation.",
+        "[bounded-proof] Keep implementation correctness, deployed integration and runtime behavior as later evidence rather than treating their absence as a design defect."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "$design-reviewer 请读取 evals/files/4/context/，评审部署状态回答方案是否足以进入实现。该对象是行为设计，不是已交付提示词；只读评审。",
+      "expected_output": "A read-only design review rejects implementation readiness because the proposed assistant cannot observe authoritative deployment completion and attempts to replace that fact with prompt instructions and optimistic inference. It identifies the missing observation contract without reviewing exact delivered behavior.",
+      "files": [
+        "evals/files/4/context/root-intent.md",
+        "evals/files/4/context/current-system.md",
+        "evals/files/4/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[behavior-design-boundary] Review whether the proposed maintained behavior is causally realizable, without claiming to test an exact prompt, model or runtime composition.",
+        "[authoritative-observation-missing] Identify that submission acknowledgement cannot establish terminal deployment state and that the assistant has no available path to the authoritative state.",
+        "[prose-not-enforcement] Reject instructions to reassure or infer success as a substitute for an observable external effect and its failure semantics.",
+        "[concrete-consequence] Tie the failed judgment to false completion claims and unsafe follow-up actions for the operator.",
+        "[minimum-disposition] Require a design decision that supplies authoritative observation or narrows the promised behavior; do not author the replacement prompt or implementation.",
+        "[not-ready] Conclude that the submitted design does not support implementation authorization."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "$design-reviewer 请读取 evals/files/5/context/，评审部署状态回答方案是否足以进入实现。该对象是行为设计，不是已交付行为；只读评审。",
+      "expected_output": "A read-only design review accepts the Agent/Harness design for implementation because the assistant can query an authoritative deployment-state tool, terminal and non-terminal responses are defined, consequential actions remain service-enforced, and planned validation can distinguish acknowledgement from completion. It keeps exact implementation and runtime behavior as later evidence rather than claiming they are already established.",
+      "files": [
+        "evals/files/5/context/root-intent.md",
+        "evals/files/5/context/current-system.md",
+        "evals/files/5/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[accept-behavior-design] Decide that no supplied fact defeats a pivotal design judgment required to enter implementation.",
+        "[causal-route] Trace user question through authorized state observation to a response grounded in the deployment service's authoritative terminal or non-terminal state.",
+        "[mechanism-fit] Recognize that the model interprets and explains while the tool and deployment service own authorization, state and consequential actions.",
+        "[failure-and-uncertainty] Confirm explicit handling for inaccessible state, non-terminal state and failed deployment without inventing success.",
+        "[discriminating-validation] Recognize that the proposed contrasting scenarios can distinguish acknowledgement from authoritative completion without claiming they have already run.",
+        "[later-evidence-boundary] Keep exact prompt loading, model behavior, integration and runtime outcome as later evidence without routing to a fixed Reviewer or treating their absence as a design defect."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "$design-reviewer 请读取 evals/files/6/context/，评审目录保存后的搜索索引刷新方案是否足以进入实现。只读，不替业务方选择产品保证。",
+      "expected_output": "A read-only design review leaves implementation authorization conditional because the required refresh guarantee is an unresolved user-owned decision. It explains that the outbox route can be justified if eventual refresh is chosen, while visible failure with manual retry is a viable lower-lifecycle route if that guarantee is not required, without choosing either guarantee or rewriting the proposal.",
+      "files": [
+        "evals/files/6/context/root-intent.md",
+        "evals/files/6/context/current-system.md",
+        "evals/files/6/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[user-owned-guarantee-remains-open] Identify eventual index refresh versus visible failure and manual retry as the decision-changing product guarantee that the supplied evidence deliberately leaves unresolved.",
+        "[no-premature-defect-or-acceptance] Do not declare the outbox machinery defective merely because it is complex, and do not authorize implementation while the guarantee that would justify it remains undecided.",
+        "[obligation-before-mechanism] Explain that eventual completion would justify durable retry, recovery ownership and reconciliation, while an allowed visible failure could remove that lifecycle and use the existing manual retry path.",
+        "[equivalent-routes-are-conditional] Present the two routes only as consequences of different legitimate guarantees, not as an arbitrary reviewer preference or a silently repaired candidate.",
+        "[bounded-disposition] State the minimum user-owned decision needed before implementation and keep exact implementation and delivery proof outside the design review."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "$design-reviewer 请读取 evals/files/7/context/，评审功能开关读取方案能否获得实现授权，并明确本次评审达到的独立性。只读。",
+      "expected_output": "A read-only review may find the substantive design route supported by the supplied facts, but it explicitly states that the current reviewer cannot satisfy the governing reviewer-author and context-separation requirement. The governance gate therefore remains unmet and implementation cannot be authorized by this review.",
+      "files": [
+        "evals/files/7/context/root-intent.md",
+        "evals/files/7/context/current-system.md",
+        "evals/files/7/context/proposed-route.md"
+      ],
+      "expectations": [
+        "[substantive-judgment-can-remain-provisional] Assess the route against ownership, capability, failure and state facts rather than inventing a technical defect solely to force rejection.",
+        "[independence-is-not-overclaimed] Distinguish judgment independence from different reviewer, author, model or context and disclose that the required structural separation was not achieved.",
+        "[governance-gate-remains-unmet] Do not claim implementation authorization even if the substantive route appears sound, because the named decision requires a factually unmet independence condition.",
+        "[minimum-next-action] Require review by an eligible reviewer in an independent context rather than rewriting the proposal or pretending that a fresh analytical method satisfies the policy."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "$design-reviewer 请读取 evals/files/8/context/，只评审已明确取代旧版的最新通知订阅方案，判断是否足以进入实现。只读，不合并不同版本。",
+      "expected_output": "A read-only design review binds its judgment to proposal version 2, does not carry superseded version 1 defects into the candidate, and accepts version 2 for implementation because identity, authoritative persistence, ownership and failure semantics are closed by maintained capabilities within the stated scope.",
+      "files": [
+        "evals/files/8/context/root-intent.md",
+        "evals/files/8/context/current-system.md",
+        "evals/files/8/context/proposal-v1.md",
+        "evals/files/8/context/proposal-v2.md"
+      ],
+      "expectations": [
+        "[bind-to-authoritative-revision] Identify version 2 as the submitted review object because the supplied source explicitly makes it authoritative and supersedes version 1.",
+        "[invalidate-obsolete-findings] Do not reject version 2 for client-assigned identity, collision ambiguity or premature success that exist only in the superseded version 1.",
+        "[accept-current-candidate] Decide that version 2 is sufficiently established for implementation at the supplied scope because the notification service owns identity and persistence, uses atomic maintained storage and returns success only after persistence.",
+        "[bounded-proof] Reserve implementation correctness, deployed integration and runtime behavior for later evidence rather than treating their absence as a design defect."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "$design-reviewer 请读取 evals/files/9/context/，评审权限申请助手的 Agent/Harness 设计是否足以进入实现。精确 prompt、模型和 tool wiring 是设计材料；只读评审，不把它们当成已经运行的证据。",
+      "expected_output": "A read-only design review uses the exact planned prompt and wiring as design evidence, rejects implementation readiness because the prompt turns a submission receipt into an approval claim without authoritative status observation, and explicitly avoids claiming that any runtime behavior has already occurred.",
+      "files": [
+        "evals/files/9/context/root-intent.md",
+        "evals/files/9/context/current-system.md",
+        "evals/files/9/context/proposed-design.md"
+      ],
+      "expectations": [
+        "[exact-material-is-admissible] Inspect the supplied exact prompt, model assumption, tool schemas and planned wiring because they determine the submitted Agent/Harness design judgment; do not exclude them merely for being implementation-shaped.",
+        "[intrinsic-design-defect] Identify that request_access returning submitted cannot establish approval and that the planned prompt explicitly instructs a false approval claim before any authoritative status read.",
+        "[causal-consequence] Tie the design defect to a user relying on access that has not been granted and to follow-up actions occurring under a false terminal state.",
+        "[artifact-not-runtime-proof] State that no model run, deployment or aggregate reliability evidence was supplied and do not claim that the planned candidate has actually produced the failure at runtime.",
+        "[minimum-disposition] Conclude that the submitted design does not support implementation until it observes authoritative approval or narrows the promised result, without rewriting the prompt, implementation or evaluation suite."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "$design-reviewer 请读取 evals/files/10/context/，评审事故摘要助手的 Agent/Harness 设计是否足以进入实现。摘要本身是最终结果，不会执行外部动作；只读评审。",
+      "expected_output": "A read-only design review accepts the pure-generation Agent/Harness design for implementation because the required summary behavior, decisive source facts, allowed wording variation, invariants, uncertainty handling, visible result, and discriminating validation are defined. It does not invent a tool action, authoritative side effect, or downstream consumer for the summary itself.",
+      "files": [
+        "evals/files/10/context/root-intent.md",
+        "evals/files/10/context/current-system.md",
+        "evals/files/10/context/proposed-design.md"
+      ],
+      "expectations": [
+        "[accept-pure-generation-design] Decide that the submitted design is sufficiently established for implementation at the stated internal incident-response scope.",
+        "[behavior-contract] Reconstruct the trigger, decisive incident facts, required synthesis, allowed prose variation, factual and uncertainty invariants, and the operator-visible summary as the final result.",
+        "[no-invented-effect-path] Do not require the model to call a tool, mutate authoritative state, produce an external side effect, or create another downstream consumer when the summary itself is the promised outcome.",
+        "[enforcement-fit] Recognize that deterministic retrieval and schema validation own record identity and required fields while the model owns concise synthesis without changing incident state.",
+        "[discriminating-validation] Recognize that the planned contrasting cases can expose omitted confirmed facts, promoted hypotheses, and missing-data invention without claiming the cases have already run.",
+        "[later-evidence-boundary] Keep exact implemented composition and runtime behavior as later evidence rather than treating their absence as a current design defect."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "$design-reviewer 请读取 evals/files/11/context/，评审政策指引助手的 Agent/Harness 设计是否足以进入实现。先判断模型依赖的行为是否已定义到可评审程度；只读，不补写方案。",
+      "expected_output": "A read-only design review rejects implementation readiness because the proposal's claim that the assistant will understand intent and answer safely does not define the decisive inputs, ambiguity behavior, required policy identity and scope, or the invariant distinction between eligibility guidance and approval. It ties that missing behavior contract to untestable implementation and unsafe guidance without inventing a fixed execution chain or rewriting the prompt.",
+      "files": [
+        "evals/files/11/context/root-intent.md",
+        "evals/files/11/context/current-system.md",
+        "evals/files/11/context/proposed-design.md"
+      ],
+      "expectations": [
+        "[define-before-mechanisms] Recover the required trigger, decisive facts, judgment, allowed variation, invariants, clarification behavior and visible result from the established intent before judging prompts or Harness mechanisms.",
+        "[vague-claim-is-not-implementable] Identify that 'understand intent' and 'answer safely' plus happy-path examples do not specify how employment country, request type, missing facts and multiple matches determine the result.",
+        "[material-consequence] Tie the undefined behavior to policy misidentification, presentation of eligibility as approval, and the inability of planned evaluation to distinguish a correct answer from a plausible unsafe one.",
+        "[no-fixed-topology] Do not require an external action or authoritative side effect; the defect is the undefined model-dependent behavior and its validation, not the absence of an execution chain.",
+        "[minimum-disposition] Keep the verdict on the submitted design and require the missing behavioral decisions and discriminating validation to be specified without authoring the replacement prompt or implementation."
+      ]
+    }
+  ]
+}

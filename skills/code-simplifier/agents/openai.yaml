@@ -1,6 +1,6 @@
 interface:
   display_name: "Code Simplifier"
-  short_description: "Converge implementation and retire unsupported complexity"
-  default_prompt: "Use $code-simplifier to converge this authorized implementation on its decided or accepted target outcome while preserving required behavior. Reconstruct affected responsibilities and every materially distinct active path; delete, reuse, realign, simplify, or retain each mechanism by evidenced necessity; close retired surfaces and their producers; preserve active contracts, failure semantics, and data; and prove behavior, retirement, and net simplicity on the final snapshot."
+  short_description: "Reduce and restructure a bounded code candidate"
+  default_prompt: "Use $code-simplifier to optimize this bounded code candidate without changing its decided behavior; choose only the smallest justified deletion, reuse, responsibility realignment, direct simplification, or restructuring, and make no edit when the candidate is already the lowest-burden complete implementation."
 policy:
   allow_implicit_invocation: false
