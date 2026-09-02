@@ -160,7 +160,7 @@ if supervisor_file.file?
   if discovery_section.nil?
     errors << "skills/supervisor/SKILL.md: missing professional capability discovery section"
   else
-    built_in_names = discovery_section.scan(/^- `\$([a-z0-9]+(?:-[a-z0-9]+)*)`：/).flatten
+    built_in_names = discovery_section.scan(/^- `\$([a-z0-9]+(?:-[a-z0-9]+)*)`\s*$/).flatten
     expected_built_in_names = skill_names.reject { |name| name == "supervisor" }
     duplicate_built_in_names = built_in_names.group_by(&:itself).select { |_name, items| items.length > 1 }.keys
     unless duplicate_built_in_names.empty?

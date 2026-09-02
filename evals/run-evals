@@ -79,6 +79,85 @@ end
 
 failed_skills = []
 
+def requires_actual_worker_dispatch?(item)
+  item.fetch("expectations").any? { |expectation| expectation.start_with?("[actual-worker-dispatch]") }
+end
+
+def completed_worker_dispatch?(rollout_path)
+  collaboration_calls = {}
+  completed_calls = {}
+
+  File.foreach(rollout_path) do |line|
+    event = JSON.parse(line)
+    next unless event["type"] == "response_item"
+
+    payload = event.fetch("payload", {})
+    if payload["type"] == "function_call" && payload["namespace"] == "collaboration"
+      collaboration_calls[payload["call_id"]] = payload
+    elsif payload["type"] == "function_call_output"
+      completed_calls[payload["call_id"]] = payload["output"]
+    end
+  rescue JSON::ParserError
+    next
+  end
+
+  spawned = collaboration_calls.any? do |call_id, payload|
+    next false unless payload["name"] == "spawn_agent" && completed_calls.key?(call_id)
+
+    arguments = JSON.parse(payload.fetch("arguments", "{}"))
+    arguments["fork_turns"] == "none"
+  rescue JSON::ParserError
+    false
+  end
+  returned = collaboration_calls.any? do |call_id, payload|
+    next false unless payload["name"] == "wait_agent" && completed_calls.key?(call_id)
+
+    output = JSON.parse(completed_calls.fetch(call_id))
+    output["timed_out"] == false
+  rescue JSON::ParserError
+    false
+  end
+  spawned && returned
+end
+
+def rollout_fingerprints(output_dir)
+  Dir[File.join(output_dir, "iteration-*", "case-*", "*", "outputs/agent/run/rollout-*.jsonl")].to_h do |path|
+    stat = File.stat(path)
+    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
+  end
+end
+
+def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_patterns)
+  required_case_ids = evals.fetch("evals").map do |item|
+    "case-#{item.fetch("id")}" if requires_actual_worker_dispatch?(item)
+  end.compact
+  if case_patterns && !case_patterns.empty?
+    required_case_ids.select! do |case_id|
+      case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) }
+    end
+  end
+  return [] if required_case_ids.empty?
+
+  errors = []
+  current_rollouts = rollout_fingerprints(output_dir).map do |path, fingerprint|
+    path if previous_rollouts[path] != fingerprint
+  end.compact
+  seen_case_ids = []
+  current_rollouts.group_by { |path| File.dirname(File.dirname(File.dirname(File.dirname(path)))) }.each do |configuration_dir, rollouts|
+    case_id = File.basename(File.dirname(configuration_dir))
+    next unless required_case_ids.include?(case_id)
+    seen_case_ids << case_id
+    next if rollouts.any? { |rollout| completed_worker_dispatch?(rollout) }
+
+    relative = Pathname.new(configuration_dir).relative_path_from(Pathname.new(output_dir))
+    errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call and a non-timeout collaboration.wait_agent return in this run's raw Codex rollout"
+  end
+  (required_case_ids - seen_case_ids).each do |case_id|
+    errors << "#{case_id}: expectation [actual-worker-dispatch] has no raw Codex rollout from this run"
+  end
+  errors
+end
+
 eval_targets.each do |skill_dir, evals|
   skill_name = evals.fetch("skill_name")
 
@@ -121,6 +200,7 @@ eval_targets.each do |skill_dir, evals|
                                       MARKDOWN
                                     end
 
+      judge_expectations = item.fetch("expectations").reject { |expectation| expectation.start_with?("[actual-worker-dispatch]") }
       case_config = {
         "id" => case_id,
         "title" => "#{skill_name} - #{item.fetch("id")}",
@@ -133,7 +213,7 @@ eval_targets.each do |skill_dir, evals|
         "judge" => {
           "type" => "agent_judge",
           "model" => options.fetch(:judge_model),
-          "criteria" => item.fetch("expectations")
+          "criteria" => judge_expectations
         }
       }
       File.write(case_path, YAML.dump(case_config))
@@ -200,7 +280,16 @@ eval_targets.each do |skill_dir, evals|
     end
 
     puts "\n==> #{skill_name}"
-    failed_skills << skill_name unless system(*command, chdir: skill_dir)
+    previous_rollouts = options[:output_root] ? rollout_fingerprints(output_dir) : {}
+    succeeded = system(*command, chdir: skill_dir)
+    if succeeded && !options[:dry_run] && options[:output_root]
+      dispatch_errors = verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, options[:cases])
+      unless dispatch_errors.empty?
+        warn dispatch_errors.join("\n")
+        succeeded = false
+      end
+    end
+    failed_skills << skill_name unless succeeded
   end
 end
 

@@ -1,6 +1,6 @@
 interface:
   display_name: "Supervisor"
   short_description: "Control and recover long-running tasks by evidence"
-  default_prompt: "Use $supervisor to establish or recover durable control state, delegate one guarded action at a time to a matching specialist Worker or an ordinary Worker, merge each bound return, and repeat without performing domain work or widening authorization until the task is Complete or Blocked."
+  default_prompt: "Use $supervisor to establish or recover durable control state, route each established obligation to a matching specialist Worker or an ordinary Worker, reconcile Worker returns against their handoffs, and continue without performing domain work or imposing a fixed sequence until the task is Complete or Blocked."
 policy:
   allow_implicit_invocation: false

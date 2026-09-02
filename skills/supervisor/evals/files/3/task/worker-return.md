@@ -1,8 +1,5 @@
 # Worker return
 
-- Action ID: `query-deploy-913`
-- Input checkpoint revision: 3
-- Worker reference: `ordinary-worker-deploy-status-1`
 - Responsibility: read-only query of the deployment owner's supplied status source
 - Authoritative evidence: `deployment-state.json`
 - Observed operation: `deploy-913`
@@ -15,4 +12,4 @@
 - Active descendant operations: none
 - Unknowns: none for the requested completion judgment
 - Invalidated conclusion: the prior `running` observation and timeout-based suggestion to redeploy
-- Next-worker context: none; this is a terminal result if the Controller validates the binding and evidence
+- Next-worker context: none; this is a terminal result if the evidence satisfies the original query handoff

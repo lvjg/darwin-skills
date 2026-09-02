@@ -7,9 +7,6 @@
 - Requested revision: `c31fe42`
 - Last known owner state: `running`
 - Decisive unknown: authoritative terminal state, running revision and health
-- Active action ID: `query-deploy-913`
-- Input checkpoint revision: 3
-- Worker reference: `ordinary-worker-deploy-status-1`
 - Active action: query the supplied deployment owner status source for `deploy-913`
-- Feedback path: merge only a return bound to this action ID and input revision
+- Expected return: the owner response or stable evidence for operation `deploy-913`, requested and running revisions, health, observed effects and unknowns
 - Completed evidence: none

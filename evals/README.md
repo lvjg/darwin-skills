@@ -62,6 +62,8 @@ evals/run-evals --skill-up /path/to/skill-up --model ci-placeholder --dry-run
 
 Supervisor 的真实闭环 case 依赖目标 Codex runtime 提供隔离 Worker 能力。它们必须在接受 Supervisor 行为变更前执行真实评测；`--dry-run` 只能证明 case、fixture、Skill 安装与 runner 配置能够物化，不能替代委派、Skill 加载、Worker 交回和 Controller 合并的运行证据。
 
+需要真实 Worker 委派的 case 使用 `[actual-worker-dispatch]` expectation 作为程序判定标记，不把它交给 agent judge。Skill-Up v0.9.1 的 judge transcript 可能在流式事件多于 Session 事件时选用前者，从而遗漏 Codex 的 namespaced collaboration 调用；因此 runner 会在其余语义要求通过后直接检查本次保存的原始 Codex rollout，只有同时存在已返回的 `fork_turns=none` `collaboration.spawn_agent` 调用和非超时的 `collaboration.wait_agent` 返回才接受该 case。checkpoint、最终回复或 Worker 产物中的自述不能替代这项运行事件。
+
 ## 运行
 
 运行真实评测：
