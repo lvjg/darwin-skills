@@ -1,4 +1,4 @@
-# Controller checkpoint
+# Supervisor checkpoint
 
 - Checkpoint reference: `checkpoint.md`
 - Revision: 3

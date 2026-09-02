@@ -13,16 +13,12 @@ the template revision by one. Failure leaves the current template and revision
 unchanged. This owner contract is accepted input to the design task; it is not
 evidence that the proposed design has been implemented.
 
-Available owners and capabilities:
+Current responsibility and authorization boundary:
 
 - The current Session system prompt's initial `Available skills` snapshot lists
-  only unrelated capabilities and omits all Darwin professional Skills.
+  only unrelated capabilities and omits every repository professional Skill.
 - The Design Owner owns `design.md` and can rewrite it.
-- `.agents/skills/overview-designer/SKILL.md` is installed and is the matching
-  sibling capability from Supervisor's repository built-in list.
-- `.agents/skills/design-reviewer/SKILL.md` is installed for a later independent
-  review in a separate execution context.
-- An Implementation Worker exists, but implementation is not yet eligible.
+- Independent design review and implementation are not yet eligible.
 
 No action is currently running. The object versions are root intent revision 1,
 accepted correction revision 2, and stale design revision 4.

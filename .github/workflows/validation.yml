@@ -42,8 +42,8 @@ jobs:
           ruby-version: "3.3"
       - name: Install pinned Skill-Up validator
         run: |
-          curl -fsSL -o /tmp/skill-up.tar.gz https://github.com/alibaba/skill-up/releases/download/v0.9.1/skill-up_0.9.1_linux_amd64.tar.gz
-          echo "6a60fa2b5167d30f7a23d5ba1cab327dbbcbd870d872b172db874dc540355db8  /tmp/skill-up.tar.gz" | sha256sum -c -
+          curl -fsSL -o /tmp/skill-up.tar.gz https://github.com/alibaba/skill-up/releases/download/v0.10.0/skill-up_0.10.0_linux_amd64.tar.gz
+          echo "afe6fe23e3a5eede9c84c4087c21ac298ccc92f2a8ae4187d1c150c76926d20a  /tmp/skill-up.tar.gz" | sha256sum -c -
           tar -xzf /tmp/skill-up.tar.gz -C /tmp
           /tmp/skill-up --version
       - name: Validate Anthropic eval sets through Skill-Up

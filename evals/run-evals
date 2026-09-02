@@ -86,6 +86,7 @@ end
 def completed_worker_dispatch?(rollout_path)
   collaboration_calls = {}
   completed_calls = {}
+  worker_returns = []
 
   File.foreach(rollout_path) do |line|
     event = JSON.parse(line)
@@ -96,20 +97,25 @@ def completed_worker_dispatch?(rollout_path)
       collaboration_calls[payload["call_id"]] = payload
     elsif payload["type"] == "function_call_output"
       completed_calls[payload["call_id"]] = payload["output"]
+    elsif payload["type"] == "agent_message"
+      worker_returns << payload
     end
   rescue JSON::ParserError
     next
   end
 
-  spawned = collaboration_calls.any? do |call_id, payload|
-    next false unless payload["name"] == "spawn_agent" && completed_calls.key?(call_id)
+  spawned_workers = collaboration_calls.map do |call_id, payload|
+    next unless payload["name"] == "spawn_agent" && completed_calls.key?(call_id)
 
     arguments = JSON.parse(payload.fetch("arguments", "{}"))
-    arguments["fork_turns"] == "none"
+    next unless arguments["fork_turns"] == "none"
+
+    output = JSON.parse(completed_calls.fetch(call_id))
+    output["task_name"]
   rescue JSON::ParserError
-    false
-  end
-  returned = collaboration_calls.any? do |call_id, payload|
+    nil
+  end.compact
+  wait_returned = collaboration_calls.any? do |call_id, payload|
     next false unless payload["name"] == "wait_agent" && completed_calls.key?(call_id)
 
     output = JSON.parse(completed_calls.fetch(call_id))
@@ -117,7 +123,10 @@ def completed_worker_dispatch?(rollout_path)
   rescue JSON::ParserError
     false
   end
-  spawned && returned
+  worker_returned = worker_returns.any? do |payload|
+    spawned_workers.include?(payload["author"]) && !payload.fetch("content", []).empty?
+  end
+  !spawned_workers.empty? && wait_returned && worker_returned
 end
 
 def rollout_fingerprints(output_dir)
@@ -150,7 +159,7 @@ def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_p
     next if rollouts.any? { |rollout| completed_worker_dispatch?(rollout) }
 
     relative = Pathname.new(configuration_dir).relative_path_from(Pathname.new(output_dir))
-    errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call and a non-timeout collaboration.wait_agent return in this run's raw Codex rollout"
+    errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that dispatched Worker in this run's raw Codex rollout"
   end
   (required_case_ids - seen_case_ids).each do |case_id|
     errors << "#{case_id}: expectation [actual-worker-dispatch] has no raw Codex rollout from this run"
@@ -236,7 +245,7 @@ eval_targets.each do |skill_dir, evals|
       installed_skill_name = File.basename(installed_skill_dir)
       skill_ref = { "source" => "local_path", "path" => installed_skill_dir }
       if options.fetch(:engine) == "codex"
-        # Codex discovers repository Skills from .agents/skills. Skill-Up v0.9.1
+        # Codex discovers repository Skills from .agents/skills. Skill-Up v0.10.0
         # still defaults to the retired .codex/skills location, so make the
         # supported target explicit until the upstream adapter changes.
         skill_ref["target"] = File.join(".agents/skills", installed_skill_name)

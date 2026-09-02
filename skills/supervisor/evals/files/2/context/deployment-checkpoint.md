@@ -2,7 +2,7 @@
 
 - Checkpoint reference: `evals/files/2/context/deployment-checkpoint.md`
 - Revision: 4
-- Control state: Active
+- Control state: Waiting
 - Environment: `internal-preview`
 - The preview deployment control plane is the deployment owner. It accepted
   revision `9ad41c2` and returned operation ID `deploy-842`.
@@ -12,4 +12,4 @@
 - The status API remains available for a read-only query, but this fixture stops before any external query is made.
 - No other deployment operation is known to be active.
 
-The controller must choose the next guarded causal action without treating the timeout as failure or starting a duplicate deployment.
+Supervisor must choose the next guarded causal action without treating the timeout as failure or starting a duplicate deployment.

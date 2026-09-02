@@ -181,7 +181,6 @@ else
     expected_link = "skills/#{skill_name}/SKILL.md"
     errors << "README.md: missing Skill inventory link #{expected_link}" unless readme_text.include?(expected_link)
   end
-  errors << "README.md: migration guide is not linked" unless readme_text.include?("MIGRATIONS.md")
 end
 
 markdown_files = [ROOT.join("README.md"), ROOT.join("MIGRATIONS.md")] + ROOT.glob("skills/**/*.md") + ROOT.glob("codex/**/*.md") + ROOT.glob("evals/**/*.md")

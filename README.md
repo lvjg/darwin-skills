@@ -69,11 +69,9 @@ npx skills add lvjg/darwin-skills --skill design-reviewer --global --agent codex
 npx skills add lvjg/darwin-skills --skill '*' --global --agent codex --yes
 ```
 
-从 v0.1.0 升级时，还需要按 [MIGRATIONS.md](MIGRATIONS.md) 核对映射并删除旧名称。
-
 ## 维护
 
-修改 Skill、README 或迁移说明后，运行静态 Skill 包校验：
+修改 Skill、评测或其他发布文件后，运行静态 Skill 包校验：
 
 ```sh
 ruby scripts/validate-skills.rb --base HEAD

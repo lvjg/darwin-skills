@@ -1,6 +1,6 @@
 # Delivery intent after the route correction
 
-At source ordinal 3527 the user asked the delivery controller to correct the adopted route and continue implementation.
+The user asked Supervisor to correct the adopted route and continue implementation.
 
 The governing outcome remains a generic document-to-template capability across the conversation service and workflow service. The representative tenant workflow must not become hard-coded product behavior, and the existing template-to-instance Skill keeps its current responsibility.
 
