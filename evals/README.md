@@ -43,7 +43,7 @@ Prompt 只陈述真实任务、目标和用户授权；决定结论的事实放�
 
 本仓库固定使用 Skill-Up v0.9.1，并保持 Anthropic `evals.json` 为唯一 case 真源。该版本有两个与当前格式或 Codex 不一致的边界：它会把 `files` 中的路径字符串直接写成文件正文，并把 Codex Skill 默认安装到不会被当前 Codex 扫描的 `.codex/skills`。因此实际运行和 CI 都必须通过 `evals/run-evals`；适配器只在临时配置中读取真实 fixture 内容，并为 Codex 显式指定官方支持的 `.agents/skills/<skill-name>` 目标，不复制第二份 case。上游同时修复文件解引用并使用 Codex 支持的安装目录后，应删除这部分适配。
 
-Codex 在每个 Session 的系统提示词中提供初始 `Available skills` 清单；显式调用专用的仓库 Skill 不一定出现在该清单。行为评测不承担触发评分，因此适配器会临时物化一份 `AGENTS.md`，要求执行 case 的根 Agent 完整读取已经显式调用的 `.agents/skills/<skill-name>/SKILL.md`。`supervisor` case 还明确把这条根 Controller 指令与子 Worker 分开：Worker 不继承 Supervisor 角色，只按交接完整读取其中显式调用的专业 Skill。`supervisor` 使用正文中的仓库内置专业 Skill 清单，并在派发时解析同一安装根下的同级 Skill；原始 prompt、fixture 和授权边界不变。触发能力仍应由独立的触发数据集评测。
+Codex 在每个 Session 的系统提示词中提供初始 `Available skills` 清单；显式调用专用的仓库 Skill 不一定出现在该清单。行为评测不承担触发评分，因此适配器会临时物化一份 `AGENTS.md`，要求执行 case 的根 Agent 完整读取已经显式调用的 `.agents/skills/<skill-name>/SKILL.md`。`supervisor` case 还明确把这条根 Supervisor 指令与子 Worker 分开，并把读取前的 Skill 使用声明限制为任务层目的：Worker 不继承 Supervisor 角色，只按交接完整读取其中显式调用的专业 Skill。`supervisor` 使用正文中的仓库内置专业 Skill 清单，并在派发时解析同一安装根下的同级 Skill；原始 prompt、fixture 和授权边界不变。触发能力仍应由独立的触发数据集评测。
 
 评测安装上下文分为两种证据边界：
 
@@ -60,7 +60,7 @@ evals/run-evals --skill-up /path/to/skill-up --model ci-placeholder --dry-run
 
 `ruby scripts/validate-skills.rb --base HEAD` 另外要求每个发布 Skill 都有 eval set，并检查 `skill_name`、整数 ID、必需字段和 fixture 引用。CI 执行相同检查并校验固定版本的 Skill-Up。
 
-Supervisor 的真实闭环 case 依赖目标 Codex runtime 提供隔离 Worker 能力。它们必须在接受 Supervisor 行为变更前执行真实评测；`--dry-run` 只能证明 case、fixture、Skill 安装与 runner 配置能够物化，不能替代委派、Skill 加载、Worker 交回和 Controller 合并的运行证据。
+Supervisor 的真实闭环 case 依赖目标 Codex runtime 提供隔离 Worker 能力。它们必须在接受 Supervisor 行为变更前执行真实评测；`--dry-run` 只能证明 case、fixture、Skill 安装与 runner 配置能够物化，不能替代委派、Skill 加载、Worker 交回和 Supervisor 合并的运行证据。
 
 需要真实 Worker 委派的 case 使用 `[actual-worker-dispatch]` expectation 作为程序判定标记，不把它交给 agent judge。Skill-Up v0.9.1 的 judge transcript 可能在流式事件多于 Session 事件时选用前者，从而遗漏 Codex 的 namespaced collaboration 调用；因此 runner 会在其余语义要求通过后直接检查本次保存的原始 Codex rollout，只有同时存在已返回的 `fork_turns=none` `collaboration.spawn_agent` 调用和非超时的 `collaboration.wait_agent` 返回才接受该 case。checkpoint、最终回复或 Worker 产物中的自述不能替代这项运行事件。
 

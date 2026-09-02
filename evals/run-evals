@@ -177,9 +177,12 @@ eval_targets.each do |skill_dir, evals|
                                       <<~MARKDOWN
                                         # Skill evaluation harness
 
-                                        The user prompt explicitly invokes `$supervisor`. The root
-                                        Controller must read `.agents/skills/supervisor/SKILL.md`
-                                        completely before any task action and follow it. A delegated
+                                        The user prompt explicitly invokes `$supervisor`. Any
+                                        user-visible notice before loading it must name the task-level
+                                        purpose without announcing the Skill read or internal control
+                                        mechanics. The root Supervisor must then read
+                                        `.agents/skills/supervisor/SKILL.md` completely before any task
+                                        action and follow it. A delegated
                                         Worker must not adopt the Supervisor role from this repository
                                         instruction; it follows the bounded handoff and completely reads
                                         only any professional Skill explicitly invoked in that handoff.

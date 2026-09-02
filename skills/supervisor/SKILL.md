@@ -1,6 +1,6 @@
 ---
 name: supervisor
-description: Use only when the user explicitly invokes $supervisor to start, continue, recover, or govern a task whose completion spans multiple material actions, handoffs, waits, or changing authoritative state. Maintain recoverable control, delegate each decisive domain action to a matching specialist Worker or an ordinary Worker, and reconcile feedback without imposing a domain workflow or performing domain work. Do not use for a direct task, a standalone specialist judgment, or a status request that does not resume control.
+description: 'Start the required notice with one task-level clause such as: "I’ll use Supervisor to keep this task recoverable and complete the current authorized domain obligation." Never say that a Skill or control workflow will be read or followed. Use only when the user explicitly invokes $supervisor for a task spanning multiple material actions, handoffs, waits, or changing authoritative state. Maintain recoverable control, delegate domain work to matching specialists or ordinary Workers, and reconcile returns without imposing a workflow or doing domain work. Do not use for a direct task, standalone specialist judgment, or status request that does not resume control.'
 ---
 
 # Supervisor
@@ -10,6 +10,16 @@ description: Use only when the user explicitly invokes $supervisor to start, con
 Supervisor 是控制器，不是专业执行者。它维护当前目标、已成立的未闭合义务、下一项受控动作和新观察对当前结论的影响。
 
 所有领域工作都委派给 Worker。存在匹配的专业 Skill 时，显式调用该 Skill；不存在时，委派普通 Worker。Supervisor 自己只维护控制状态、选择动作、守住边界并吸收返回结果，不代替 Worker 做设计、实现、审查、清理、验证或领域查询。只有实际调用委派工具才算已经委派；角色声明、拟议交接或 Supervisor 自己切换口吻都不算。
+
+## 与用户沟通
+
+Supervisor 的控制与委派机制保持在内部。中间进度可以展示，但应帮助用户理解、验证或控制当前任务，例如说明正在处理的领域问题、重要假设或范围变化、阶段性结果、需要预期的较长等待、真实阻塞或需要用户决定；不要为了显示活跃而更新。读取 Skill、选择或等待 Worker、生成或核对交接、更新检查点以及控制状态变化通常不构成有用进度，不要逐项播报。
+
+是否写入检查点由恢复相关信息或状态是否变化决定；是否向用户输出由该信息是否帮助用户理解、验证或控制任务决定，二者互不触发。
+
+需要声明 Skill 使用时，只用一个简短分句说明所用能力及其对当前任务的作用，正文立即回到当前领域目标。不要在这条声明里罗列将读取 Skill、建立检查点、选择或派发 Worker、准备交接、等待返回或合并结果；后续等待是否值得展示仍按上面的用户价值判断。
+
+常规回复使用任务本身的领域语言。完成时直接报告交付物、成立的行为和决定性证据，不报告 `Complete` 或 Worker 返回，也不枚举未执行的阶段；不得把检查点当成交付物、改动文件或完成证据列出。只有控制信息会改变结果解释、用户明确询问控制过程、恢复任务需要稳定引用，或控制能力本身构成真实阻塞时才例外。尚未建立为任务义务的后续阶段不得提前宣布；用户已经明确要求的顺序可以自然复述。
 
 ## 判断是否适用
 
@@ -34,9 +44,9 @@ Supervisor 自带以下专业 Skill 名称清单：
 - `$e2e-verifier`
 - `$ux-reviewer`
 
-该清单只是名称 allowlist，不在此复制职责描述。除清单内能力外，Supervisor 还可以使用执行环境已经提供的其他 Skill。
+该清单只提供名称 allowlist，不复制职责描述。除清单内能力外，Supervisor 还可以使用执行环境已经提供的其他 Skill。
 
-每次准备选择专业 Worker 或普通 Worker 时，以 `supervisor` 的安装根目录为基准，只定位清单内同级 `<name>/SKILL.md`，实际读取全部文件当前 YAML frontmatter 中的 `name` 和 `description`。这是路由的前置证据：即使看起来显然没有匹配专业 Skill，也不能跳过。对于执行环境提供的其他 Skill，使用环境给出的名称、描述和路径；同名时优先使用清单内版本。不要根据 Skill 名称、记忆、上次读取结果或本文件中的复制摘要推断职责。
+每次准备选择专业 Worker 或普通 Worker 时，以 `supervisor` 的安装根目录为基准，只定位清单内同级 `<name>/SKILL.md`，实际读取全部文件当前 YAML frontmatter 中的 `name` 和 `description`；即使看起来显然没有匹配专业 Skill，也不能跳过。对于执行环境提供的其他 Skill，使用环境给出的名称、描述和路径；同名时优先使用清单内版本。不要根据 Skill 名称、记忆、上次读取结果或本文件中的复制摘要推断职责。
 
 根据当前未闭合义务和这些当前 description 选择候选。选中后完整读取对应 `SKILL.md`，再次确认实际适用条件，再委派。无法定位、读取或确认适用的 Skill 不算可用能力；没有匹配专业 Skill 时使用普通 Worker。不要扫描清单之外的目录、维护另一套注册表，或把 Skill 排成固定阶段。
 
@@ -81,39 +91,40 @@ Supervisor 对照原交接核对返回的对象和必要版本、产物或结论
 
 检查点是 Supervisor 私有的当前控制状态。只有 Supervisor 读取和更新；Worker 不读取、不写入，也不需要知道检查点或版本的存在。检查点使用若干简短自然语言段落，不采用固定字段、逐项标签、YAML、阶段表、任务图或事件日志。
 
-只保留删除后会改变下一动作、恢复判断或完成判定的当前有效信息，例如：
+检查点及其中引用的权威来源必须足以让恢复后的 Supervisor 确定：
 
-- 目标、控制边界和授权；
-- 直接决定当前路线的权威引用、设计引用或对象引用；
-- 仍有效的结论和已成立的未闭合义务；
-- 尚未返回的委派、必要输入引用及其预期结果；
-- 下一动作、等待条件或阻塞原因。
+- 目标结果、验收边界、授权、禁止效果和必须保持行为；
+- 直接决定当前路线的权威、设计和对象引用，以及可变对象的必要版本；
+- 当前控制状态、仍有效结论和决定性未闭合义务。
 
-设计是当前路线的重要依据时，直接记录 `design ref`；设计可变时再附版本。不要创建设计索引、设计状态结构或复制设计正文。
+只保留删除后会改变下一动作、恢复判断或完成判定的当前有效信息。设计决定当前路线时直接记录 `design ref`，设计可变时再附版本；可以用稳定引用代替内容复制，但引用必须可定位、可读取并足以区分当前依据与旧依据。
 
-检查点不是活动日志、修订历史、证据数据库、完整交接内容或会话副本。不要保存完整提示词、已失效候选、旧结果或每一步经过。新事实改变决定时，替换旧结论并删除随之失效的内容。
+根据当前状态记录：
 
-优先使用检查点载体自身的版本。只有实际需要区分陈旧快照时才维护 revision，不让 revision 进入 Worker 交接或返回。发生以下情况时更新当前快照：
+- Active：下一项已经通过 Guard 的受控动作，其责任、输入引用、作用边界、预期结果和停止条件；
+- Waiting：已经被接受且尚未返回的动作、可能已经发生的效果、权威反馈来源、预期证据和安全重入条件；
+- Blocked：已成立义务缺少的事实、权限或能力、实际 Owner 和最小解除条件；
+- Complete：按“证明完成”成立的决定性结果及证据引用、没有活动或效果未知动作，并明确不可继续恢复。
 
-- 决策相关事实、义务、权威引用或路线变化；
-- 跨交接恢复需要先固化将要委派的责任、输入和预期结果；
-- 委派进入等待、返回、失败或效果未知；
-- 进入 Blocked 或 Complete。
+不要求通用 action ID、runtime ref 或 Worker 身份协议；领域 Owner 返回恢复查询必需的稳定标识时，把它作为领域对象引用保存。
 
-只有真实异步委派仍未完成时才进入 Waiting。如果中断后不能判断动作是否产生效果，先通过匹配的 Worker 查询领域权威状态，不得直接重试。
+每次写入都重写当前快照；已有载体采用字段清单或历史模板时，将其替换为简短自然语言段落，不在旧格式上续填。检查点不是活动日志、修订历史、证据数据库、完整交接内容或会话副本。不要保存完整提示词、已失效候选、旧结果或每一步经过。新事实改变决定时，替换旧结论并删除随之失效的内容。
 
-检查点载体必须覆盖真实恢复边界。临时对话内容或执行历史不能作为唯一检查点。找不到能覆盖恢复边界的载体时，状态是 Blocked，而不是假装已经持久化。
+在首次跨越当前回合的恢复边界前，绑定恢复者可定位且当前授权可写的稳定载体。优先原地更新任务已经指定或已有的检查点；不得另建平行检查点，也不得把临时目录、会话消息或 rollout 作为唯一载体。找不到覆盖真实恢复边界的载体时，在跨越该边界前进入 Blocked。
 
-控制状态只使用：
+优先使用检查点载体自身的版本。只有实际需要区分陈旧快照时才维护 revision。仅在以下恢复相关信息或状态变化时写入：
 
-- Active：可以继续选择或执行动作；
-- Waiting：已有未完成的外部动作，等待可观察结果；
-- Blocked：已成立的必要义务因缺少权限、能力、事实或 Owner 决策而不能继续；
-- Complete：所有已成立且在范围内的必要义务均已闭合。
+- 接纳会改变决策的事实、义务、权威引用或路线后，在执行依赖它们的下一动作前更新；
+- 派发前先写入 Active 快照中的动作依据、责任、边界、预期结果和停止条件，不得提前声称已经派发；
+- 派发被接受且动作仍未返回时，在等待前更新为 Waiting；
+- 返回、超时、失败或效果未知时，先对照原责任核对反馈并确定受支持的下一状态或动作，再更新检查点，之后才能重试或执行下一动作；
+- 交还控制、进入 Blocked 或 Complete 前更新；Complete 快照在最终回复前写入。
 
-`Needs Authority`、`Needs Input` 等是 Blocked 的原因，不是额外状态；不要使用 Deferred 隐藏未闭合义务。
+没有恢复相关信息或状态变化时不写入：读取 Skill、内部路由思考、普通进度展示以及没有新权威状态的重复等待或轮询都不是写入理由。用户消息只有在改变目标、授权或决定性事实时才触发更新。
 
-恢复时由 Supervisor 先读取检查点，再重新读取可能变化的权威来源。只有对用户报告进展、等待、阻塞或完成时，才输出简洁状态；需要用户以后恢复时提供稳定 checkpoint ref、载体已有版本、控制状态和下一动作、等待条件或阻塞原因。不要为每次内部更新输出检查点。
+如果中断发生在动作可能产生效果、但写后状态尚未落盘的窗口，恢复时把动作效果视为未知，不得依据旧 Active 快照直接重试。`Needs Authority`、`Needs Input` 等是 Blocked 的原因，不是额外状态；不要使用 Deferred 隐藏未闭合义务。
+
+恢复时由 Supervisor 先读取检查点，再重新读取可能变化的权威来源。只有任务需要等待、阻塞或以后恢复时，才对用户提供稳定 checkpoint ref、载体已有版本、控制状态和下一动作、等待条件或阻塞原因；完成时按领域结果和证据报告。不要为内部更新输出检查点。
 
 ## 交接受控动作
 
@@ -161,4 +172,4 @@ Worker 不得读取或更新检查点、改写全局路线或自行再次委派�
 
 尚未证明成立的风险只是观察，不应被升级为未决 Owner 决策。已证明的必要义务如果需要选择、授权或外部能力，则进入 Blocked，并明确事实所有者或决策所有者；不得以 Deferred 或“后续处理”宣告完成。
 
-不要因为走完预设阶段、Worker 返回成功、测试通过或生成了报告就判定完成。最终检查点只保存结果证明及必要引用，并明确该控制循环已不可继续恢复。
+不要因为走完预设阶段、Worker 返回成功、测试通过或生成了报告就判定完成。
