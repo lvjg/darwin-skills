@@ -199,3 +199,5 @@ These notes govern edits to this Skill; they are not instructions to the executi
 - The task model, selection proof, and design argument are reasoning aids. They are not required artifacts, schemas, permanent state, stages of the delivered system, or document sections.
 - The method must not become the document structure. Stage 4 reasons about the operating model and significant mechanisms; only Stage 5 maps them to Overall Design and Key Designs.
 - Method names and theory labels belong in `references/` comments, if anywhere; never in stage text.
+- Enumerations that appear in an Exit are attention triggers, not knowledge; removing one to reduce repetition has caused regressions. When deduplicating, keep the enumeration in the owning stage's Exit and remove it from Work paragraphs, not the reverse.
+- The Purpose anchor and the stage opening sentences are an untested hypothesis that designer voice improves design quality; the regression suite cannot distinguish their presence. Remove them if a future case shows they cost accuracy.

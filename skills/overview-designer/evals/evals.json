@@ -171,7 +171,7 @@
         "evals/files/10/design/system-design.md"
       ],
       "expectations": [
-        "[representation-rebuilt-from-evidence] Somewhere in the artifact, the final reply, or the agent's intermediate reasoning in the transcript, the design basis reflects the fixture evidence that duplicates mostly arise from retries after gateway timeouts (minutes apart) rather than from taps within a short window, and concludes that edge request deduplication is the wrong problem representation. Exact percentages need not be quoted; the causal contrast is what matters.",
+        "[representation-rebuilt-from-evidence] The design basis, in the artifact or the final reply, reflects the fixture evidence that duplicates mostly arise from retries after gateway timeouts (minutes apart) rather than from taps within a short window, and concludes that edge request deduplication is the wrong problem representation. Exact percentages need not be quoted; the causal contrast is what matters.",
         "[gateway-cache-rejected] The design does not select a gateway-level request cache, fingerprint window, or distributed dedup store as the mechanism that guarantees the result; it may mention the draft only to reject it.",
         "[identity-anchored-at-owner] Uniqueness is anchored in Order Service using the Cart Service-owned `checkout_session_id` (or an equivalent owner-defined order identity from the fixture), with a uniqueness constraint whose violation returns the existing order rather than creating a second one.",
         "[authority-respected] Cart Service remains the owner of `checkout_session_id` meaning; Order Service does not redefine it; the design states what Order Service does if the identity is absent or invalid.",
