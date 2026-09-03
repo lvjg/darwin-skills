@@ -15,7 +15,7 @@
         "[authoritative-rebaseline] Update controller-checkpoint.md from revision 7 and treat the user corrections as invalidating the old route and its dependent design and delivery-acceptance conclusions; stop future work on that source-evidence and full-replacement chain.",
         "[preserve-still-valid-obligations] Carry forward the generic capability outcome, service ownership, publication prohibition, typed resource decisions and non-E2E evidence boundary either as still-valid current conclusions or through direct authoritative references that govern the prepared rewrite. Preserve implementation and evidence sufficient to prove that implementation as established remaining obligations conditional on the corrected design. The listed non-E2E checks are permitted methods, not a mandatory checklist or fixed sequence, and their full contents need not be duplicated into the checkpoint.",
         "[decisive-gap] Identify the earliest current gap as the absence of a rewritten authoritative design that incorporates the accepted corrections.",
-        "[specialist-routing] Read the current frontmatter name and description from every allowlisted sibling Skill, select overview-designer because its real contract matches the current design obligation, then read that full Skill and record that the actual Worker handoff must explicitly invoke `$overview-designer`; do not route from a copied summary or turn installed Skills into a fixed pipeline.",
+        "[专业能力路由] 为本次恢复后的控制任务建立一次当前能力目录快照，优先使用 Session 提供的描述并只补读清单中缺失的 frontmatter；因为 overview-designer 的真实合同匹配当前设计义务而选择它，再完整读取该 Skill，并记录实际 Worker 交接必须显式调用 `$overview-designer`。不得在每个后续 Worker 前重读全部 Skill、从复制摘要路由或把已安装 Skill 排成固定流水线。",
         "[bounded-action] Specify the smallest current design-rewrite action against the actual Design Owner, including precise inputs, sole writable artifact, expected result, stop condition and evidence required for re-entry.",
         "[later-boundary] Keep implementation and its bounded outcome proof conditional on the rewritten state, carry the explicit E2E exclusion, and do not claim those actions already occurred, require every permitted check, or manufacture an unestablished review or fixed specialist stage.",
         "[supervisor-boundary] Modify only the already authorized controller-checkpoint.md rather than creating a parallel or temporary carrier. Update its current Active snapshot without requiring a format migration, preserving the result and acceptance boundary, authorization, direct governing and design references with necessary versions, all established remaining obligations, the currently selected design obligation, and the guarded next action with its expected proof and re-entry conditions; return its stable reference, new revision, state and next action. Do not write design/implementation, reuse stale acceptance, dispatch a Worker, ask the user to reconfirm recorded choices or specify parallel delivery actions."
@@ -32,7 +32,7 @@
       "expectations": [
         "[preserve-active-operation] Keep the accepted deployment operation unresolved in Waiting because a wait timeout supplies no terminal fact.",
         "[decisive-gap] Identify the earliest gap as the unknown authoritative terminal state and effects of operation deploy-842, not a need to create another deployment.",
-        "[routing-and-authoritative-query] Read the current descriptions of the allowlisted professional Skills and establish that none owns this status query; do not invoke a mismatched specialist. Identify the deployment owner's read-only operation-status query for deploy-842 as the next domain action, bound to internal-preview and requested revision 9ad41c2, and state that the deciding evidence is the owner status, resulting running revision and health/effect evidence. Because this case stops before dispatch and forbids file writes, do not require the user-facing recovery summary to expose an internal ordinary-Worker handoff, checkpoint metadata beyond useful recovery status, or the full Worker return contract.",
+        "[权威查询路由] 建立一次当前能力目录快照，并识别没有专业 Skill 拥有该状态查询；不得为下一个普通 Worker 重读全部目录或调用不匹配的专业 Skill。准备一个 explore Worker 动作，查询部署 Owner 对 `deploy-842` 的只读 operation status，绑定 `internal-preview` 和请求 revision `9ad41c2`；决定性证据是 Owner 状态、实际运行 revision 及健康和效果证据。由于本 case 在派发前停止且禁止写文件，面向用户的恢复摘要不必暴露内部交接、无助于恢复的 checkpoint 元数据或完整 Worker 返回合同。",
         "[safe-re-entry] Completion remains conditional on authoritative evidence that the requested revision is running in a healthy succeeded state. While the operation is active or its status/effects remain undecidable, preserve effect uncertainty and prohibit a duplicate deployment. A reported terminal failure must not be called completion or proof that no effect occurred. Do not require enumeration of every hypothetical owner response before any query has run; choose the later control state from the actual returned facts.",
         "[guard-and-stop] Preserve the no-duplicate-deploy constraint, perform no external call or domain query in the Supervisor, dispatch no Worker in this case, and stop after the action specification.",
         "[prohibited-control-shortcuts] The response does not treat timeout as failure, redispatch deployment before a safe terminal fact, or add unrelated design/review/E2E/cleanup stages."
@@ -70,7 +70,7 @@
       ],
       "expectations": [
         "[durable-control-state] Judge the visible checkpoint snapshots and file-change sequence; the separate program-owned assertion establishes the collaboration events omitted from some Judge transcripts. Use only the authorized checkpoint.md as the durable carrier. Before dispatch persist an Active snapshot with the root result and acceptance boundary, authorization, direct authority and design references with necessary versions, all established remaining obligations, the stale replacement design as the selected obligation, and the bounded next responsibility with its expected result and stop condition. The next snapshot must represent the accepted unresolved action as Waiting, including its safe re-entry condition, before the visible wait. After the program-verified Worker return, reconcile its evidence, clear the outstanding action and persist the supported Active, Blocked or non-resumable Complete state. Do not require a separate generic re-entry field in Active or fail merely because the Judge transcript omits the hidden dispatch or child-return events.",
-        "[specialist-routing] Read the current frontmatter name and description from every allowlisted sibling Skill, select overview-designer from its real contract, and read that Skill completely before dispatch even though the Session initial Available skills snapshot omits it. Judge the visible discovery and full-read evidence here; the suite's dispatch-ready case covers the explicit `$overview-designer` handoff contract, while the program assertion below covers this case's actual Worker round trip. Do not require encrypted handoff text to appear in the Judge transcript.",
+        "[专业能力路由] 用 Session 描述和仅有的清单缺失 frontmatter 为本控制任务建立一次能力目录快照；依据真实合同选择 overview-designer，并因 Session 快照缺少它而在首次派发前完整读取该 Skill。后续路由复用未变化的目录和已选 Skill 合同，不重新扫描全部同级 Skill。这里判定可见的发现和完整读取证据；显式 `$overview-designer` 交接合同由 suite 中的派发准备 case 覆盖，真实 Worker 往返由下面的程序断言覆盖；不要求 Judge transcript 出现加密交接正文。",
         "[actual-worker-dispatch] Program-owned assertion: the raw Codex rollout must contain a completed fork_turns=none isolated Worker dispatch, a non-timeout wait and a plaintext return from that dispatched Worker; the runner, not the agent judge, verifies these events.",
         "[user-facing-communication] User-visible updates use the task's domain language. Intermediate updates may communicate useful intent, meaningful milestones or partial results, expectation-setting waits, blockers, or required decisions when they help the user understand, verify, or control the work; their absence is not by itself a failure. Do not add updates merely to show activity or narrate Skill discovery, Worker routing, checkpoint maintenance, handoff mechanics, or unestablished future stages unless that mechanism materially changes task interpretation or control. The presence or absence of an intermediate update does not alter the required checkpoint writes or their order.",
         "[bounded-design-result] Rewrite design.md to use the existing owner-controlled in-place mutation, preserve template identity and inbound references, increment revision on successful mutation, distinguish the proposed design from implementation or external validation, and modify no other domain artifact.",
@@ -82,7 +82,7 @@
     {
       "id": 5,
       "prompt": "$supervisor 请读取 `evals/files/5/task/`，按其中已接受的契约继续实现项目本地 policy 配置加载，保持配置缺失时的既有默认行为，并用聚焦测试证明结果。不要超出随附文件记录的授权范围。",
-      "expected_output": "The supervisor reads the current professional Skill descriptions, recognizes that none owns general implementation, actually delegates the bounded change and focused proof to an ordinary Worker, compares its return with the handoff, and completes only when the authorized code and tests satisfy the accepted contract.",
+      "expected_output": "Supervisor 使用一次当前专业能力目录快照，识别没有专业 Skill 拥有通用实现，实际把有界修改和聚焦证明委派给普通 Worker，对照交接核对返回，并且仅在获授权代码和测试满足已接受合同时完成。",
       "files": [
         "evals/files/5/task/root-intent.md",
         "evals/files/5/task/implementation-contract.md",
@@ -93,7 +93,7 @@
       "expectations": [
         "[established-obligation] Preserve the accepted parser contract, exact writable objects, behavior constraints, authorization and test evidence as the current implementation obligation rather than inventing a design, review, cleanup or E2E stage.",
         "[durable-pre-dispatch-state] Use only the existing authorized checkpoint.md as the durable carrier, never a parallel file, temporary directory, chat or rollout. Before dispatch update its current Active snapshot without requiring a format migration, retaining the root result and acceptance boundary, authorization and preserved behavior, exact contract and object references with necessary versions, all established remaining obligations, the intended bounded implementation responsibility, expected proof, stop conditions and re-entry evidence. After dispatch is accepted and while the Worker remains unfinished, update it to Waiting before waiting; do not record an outstanding delegation before acceptance or after its return.",
-        "[professional-routing] Read the current frontmatter descriptions of every allowlisted built-in Skill and establish from those real contracts and the Session-initial descriptions that none owns general implementation; do not misuse `$code-simplifier`, `$code-reviewer`, or another specialist.",
+        "[专业能力路由] 用 Session 描述和仅有的清单缺失 frontmatter 建立一次当前能力目录快照，确定没有专业 Skill 拥有通用实现，并在普通 Worker 前复用该快照而不是重读每个 Skill；不得误用 `$code-simplifier`、`$code-reviewer` 或其他专业 Skill。",
         "[actual-worker-dispatch] Program-owned assertion: the raw Codex rollout must contain a completed isolated Worker dispatch and non-timeout return; the runner, not the agent judge, verifies this event.",
         "[user-facing-communication] User-visible updates use the task's domain language. Intermediate updates may communicate useful intent, meaningful milestones or partial results, expectation-setting waits, blockers, or required decisions when they help the user understand, verify, or control the work; their absence is not by itself a failure. Do not add updates merely to show activity or narrate Skill discovery, Worker routing, checkpoint maintenance, handoff mechanics, or unestablished future stages unless that mechanism materially changes task interpretation or control. The presence or absence of an intermediate update does not alter the required checkpoint writes or their order.",
         "[private-checkpoint-handoff] Keep checkpoint.md private to the Supervisor. Give the Worker a self-sufficient bounded handoff containing its one-line implementation responsibility, the root-intent and accepted-contract references, exact writable objects, execution boundary and compact return contract; do not give it a checkpoint reference or revision or duplicate complete source contents and control history.",
@@ -114,11 +114,84 @@
       ],
       "expectations": [
         "[preserve-runtime-boundary] Advance checkpoint.md from revision 6 while preserving that the decision concerns the observed behavior of the exact prompt-r17, model-snapshot-m4, tool-policy-8 and adapter-2 composition against behavior-contract.md, not a future design, code candidate or product journey.",
-        "[no-retired-or-adjacent-specialist] Read the current frontmatter descriptions of the allowlisted built-in Skills and recognize that neither their real contracts nor a Session-initial professional Skill directly owns exact runtime-behavior acceptance; do not invoke or route to a retired behavior reviewer, `$design-reviewer`, `$code-reviewer`, `$e2e-verifier`, `$ux-reviewer`, `$overview-designer` or `$code-simplifier`.",
+        "[不误用相邻专业能力] 用 Session 描述和仅有的清单缺失 frontmatter 建立一次当前能力目录快照，识别没有可用专业 Skill 直接拥有精确运行行为验收；不得为下一个 Worker 重新扫描每个 Skill，也不得调用已退役 behavior reviewer、`$design-reviewer`、`$code-reviewer`、`$e2e-verifier`、`$ux-reviewer`、`$overview-designer` 或 `$code-simplifier`。",
         "[ordinary-worker-routing] Prepare one bounded runtime-evaluation responsibility for an ordinary Worker without exposing checkpoint.md or revision 6 in the future handoff, and require a return that identifies the evaluated composition and supplied evidence. Do not require a professional Skill merely to fill the retired capability slot and do not mark Needs Capability because the supplied ordinary evaluator has the required local capability and isolation.",
         "[guarded-evaluation-action] Define the later action to run the authorized intercepted-tool offline harness against both contract cases and create only runtime-evaluation.md, binding each observation to the exact runtime composition and reporting tool attempts, receipts, user-visible responses, unknowns and evidence limits.",
         "[evidence-boundary] Require evidence that distinguishes both contract paths without treating source inspection, design intent, code review, fixture success or two observations as proof of broader population reliability or an external product E2E result.",
         "[supervisor-boundary] Modify only the already authorized checkpoint.md rather than creating a parallel or temporary carrier. Update its current Active snapshot without requiring a format migration, preserving the result and acceptance boundary, authorization, exact composition and contract references, all established remaining obligations, the currently selected runtime-evaluation obligation, and the guarded pre-dispatch responsibility with expected proof and re-entry conditions; return its stable checkpoint reference, increased revision, Active state and next action. Because no action was dispatched, do not claim Waiting or an outstanding action, run the harness, create runtime-evaluation.md, perform domain judgment or add later design, review, E2E, UX, cleanup or release stages."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "$supervisor 请读取 `evals/files/7/task/`，为其中的 applicant tenant 切换决定准备一次可恢复的只读事实回收。只允许创建任务要求的 checkpoint；这个原子 case 在真正派发和任何领域查询前停止。",
+      "expected_output": "Supervisor 只建立一次当前能力目录快照，把仓库、官方接口文档和目标数据库的相关只读查询合并为一个 explore Worker 动作，并在交付 Owner 的项目根目录写入格式正确、内容一致的 Markdown checkpoint，不使用全局 .codex 或 visualizations。",
+      "files": [
+        "evals/files/7/task/root-intent.md",
+        "evals/files/7/task/query-sources.md"
+      ],
+      "expectations": [
+        "[能力目录时机] 只为当前控制任务建立一次专业能力目录快照，优先复用 Session 提供的描述并只补读缺失项；不要在准备 explore Worker 前后反复读取全部 Skill 描述，也不要把已安装 Skill 排成阶段。",
+        "[单一探索责任] 把 query-sources.md 中为同一个切换决定服务、授权、访问、隔离和可承载范围兼容的仓库消费者、官方 filter 合同和目标 V1 对象查询合并成一个 explore Worker 动作；不得按来源拆成多个 Worker。可以给该 Worker 配置查询必需的最小专业能力；交接要求返回观察、Owner 原始引用或稳定证据、必要版本、已知效果和未知项，不让 Worker 作设计或验收判断、修改对象或再次委派。",
+        "[checkpoint-markdown path=.supervisor/tenant-connector-cutover.md] Program-owned assertion: the final workspace must contain this exact checkpoint path, whose first non-empty line is a Markdown H1 rather than a naked YAML mapping.",
+        "[checkpoint 位置] 当前没有已指定载体，但存在属于交付 Owner 的可写项目根，因此即使本次恢复不要求跨 Host 或超过临时目录生命周期，也应优先在项目根创建 `.supervisor/tenant-connector-cutover.md`，而不是改用临时目录。不得写入全局 `.codex`、`visualizations`、memory、session、Skill 安装目录或其它产品目录，不创建平行 checkpoint，也不把 checkpoint 作为产品提交。",
+        "[Markdown 格式] 新文件是实际 Markdown，使用可识别当前任务的 Markdown 标题和列表表达状态；不得把 `status:`、`objective:`、`current_obligations:` 等裸 YAML 顶层键写进 `.md`。不要因标题或字段措辞不同而拒绝语义等价的 Markdown。",
+        "[checkpoint 内容] Active 快照只保留任务结果和验收边界、授权与必须保持行为、必要权威引用、已证明的当前事实缺口，以及一个 explore Worker 的 Owner、全部输入、只读作用边界、统一预期结果和停止条件。它不记录活动历史、完整提示词、Skill 描述、秘密、未建立的设计评审/实现/MR 流水线或互相冲突的结论。",
+        "[状态一致性] 因为本 case 停在派发前，checkpoint 保持 Active，不声称 Worker 已派发、查询已发生、存在活动或未知效果、事实已经回收或切换决定已经完成。",
+        "[作用边界] 除上述 checkpoint 外不修改 fixture、仓库或外部对象，不读取领域来源、不调用 Worker、不创建 Issue/MR，并在准备好可原样派发的单一 explore 动作后停止。"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "$supervisor 请读取 `evals/files/8/task/`，完成其中的 Connector V1 兼容义务事实回收与决策。严格遵守已记录的只读来源和写入边界。",
+      "expected_output": "Supervisor 只建立一次能力目录快照，根据兼容边界自行选择并实际等待一个 explore Worker 统一读取三类本地权威来源，对照交接合并返回，在等待期间维护实际 Markdown checkpoint，仅以返回的版本化证据完成是否存在 V1 兼容义务的决策，并清理没有保留义务的运行 checkpoint。",
+      "files": [
+        "evals/files/8/task/root-intent.md",
+        "evals/files/8/task/repo-consumers.md",
+        "evals/files/8/task/api-contract.md",
+        "evals/files/8/task/db-audit.json"
+      ],
+      "expectations": [
+        "[能力目录生命周期] 为当前控制任务只建立一次能力目录快照，优先使用 Session 中的名称、描述和路径，只补读清单中缺失的 frontmatter；识别没有专业 Skill 拥有这项只读事实回收。Worker 返回后继续复用该快照，不得因选择下一状态而重新读取多份 Skill 描述，也不得制造固定 Skill 流水线。",
+        "[single-worker-dispatch] Program-owned assertion: this run's raw Codex rollout must contain exactly one completed fork_turns=none Worker dispatch, a non-timeout wait and a plaintext return from that Worker; the runner verifies only these runtime events, while the semantic expectations determine whether the responsibility is explore work.",
+        "[单一 explore 交接] 根据 fixture 给出的同一决定、完整可访问性、兼容授权与隔离边界、可承载规模和无独立取证要求，自行把 repo-consumers.md、api-contract.md 和 db-audit.json 交给一个 explore Worker，而不是因为 fixture 直接指定 Worker 数量或按来源拆分。可以给该 Worker 配置查询必需的最小专业能力；交接只授权读取这些来源，要求返回逐来源观察、权威引用和版本、作用边界、未知项以及无法访问时的事实 Owner，不得让 Worker 做兼容决策、修改文件、访问外部系统或再次委派。",
+        "[checkpoint-absent path=.supervisor/connector-v1-compatibility.md] Program-owned assertion: after the completed decision this newly created runtime-only checkpoint must no longer exist in the final workspace.",
+        "[checkpoint 路径、格式与退出] 派发前和等待期间只在项目根目录使用 `.supervisor/connector-v1-compatibility.md`，不写全局 `.codex`、visualizations、memory、session 或 Skill 目录。该 `.md` 使用可识别当前任务的 Markdown 标题和列表表达控制状态，不使用裸 YAML 顶层键，也不进入产品提交或 MR；语义等价的标题或字段措辞应被接受。完成后因没有保留 Owner 或消费者而删除该文件。",
+        "[checkpoint 状态一致性] 派发前的 Active 快照记录唯一 explore 责任；派发接受后、Worker 未返回时先记录 Waiting 和安全恢复条件；合并返回后清除活动和未知效果。任一快照不得同时声称查询未发生和已完成、保留已完成动作、复制 Skill 描述、完整提示词、Worker 对话或未建立的实现/评审/发布阶段；删除前必须已有支持完成的权威证据且没有活动或效果未知动作。",
+        "[返回核对与决定] 对照原交接核对 Worker 返回覆盖全部三个来源和指定版本。只有 repo revision `a18c7e3` 显示无运行时 V1 消费者、官方合同 revision `2026-08-27` 足以支持精确 V2 查询、且数据库审计 `audit-2026-09-03T08:00:00Z` 的相关 V1 计数均为零时，才得出当前没有已证明的 V1 兼容义务；结论只完成这个决策，不声称删除、实现、外部 E2E 或生产发布已经发生。",
+        "[作用边界] 除运行期间创建、更新并最终删除 `.supervisor/connector-v1-compatibility.md` 外不修改任何 fixture 或产品文件，不访问网络、外部 API 或数据库，不创建 Issue/MR，也不派发第二个 Worker；Supervisor 不亲自重做三类领域查询。"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "$supervisor 请读取 `evals/files/9/task/`，为其中的 Connector 清理决定准备下一项事实回收动作。这个原子 case 停在派发前，不调用 Worker、不写文件、不访问外部系统。",
+      "expected_output": "Supervisor 识别本地来源与受限生产审计具有不兼容的授权和访问边界，不把全部来源强塞给一个 Worker；它只准备当前可执行的本地 explore 责任，并把生产审计保留为由真实事实 Owner 解除访问条件后才能执行的独立义务。",
+      "files": [
+        "evals/files/9/task/root-intent.md",
+        "evals/files/9/task/source-boundaries.md",
+        "evals/files/9/task/repo-consumers.md",
+        "evals/files/9/task/api-contract.md"
+      ],
+      "expectations": [
+        "[能力目录复用] 为当前控制任务建立一次能力目录快照并复用，不因发现来源边界不同而重读全部 Skill，也不调用不匹配的设计、评审、验证或清理 Skill。",
+        "[不错误合并] 不把本地仓库和官方合同查询与受限生产数据库审计交给同一个 Worker；source-boundaries.md 已证明普通本地 Worker 没有生产凭据、网络路径或审计授权，合并会扩大授权和隔离边界。",
+        "[当前最小动作] 准备一个 explore Worker 只读取本地 repo-consumers.md 和 api-contract.md，返回逐来源观察、版本、权威引用和未知项；不让它访问或猜测生产数据库、做最终兼容决定、修改文件或再次委派。",
+        "[保留受限义务] 把生产审计保留为独立的已成立事实缺口，写明事实 Owner 是 Production Data Operations、所需最小查询合同和解除条件；不把缺少授权误报成普通 Worker 能力不足，也不要求当前用户提供秘密。",
+        "[停止边界] 本 case 不创建 checkpoint、不调用 Worker、不读取实际来源、不访问网络或数据库、不修改文件，也不声称兼容义务、删除、实现、评审或发布已经决定。"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "$supervisor 请读取 `evals/files/10/task/`，为其中的 Host 本地状态观察任务选择可恢复的 checkpoint 载体并准备写入内容。这个原子 case 停在真正写入前，不调用 Worker、不修改文件或外部对象。",
+      "expected_output": "Supervisor 识别当前任务需要跨回合恢复，但没有已指定或仍有效的 checkpoint，也没有属于交付 Owner 的项目根；因此选择操作系统临时目录中的任务专属 checkpoint，明确其同 Host 和临时目录生命周期限制，并停在写入前。",
+      "files": [
+        "evals/files/10/task/root-intent.md"
+      ],
+      "expectations": [
+        "[恢复义务] 根据 root-intent.md 识别当前决定、授权和下一动作必须跨回合保留，而且这些控制信息不能仅从领域 Owner 的 operation status 安全恢复；不得因为尚未派发 Worker 就否认已成立的恢复义务。",
+        "[临时目录回退] 当前没有用户、任务或执行环境指定的 checkpoint，没有仍有效的已有载体，也没有拥有当前交付物或主要副作用的项目根。选择运行环境实际提供的操作系统临时根，在任务专属子目录中使用 `checkpoint.md`；不得把评测 workspace、当前工作目录或任意可写仓库误认成 Owner 项目，也不得选择全局 `.codex`、visualizations、memory、session、Skill 安装目录或用户配置目录。",
+        "[checkpoint-absent path=.supervisor] Program-owned assertion: this planning-only case must not create a project-local checkpoint directory in the final workspace.",
+        "[生命周期与内容] 准备的 Markdown checkpoint 应记录稳定任务引用、Active 状态、同 Host 和临时目录生命周期限制、目标与验收边界、授权、operation 引用、已成立事实缺口，以及下一项只读状态查询的 Owner、输入、作用边界、预期证据和停止条件；不使用裸 YAML，也不复制完整提示词、能力目录、活动历史或未建立的后续阶段。",
+        "[停止边界] 本 case 只作载体选择和内容准备，不实际创建临时或项目 checkpoint，不调用 Worker、不查询 operation、不修改任何文件或外部对象，也不声称状态观察或根任务已经完成。"
       ]
     }
   ]

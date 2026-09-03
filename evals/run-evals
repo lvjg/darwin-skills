@@ -79,11 +79,49 @@ end
 
 failed_skills = []
 
-def requires_actual_worker_dispatch?(item)
-  item.fetch("expectations").any? { |expectation| expectation.start_with?("[actual-worker-dispatch]") }
+PROGRAM_OWNED_EXPECTATION_PREFIXES = %w[
+  [actual-worker-dispatch]
+  [single-worker-dispatch]
+].freeze
+CHECKPOINT_MARKDOWN_EXPECTATION = /\A\[checkpoint-markdown path=([^\s\]]+)\]/
+CHECKPOINT_ABSENT_EXPECTATION = /\A\[checkpoint-absent path=([^\s\]]+)\]/
+
+def program_owned_expectation?(expectation)
+  PROGRAM_OWNED_EXPECTATION_PREFIXES.any? { |prefix| expectation.start_with?(prefix) } ||
+    expectation.match?(CHECKPOINT_MARKDOWN_EXPECTATION) ||
+    expectation.match?(CHECKPOINT_ABSENT_EXPECTATION)
 end
 
-def completed_worker_dispatch?(rollout_path)
+def checkpoint_program_expectations(item)
+  item.fetch("expectations").each_with_object([]) do |expectation, assertions|
+    if (match = expectation.match(CHECKPOINT_MARKDOWN_EXPECTATION))
+      type = :markdown
+    elsif (match = expectation.match(CHECKPOINT_ABSENT_EXPECTATION))
+      type = :absent
+    else
+      next
+    end
+
+    path = Pathname.new(match[1])
+    abort "checkpoint assertion path must stay inside the case workspace: #{match[1]}" if path.absolute? || path.each_filename.include?("..")
+    assertions << { type: type, path: match[1] }
+  end
+end
+
+def requires_actual_worker_dispatch?(item)
+  item.fetch("expectations").any? do |expectation|
+    expectation.start_with?("[actual-worker-dispatch]") ||
+      expectation.start_with?("[single-worker-dispatch]")
+  end
+end
+
+def requires_single_worker_dispatch?(item)
+  item.fetch("expectations").any? do |expectation|
+    expectation.start_with?("[single-worker-dispatch]")
+  end
+end
+
+def completed_worker_dispatch?(rollout_path, single_worker: false)
   collaboration_calls = {}
   completed_calls = {}
   worker_returns = []
@@ -123,8 +161,16 @@ def completed_worker_dispatch?(rollout_path)
   rescue JSON::ParserError
     false
   end
+  if single_worker
+    spawn_calls = collaboration_calls.values.count { |payload| payload["name"] == "spawn_agent" }
+    return false unless spawn_calls == 1 && spawned_workers.length == 1
+  end
   worker_returned = worker_returns.any? do |payload|
-    spawned_workers.include?(payload["author"]) && !payload.fetch("content", []).empty?
+    next false unless spawned_workers.include?(payload["author"])
+
+    payload.fetch("content", []).any? do |part|
+      part.is_a?(Hash) && part["type"] == "text" && !part.fetch("text", "").strip.empty?
+    end
   end
   !spawned_workers.empty? && wait_returned && worker_returned
 end
@@ -136,16 +182,67 @@ def rollout_fingerprints(output_dir)
   end
 end
 
-def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_patterns)
-  required_case_ids = evals.fetch("evals").map do |item|
-    "case-#{item.fetch("id")}" if requires_actual_worker_dispatch?(item)
-  end.compact
+def checkpoint_artifact_fingerprints(output_dir)
+  pattern = File.join(output_dir, "iteration-*", "case-*", "*", "outputs/workspace", "**/*")
+  Dir.glob(pattern, File::FNM_DOTMATCH).select { |path| File.file?(path) }.to_h do |path|
+    stat = File.stat(path)
+    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
+  end
+end
+
+def verify_checkpoint_artifacts(output_dir, evals, previous_artifacts, case_patterns)
+  required_cases = evals.fetch("evals").each_with_object([]) do |item, cases|
+    assertions = checkpoint_program_expectations(item).select { |assertion| assertion[:type] == :markdown }
+    cases << ["case-#{item.fetch("id")}", assertions] unless assertions.empty?
+  end.to_h
   if case_patterns && !case_patterns.empty?
-    required_case_ids.select! do |case_id|
+    required_cases.select! do |case_id, _assertions|
       case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) }
     end
   end
-  return [] if required_case_ids.empty?
+  return [] if required_cases.empty?
+
+  current_artifacts = checkpoint_artifact_fingerprints(output_dir).each_with_object([]) do |(path, fingerprint), artifacts|
+    artifacts << path if previous_artifacts[path] != fingerprint
+  end
+  errors = []
+  seen_case_ids = []
+  current_artifacts.group_by { |path| path.split("/outputs/workspace/", 2).first }.each do |configuration_dir, _paths|
+    case_id = File.basename(File.dirname(configuration_dir))
+    next unless required_cases.key?(case_id)
+
+    seen_case_ids << case_id
+    required_cases.fetch(case_id).each do |assertion|
+      artifact = File.join(configuration_dir, "outputs/workspace", assertion.fetch(:path))
+      unless File.file?(artifact)
+        errors << "#{case_id}: checkpoint artifact is missing at #{assertion.fetch(:path)}"
+        next
+      end
+
+      first_line = File.foreach(artifact).find { |line| !line.strip.empty? }&.strip
+      unless first_line&.match?(/\A#\s+\S/)
+        errors << "#{case_id}: #{assertion.fetch(:path)} must start with a Markdown H1, not a naked YAML mapping"
+      end
+    end
+  end
+  (required_cases.keys - seen_case_ids).each do |case_id|
+    errors << "#{case_id}: expectation [checkpoint-markdown] has no collected workspace artifact from this run"
+  end
+  errors
+end
+
+def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_patterns)
+  required_cases = evals.fetch("evals").map do |item|
+    next unless requires_actual_worker_dispatch?(item)
+
+    ["case-#{item.fetch("id")}", requires_single_worker_dispatch?(item)]
+  end.compact.to_h
+  if case_patterns && !case_patterns.empty?
+    required_cases.select! do |case_id, _single_worker|
+      case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) }
+    end
+  end
+  return [] if required_cases.empty?
 
   errors = []
   current_rollouts = rollout_fingerprints(output_dir).map do |path, fingerprint|
@@ -154,15 +251,21 @@ def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_p
   seen_case_ids = []
   current_rollouts.group_by { |path| File.dirname(File.dirname(File.dirname(File.dirname(path)))) }.each do |configuration_dir, rollouts|
     case_id = File.basename(File.dirname(configuration_dir))
-    next unless required_case_ids.include?(case_id)
+    next unless required_cases.key?(case_id)
     seen_case_ids << case_id
-    next if rollouts.any? { |rollout| completed_worker_dispatch?(rollout) }
+    single_worker = required_cases.fetch(case_id)
+    next if rollouts.any? { |rollout| completed_worker_dispatch?(rollout, single_worker: single_worker) }
 
     relative = Pathname.new(configuration_dir).relative_path_from(Pathname.new(output_dir))
-    errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that dispatched Worker in this run's raw Codex rollout"
+    if single_worker
+      errors << "#{relative}: expectation [single-worker-dispatch] requires exactly one completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that Worker in this run's raw Codex rollout"
+    else
+      errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that dispatched Worker in this run's raw Codex rollout"
+    end
   end
-  (required_case_ids - seen_case_ids).each do |case_id|
-    errors << "#{case_id}: expectation [actual-worker-dispatch] has no raw Codex rollout from this run"
+  (required_cases.keys - seen_case_ids).each do |case_id|
+    marker = required_cases.fetch(case_id) ? "[single-worker-dispatch]" : "[actual-worker-dispatch]"
+    errors << "#{case_id}: expectation #{marker} has no raw Codex rollout from this run"
   end
   errors
 end
@@ -212,7 +315,13 @@ eval_targets.each do |skill_dir, evals|
                                       MARKDOWN
                                     end
 
-      judge_expectations = item.fetch("expectations").reject { |expectation| expectation.start_with?("[actual-worker-dispatch]") }
+      judge_expectations = item.fetch("expectations").reject { |expectation| program_owned_expectation?(expectation) }
+      checkpoint_expectations = checkpoint_program_expectations(item)
+      deterministic_expect = {}
+      checkpoint_expectations.each do |expectation|
+        key = expectation.fetch(:type) == :markdown ? "files_exist" : "files_not_exist"
+        (deterministic_expect[key] ||= []) << expectation.fetch(:path)
+      end
       case_config = {
         "id" => case_id,
         "title" => "#{skill_name} - #{item.fetch("id")}",
@@ -221,13 +330,17 @@ eval_targets.each do |skill_dir, evals|
         "input" => { "prompt" => item.fetch("prompt") },
         "context" => { "files" => context_files },
         "constraints" => {},
-        "expect" => {},
+        "expect" => deterministic_expect,
         "judge" => {
           "type" => "agent_judge",
           "model" => options.fetch(:judge_model),
           "criteria" => judge_expectations
         }
       }
+      markdown_artifacts = checkpoint_expectations.each_with_object([]) do |expectation, artifacts|
+        artifacts << expectation.fetch(:path) if expectation.fetch(:type) == :markdown
+      end
+      case_config["collect_artifacts"] = markdown_artifacts unless markdown_artifacts.empty?
       File.write(case_path, YAML.dump(case_config))
       Pathname.new(case_path).relative_path_from(Pathname.new(skill_dir)).to_s
     end
@@ -293,11 +406,14 @@ eval_targets.each do |skill_dir, evals|
 
     puts "\n==> #{skill_name}"
     previous_rollouts = options[:output_root] ? rollout_fingerprints(output_dir) : {}
+    previous_checkpoint_artifacts = options[:output_root] ? checkpoint_artifact_fingerprints(output_dir) : {}
     succeeded = system(*command, chdir: skill_dir)
     if succeeded && !options[:dry_run] && options[:output_root]
       dispatch_errors = verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, options[:cases])
-      unless dispatch_errors.empty?
-        warn dispatch_errors.join("\n")
+      checkpoint_errors = verify_checkpoint_artifacts(output_dir, evals, previous_checkpoint_artifacts, options[:cases])
+      program_errors = dispatch_errors + checkpoint_errors
+      unless program_errors.empty?
+        warn program_errors.join("\n")
         succeeded = false
       end
     end

@@ -1,0 +1,14 @@
+{
+  "authority": "target PostgreSQL read-only compatibility audit",
+  "audit_id": "audit-2026-09-03T08:00:00Z",
+  "snapshot_revision": "pg-snapshot-4471",
+  "scope": "connector-v1 bindings that remain consumable by active workflow state",
+  "counts": {
+    "editing_drafts": 0,
+    "returned_or_resubmittable_tasks": 0,
+    "related_instances": 0
+  },
+  "legacy_site_values": [],
+  "effects": "read-only repeatable-read transaction; rolled back after aggregation",
+  "unknowns": []
+}
