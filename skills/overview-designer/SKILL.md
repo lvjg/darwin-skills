@@ -1,6 +1,6 @@
 ---
 name: overview-designer
-description: Use only when the user explicitly invokes $overview-designer to create, complete, or rewrite a system-level target architecture or design artifact. Do not use for current-state explanation, descriptive overview, local implementation planning, read-only review, code review, debugging, or delivery acceptance.
+description: Use only when the user explicitly invokes $overview-designer to create, complete, revise, or rewrite a system-level design artifact, or to drill down into a specific key design or local part of one. Do not use for current-state explanation, descriptive overview, implementation task planning, read-only review, code review, debugging, or delivery acceptance.
 ---
 
 # Overview Designer
@@ -9,13 +9,11 @@ description: Use only when the user explicitly invokes $overview-designer to cre
 
 You are designing this system for the people who rely on it, run it, and will change it next. A design that is merely sound and minimal has cleared the floor; you are after the structure the problem itself would choose.
 
-Form the target system design the user needs and express it as a coherent design artifact. Start from the observable result and the obligation behind it, establish the evidence-backed task model, explore and deepen viable system directions, form the smallest complete target design, challenge both the task model and the design, and draft only after the judgment converges. Explain the current system only when it establishes a fact, problem, preservation obligation, constraint, or evolution condition that changes the target design.
+Form the target system design the user needs—the whole system, or the key design or local part the user names—and express it as a coherent design artifact. Start from the observable result and the obligation behind it, establish the evidence-backed task model, explore and deepen viable system directions, form the smallest complete target design, challenge both the task model and the design, and draft only after the judgment converges. Explain the current system only when it establishes a fact, problem, preservation obligation, constraint, or evolution condition that changes the target design.
 
 Keep decision categories separate. Accountable authorities establish intent, scope, constraints, allowed degradation, route adoption, and delegated choice. Fact owners, active contracts, implementation, runtime evidence, and tests establish different kinds of current-system evidence; none alone silently establishes another category. Design adoption does not prove implementation, deployment, external validation, publication authority, or another downstream action.
 
 Use the five stages as one revisable reasoning chain and as the only process model. Each stage owns a distinct judgment and may be reopened only by an issue that belongs to it. Unless the user authorizes a broader artifact set, modify only the requested design artifact or artifacts; do not implement, independently review, or accept delivery. Read `references/overview-standard.md` only after Stage 4 converges. It controls expression, not design formation.
-
-Write the task model (Stage 2), the selection proof (Stage 3), and the design argument (Stage 4) as text before drafting—in your reply, inside a clearly delimited `<design-reasoning>` block—so that each can be challenged as text. They govern the design and do not enter the artifact.
 
 ## Stage 1: Frame the Design Intent and Authority
 
@@ -25,7 +23,7 @@ Establish the target-design judgment, its authorization, and the boundary within
 
 ### Work
 
-Here you settle what result must hold, whose decision each part of it is, and how far your mandate reaches—so that later judgment has something to be faithful to. A requested technology or mechanism is not automatically the goal. Define the result a user, consumer, operator, or responsible party must be able to rely on; the behavior to create or preserve; allowed degradation; relevant participants and environments; scope and non-goals; material constraints; decision horizon; requested artifact set; and authorized mutation boundary. Separate what is wanted from what is proposed and from what is merely inherited. Test any premise that can change scope, guarantee strength, or the need for system-level design. Stop using this Skill when a current-state explanation or local implementation change is the actual task.
+Here you settle what result must hold, whose decision each part of it is, and how far your mandate reaches—so that later judgment has something to be faithful to. A requested technology or mechanism is not automatically the goal. Define the result a user, consumer, operator, or responsible party must be able to rely on; the behavior to create or preserve; allowed degradation; relevant participants and environments; scope and non-goals; material constraints; decision horizon; requested artifact set; and authorized mutation boundary. Separate what is wanted from what is proposed and from what is merely inherited. Test any premise that can change scope, guarantee strength, or the need for system-level design. Stop using this Skill when a current-state explanation or an implementation change with no design content is the actual task. When the requested scope is a key design or a local part, the surrounding system's adopted design is the authority for its boundaries and handoffs; design within them, and expose rather than silently change anything the local design needs from outside its scope.
 
 Identify who owns intent, external commitments, facts, and route adoption, and whether route selection or redesign has been delegated within fixed outcome, scope, constraint, and risk bounds. Any route may be challenged, but finding that an adopted route is invalid does not itself authorize selecting a replacement. Without route-change authority, preserve a valid adopted route; if evidence invalidates it, stop extending it, expose the conflict and viable alternatives, and leave the route decision to its authority.
 
@@ -64,7 +62,7 @@ Form a provisional task model from evidence and authority rather than generic ar
 - assumptions, unknowns, evidence boundaries, and facts that would invalidate the model;
 - a credible alternative problem representation when one could change the route.
 
-Treat theories, analogies, patterns, and model-generated abstractions as hypotheses. Retain one only when a concrete obligation, condition, causal relationship, or failure explains why it applies and what would invalidate it. Greenfield work needs no invented current defect; its task model can start from the required responsibility, information, interaction, operating, and evolution model.
+Treat theories, analogies, patterns, and model-generated abstractions as hypotheses. Retain one only when a concrete obligation, condition, causal relationship, or failure explains why it applies and what would invalidate it. Greenfield work needs no invented current defect; its task model can start from the required responsibility, information, interaction, operating, and evolution model. The task model is a reasoning aid, not a required artifact or document section.
 
 ### Exit
 
@@ -189,15 +187,3 @@ Finish when the artifact:
 - keeps claims within their evidence and authority;
 - distinguishes adoption from implementation and validation;
 - lets a reader recover the overall result, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton.
-
-## Notes for Maintainers
-
-These notes govern edits to this Skill; they are not instructions to the executing agent.
-
-- Each rule has one owning location. Elsewhere, reference it by name (selection proof, handoff guarantee, unknown rule, design argument, revision classification) rather than restating it.
-- Stage 3 owns design formation, including contracts, state, failure, and lifecycle. Stage 4 only falsifies and converges; a gap found in Stage 4 returns to Stage 3 rather than being completed there.
-- The task model, selection proof, and design argument are reasoning aids. They are not required artifacts, schemas, permanent state, stages of the delivered system, or document sections.
-- The method must not become the document structure. Stage 4 reasons about the operating model and significant mechanisms; only Stage 5 maps them to Overall Design and Key Designs.
-- Method names and theory labels belong in `references/` comments, if anywhere; never in stage text.
-- Enumerations that appear in an Exit are attention triggers, not knowledge; removing one to reduce repetition has caused regressions. When deduplicating, keep the enumeration in the owning stage's Exit and remove it from Work paragraphs, not the reverse.
-- The Purpose anchor and the stage opening sentences are an untested hypothesis that designer voice improves design quality; the regression suite cannot distinguish their presence. Remove them if a future case shows they cost accuracy.

@@ -1,6 +1,6 @@
 # Overview Designer Drafting Standard
 
-Use this standard only to express the target-design judgment completed in `SKILL.md`. Do not decide the goal, route, mechanism significance, ownership, state, failure semantics, adoption, or revision classification while drafting. Return an exposed semantic gap to the stage that owns it instead of inventing a mechanism through document structure. The task model, selection proof, design argument, and any `<design-reasoning>` block do not enter the artifact.
+Use this standard only to express the target-design judgment completed in `SKILL.md`. Do not decide the goal, route, mechanism significance, ownership, state, failure semantics, adoption, or revision classification while drafting. Return an exposed semantic gap to the stage that owns it instead of inventing a mechanism through document structure.
 
 Write in the requested language, or otherwise the request's primary language. Preserve established project terms, identifiers, code symbols, interface names, and quoted contracts unless translation is requested. Use direct project language rather than the reasoning vocabulary from `SKILL.md`.
 
