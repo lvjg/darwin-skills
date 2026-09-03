@@ -136,10 +136,105 @@
         "evals/files/8/context/current-system.md"
       ],
       "expectations": [
-        "[task-type-boundary] Treat the requested result as a current-state explanation rather than a target system design artifact, without narrating the Skill method.",
+        "[task-type-boundary] The final response treats the requested result as a current-state explanation rather than a target system design artifact. Judge the final response only: brief intermediate progress notes in the transcript are not method narration; the final response itself must not describe the Skill's stages, method, or decision process.",
         "[bounded-explanation] Explain the supplied request path, responsibility and observable result using only the fixture facts.",
         "[no-target-design] Do not propose a target route, design status, migration, new state, recovery mechanism, alternative architecture or acceptance plan.",
         "[no-file-mutation] Do not create or modify any file."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "$overview-designer 根据 `evals/files/9/context/` 中已接受的新义务，在已确认路线内补全 `evals/files/9/design/system-design.md`。本次是路线内的设计修订，不允许替换路线；请按文档现有约定记录修订。只修改该设计文件，不实现代码。",
+      "expected_output": "A within-route design revision that projects failure_code (not failure_detail) through the existing gateway, and records exactly that substantive change in the existing revision record.",
+      "files": [
+        "evals/files/9/context/current-system.md",
+        "evals/files/9/context/new-obligation.md",
+        "evals/files/9/context/root-intent.md",
+        "evals/files/9/design/system-design.md"
+      ],
+      "expectations": [
+        "[within-route-revision] The design adds a failure reason to the operator view by extending the existing Export Service -> Gateway -> Operations UI projection; it does not replace the route, add a new service, store or event stream.",
+        "[security-boundary-respected] `failure_code` is projected to authorized operators; `failure_detail` is stated not to leave Export Service, citing the security owner's ruling from the fixture.",
+        "[derived-from-owner] The failure reason shown is derived from Export Service's `failure_code`; the design does not have the UI or Gateway infer a reason from state or timing.",
+        "[revision-record-present-and-bounded] The existing revision record table gains one entry describing the substantive change (failure reason projection), its impact, and its basis (the accepted new obligation). The prior entry is preserved. No entries are added for wording or evidence-only changes.",
+        "[classification-correct] The artifact treats this as a design revision within the adopted route, not as an evidence correction and not as a route change; design status remains Confirmed or is set Pending Confirmation only with a stated reason.",
+        "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "$overview-designer 根据 `evals/files/10/context/` 重写 `evals/files/10/design/system-design.md`，形成让客户重复下单只被扣款和发货一次的目标系统设计。草稿把问题描述成 API 边缘的请求去重，这只是待验证的提议，不是约束。只修改该设计文件，不实现代码。",
+      "expected_output": "The design recognizes from the incident evidence that a short dedup window at the gateway cannot satisfy the result, rebuilds the problem representation around order identity per checkout, and anchors uniqueness in Order Service using checkout_session_id.",
+      "files": [
+        "evals/files/10/context/current-system.md",
+        "evals/files/10/context/root-intent.md",
+        "evals/files/10/design/system-design.md"
+      ],
+      "expectations": [
+        "[representation-rebuilt-from-evidence] Somewhere in the artifact, the final reply, or the agent's intermediate reasoning in the transcript, the design basis reflects the fixture evidence that duplicates mostly arise from retries after gateway timeouts (minutes apart) rather than from taps within a short window, and concludes that edge request deduplication is the wrong problem representation. Exact percentages need not be quoted; the causal contrast is what matters.",
+        "[gateway-cache-rejected] The design does not select a gateway-level request cache, fingerprint window, or distributed dedup store as the mechanism that guarantees the result; it may mention the draft only to reject it.",
+        "[identity-anchored-at-owner] Uniqueness is anchored in Order Service using the Cart Service-owned `checkout_session_id` (or an equivalent owner-defined order identity from the fixture), with a uniqueness constraint whose violation returns the existing order rather than creating a second one.",
+        "[authority-respected] Cart Service remains the owner of `checkout_session_id` meaning; Order Service does not redefine it; the design states what Order Service does if the identity is absent or invalid.",
+        "[downstream-preserved] Payment and Fulfillment continue to key their exactly-once effects on `order_id`; the design does not add a second idempotency layer there.",
+        "[support-explanation] Support can identify a suppressed duplicate from Order Service records without a customer-facing list or new store.",
+        "[artifact-and-claim-boundary] Only evals/files/10/design/system-design.md is modified; the design is not presented as implemented or validated."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "$overview-designer 根据 `evals/files/12/context/` 重写 `evals/files/12/design/system-design.md`，在两条已知可行的路线中形成目标系统设计并说明选择依据。只修改该设计文件，不实现代码。",
+      "expected_output": "Both routes are valid and minimal; the design selects the ShipmentEligibility capability because it names a domain concept, hides carrier-rule volatility behind its owner, and the alternative would force Checkout to know what it should not.",
+      "files": [
+        "evals/files/12/context/current-system.md",
+        "evals/files/12/context/root-intent.md",
+        "evals/files/12/design/system-design.md"
+      ],
+      "expectations": [
+        "[route-a-selected] The design selects the Logistics-owned `ShipmentEligibility` capability (or an equivalently domain-named capability owned by the team that owns the rules) rather than the pass-through AggregatorService.",
+        "[abstraction-argued-by-what-it-hides] The selection basis states what the chosen abstraction hides that varies independently (carrier coverage and hazmat acceptance rules changing weekly) and who owns that variation.",
+        "[alternative-argued-by-what-consumers-would-know] The design states that under Route B Checkout would have to learn or apply carrier-specific rules (coverage, hazmat acceptance) that change frequently and that the owning team does not want Checkout to hold. Verbatim attribution to a named team is not required if the constraint itself is stated.",
+        "[single-owner-per-decision] Eligibility meaning (eligible / restricted / no_coverage / oversize) has one owner; Checkout only presents it. Catalog and Address remain fact owners consulted by the capability.",
+        "[no-speculative-consumer] The design does not add generality, caching or a shared platform layer justified by Marketing's uncommitted interest.",
+        "[failure-semantics] The design states what Checkout shows when the capability is unavailable or returns a malformed response, at the owner boundary.",
+        "[artifact-and-claim-boundary] Only evals/files/12/design/system-design.md is modified; the design is not presented as implemented or validated."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "$overview-designer 根据 `evals/files/13/context/` 重写 `evals/files/13/design/system-design.md`，形成单区域租户审计日志保留期的目标系统设计。只修改该设计文件，不实现代码。",
+      "expected_output": "A minimal single-region retention design that reuses Tenant Config history and partition deletion, adds no multi-region machinery, and states which decisions it deliberately leaves open and which it closes.",
+      "files": [
+        "evals/files/13/context/current-system.md",
+        "evals/files/13/context/root-intent.md",
+        "evals/files/13/design/system-design.md"
+      ],
+      "expectations": [
+        "[no-uncommitted-build] The design does not introduce a region-aware policy registry, cross-region replication, pluggable deletion backend, or any mechanism justified only by possible future multi-region expansion.",
+        "[reuse-established-capabilities] Retention decisions derive from Tenant Config Service's `audit_retention_days` and its existing change history; deletion uses atomic partition deletion via the nightly maintenance framework.",
+        "[provability] Compliance can prove the effective retention period on any past date by reading Tenant Config's setting history (or an equivalent owner-held record), without Audit Service becoming a second authority for the setting.",
+        "[open-and-closed-decisions-named] The artifact explicitly names which decisions it deliberately leaves open for a possible future multi-region deployment (e.g., where the retention authority would live per region) and which it closes now, each with a one-line reason, without proposing phases, roadmap or timelines.",
+        "[no-roadmap] There is no 'phase 2', 'future work' roadmap, or compatibility path for the uncommitted multi-region case.",
+        "[failure-semantics] The design states what happens when a nightly deletion fails or a setting change arrives late, at the owning boundary.",
+        "[artifact-and-claim-boundary] Only evals/files/13/design/system-design.md is modified; the design is not presented as implemented or validated."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "$overview-designer 根据 `evals/files/14/context/` 重写 `evals/files/14/design/system-design.md`，形成发票总额始终一致的目标系统设计。草稿中的同步服务只是提议，不是约束；如果责任归属调整能闭合结果，允许这样做。只修改该设计文件，不实现代码。",
+      "expected_output": "The design recognizes from the incident evidence that the mismatch stems from the total being written by a non-owner with stale inputs, moves total computation into Invoice Service, and rejects the synchronization service.",
+      "files": [
+        "evals/files/14/context/current-system.md",
+        "evals/files/14/context/root-intent.md",
+        "evals/files/14/design/system-design.md"
+      ],
+      "expectations": [
+        "[problem-dissolved-not-solved] The design does not select a Total Synchronization Service, event-driven recomputation pipeline, or drift reconciliation job as the mechanism that guarantees the result.",
+        "[responsibility-reassigned] Invoice Service becomes the sole owner of `Invoice.total`, computing it from its own lines and the Tax Service rule at the time it matters; Billing Portal no longer writes the total.",
+        "[evidence-cited] The selection basis cites both incident classes from the fixture (partner edits bypassing the portal; stale tax rule in an open session) and explains why owner-side computation closes both.",
+        "[tax-rule-timing] The design states when the tax rule is resolved (e.g., at issue time or on read for unissued invoices) and who owns that decision, without adding a rule cache or a second rule authority.",
+        "[consumers-preserved] Reports, exports and the customer PDF continue to read the total from Invoice Service unchanged.",
+        "[portal-transition] The design states how Billing Portal's existing PATCH of `total` is retired or ignored and what the portal displays instead.",
+        "[artifact-and-claim-boundary] Only evals/files/14/design/system-design.md is modified; the design is not presented as implemented or validated."
       ]
     }
   ]

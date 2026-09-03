@@ -1,6 +1,6 @@
 # Overview Designer Drafting Standard
 
-Use this standard only to express the target-design judgment completed in `SKILL.md`. Do not decide the goal, route, mechanism significance, ownership, state, failure semantics, adoption, or revision classification while drafting. Return an exposed semantic gap to the stage that owns it instead of inventing a mechanism through document structure.
+Use this standard only to express the target-design judgment completed in `SKILL.md`. Do not decide the goal, route, mechanism significance, ownership, state, failure semantics, adoption, or revision classification while drafting. Return an exposed semantic gap to the stage that owns it instead of inventing a mechanism through document structure. The task model, selection proof, design argument, and any `<design-reasoning>` block do not enter the artifact.
 
 Write in the requested language, or otherwise the request's primary language. Preserve established project terms, identifiers, code symbols, interface names, and quoted contracts unless translation is requested. Use direct project language rather than the reasoning vocabulary from `SKILL.md`.
 
@@ -18,7 +18,7 @@ Keep background to the observable result, impact, preserved behavior, allowed de
 
 ## Overall Design
 
-Lead with a paragraph that independently states the operating conclusion: what the system does, who collaborates, who owns the decisive facts and decisions, how the parts produce the observable result, the material change from the relevant starting state, and the governing limits. Include only applicable elements, and make clear when a route is proposed rather than implemented.
+Lead with a paragraph that independently states the operating conclusion: what the system does, who collaborates, who owns the decisive facts and decisions, how the parts produce the observable result, the material change from the relevant starting state, the governing limits, and—when a decision would be affected by a plausible but uncommitted future—what the design deliberately leaves open and what it closes. Include only applicable elements, and make clear when a route is proposed rather than implemented.
 
 Then trace a representative end-to-end flow using actual project objects and actions across initiation, facts, decisions, information or state changes, effects, result handoffs, and cross-mechanism failure takeover. Add a second flow only when its difference explains a material branch, change, or evolution requirement. Make responsibility boundaries and dependency direction visible where they determine the result. State what each Key Design contributes; leave its internal rules and local failure handling to its own section.
 
@@ -30,7 +30,7 @@ Include only mechanisms established as independently design-significant in `SKIL
 
 Open each section with a self-contained design judgment: mechanism, owner, responsibility and change boundary, material contract and dependency direction, input from and result returned to the overall flow, observable result, and key limits. Keep each consequential choice with its owning mechanism. Other sections may reference its result and impact but must not repeat its internal rule.
 
-After the opening, include only the facts and inputs, information authority, necessary state and handoffs, key branches, failure, recovery, and lifecycle implications needed to make the mechanism hold. For each material handoff, express the sending contract, receiver validation boundary, and consumer-visible handling of applicable contract violations established during design formation. Express the established obligation and lifecycle justification for any lifecycle-expanding mechanism. For a consequential choice with a real alternative, state the strongest viable alternative, selection basis, cost bearer, evidence boundary, and reconsideration condition already established during design formation. Do not manufacture comparisons for facts, constraints, inevitable consequences, or interchangeable implementation choices.
+After the opening, include only the facts and inputs, information authority, necessary state and handoffs, key branches, failure, recovery, and lifecycle implications needed to make the mechanism hold. For each material handoff, express the handoff guarantee established in Stage 3. Express the established obligation and lifecycle justification for any lifecycle-expanding mechanism. For a consequential choice with a real alternative, express the selection proof established in Stage 3; do not rederive or manufacture a comparison here.
 
 ## Evolution, Acceptance, and Unresolved Matters
 
@@ -42,7 +42,7 @@ Keep assumptions, risks, and unresolved conditions with their owning design, inc
 
 ## Revision Record
 
-Use the final revision classification established in Stage 4; do not rederive it while drafting. Include a revision record only when the converged judgment identifies a substantive design revision, and omit it for a first draft or when only evidence wording, structure, review history, or formatting changed. The record reports change, impact, and basis; it proves neither the underlying fact, adoption, nor implementation and cannot be the only place where a design or unresolved condition appears.
+Use the revision classification established in Stage 4; do not rederive it while drafting. Include a revision record only when Stage 4 classified a within-route design revision, route change, or intent change; omit it otherwise. The record reports change, impact, and basis; it proves neither the underlying fact, adoption, nor implementation and cannot be the only place where a design or unresolved condition appears.
 
 Use one compact table, following an existing project convention when available and inventing no identifiers:
 
@@ -58,4 +58,4 @@ Aggregate related changes and point to the owning design. Do not output an empty
 - **System consistency:** Prose, diagrams, terminology, information, state, contracts, failures, acceptance, and evolution describe the same system across applicable conditional, parallel, and re-entry paths. Factual claims remain within evidence, and proposed design remains distinguishable from implementation.
 - **Revision expression:** For completion or rewrite, every preserved, corrected, changed, or removed item in the established semantic change surface appears consistently in the artifact. Valid mechanisms and evidence remain; superseded machinery and claims do not. If a design change is missing, return to `SKILL.md` rather than deriving it here.
 
-Finally remove content that cannot change understanding of system operation, design judgment, evidence boundary, or the next decision. Keep depth proportional to the conclusion it can change. Use lists for real enumerations, tables for actual comparisons, and diagrams only when they clarify a relationship. Include code, interface, test, or operational detail only when it supports system-level understanding or a design judgment.
+Finally remove content that cannot change understanding of system operation, design judgment, evidence boundary, or the next decision. Keep depth proportional to the conclusion it can change. Include code, interface, test, or operational detail only when it supports system-level understanding or a design judgment.
