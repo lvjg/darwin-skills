@@ -55,6 +55,8 @@ For material information and handoffs, establish why the system depends on them,
 Form a provisional task model from evidence and authority rather than generic architecture slogans or invented terminology. It should contain only what can change the design:
 
 - the observable result and the obligation behind it;
+- what the system must never violate, stated as facts a design can be checked against;
+- which of the current system's complexity the problem itself requires and which only a past choice requires—only the former constrains the target design;
 - relevant facts, decisions, state, effects, authorities, and consumers;
 - causal relationships and structural tensions shaping the solution space;
 - hard constraints, preserved behavior, and active commitments;
@@ -69,6 +71,7 @@ Treat theories, analogies, patterns, and model-generated abstractions as hypothe
 Proceed when:
 
 - every relevant current-system claim is bounded by its evidence;
+- what must never be violated is stated, and current complexity is separated into what the problem requires and what a past choice left behind;
 - the design problem and its causal model are explicit;
 - the conditions that would change direction are visible;
 - every remaining unknown is immaterial to the next design judgment, explicitly conditional, or assigned to its fact or decision owner (the **unknown rule**);
@@ -94,7 +97,7 @@ Close each plausible direction only far enough to compare it on those criteria. 
 
 For a consequential choice with a real alternative, retain a compact **selection proof**: selected direction, obligations it satisfies, strongest viable alternative, why the simpler route is insufficient, what the selected route gives up and who bears it, evidence boundary, and reconsideration condition. Do not create a decision record for a fact, constraint, inevitable consequence, or interchangeable implementation. Keep the route conditional when missing evidence or external authority can change it.
 
-Form the selected route's operating model from initiation, collaboration, facts, authorized decisions, necessary state, effects, handoffs, observable result, and failure takeover. Determine which affected responsibilities and paths remain, move, merge, or disappear.
+Form the selected route's operating model from initiation, collaboration, facts, authorized decisions, necessary state, effects, handoffs, observable result, and failure takeover. Determine which affected responsibilities and paths remain, move, merge, or disappear. Prefer boundaries where responsibility, change, authority, and knowledge coincide, so that one change touches one place and the party that decides is the party that knows.
 
 For every material contract or handoff created, replaced, or reinterpreted by the route, design only the guarantees the result depends on. State the **handoff guarantee**: the sender contract, the receiver's acceptance or validation boundary, and the consumer-visible result of an applicable contract violation. Preserve or explicitly supersede established identity, mutation, concurrency or idempotency, dependency, validation, authorization, and result semantics. Design handling for absent, malformed, stale, conflicting, or unauthorized input only when that condition can prevent or corrupt an established result. When you reach for validation or a defensive path, first find the owner's contract; if it already closes the case, add nothing.
 
@@ -186,4 +189,5 @@ Finish when the artifact:
 - states one coherent target design;
 - keeps claims within their evidence and authority;
 - distinguishes adoption from implementation and validation;
-- lets a reader recover the overall result, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton.
+- lets a reader recover the overall result, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton;
+- gives a consumer, an operator, and the engineer who changes it next each what they need to act.

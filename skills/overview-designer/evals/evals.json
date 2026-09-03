@@ -124,7 +124,7 @@
         "[single-authority] Make Preference Service the sole authority and mutation owner for notification preference decisions; Account, Campaign and Support may consume bounded projections but do not retain independent writable truth.",
         "[observable-obligation] Define how an accepted user change becomes effective for subsequent sends within the one-minute obligation and how consumers expose or handle an unavailable or lagging decision without silently using conflicting writable copies.",
         "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
-        "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition.",
+        "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition, and states the obligation the retired reconciliation path was built to serve and why that obligation no longer holds.",
         "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation."
       ]
     },
@@ -196,6 +196,7 @@
         "[single-owner-per-decision] Eligibility meaning (eligible / restricted / no_coverage / oversize) has one owner; Checkout only presents it. Catalog and Address remain fact owners consulted by the capability.",
         "[no-speculative-consumer] The design does not add generality, caching or a shared platform layer justified by Marketing's uncommitted interest.",
         "[failure-semantics] The design states what Checkout shows when the capability is unavailable or returns a malformed response, at the owner boundary.",
+        "[selection-cost-named] The selection basis states what Route A gives up (for example Checkout's dependency on Logistics availability before payment, or Logistics owning an additional consumer-facing capability) and who bears it.",
         "[artifact-and-claim-boundary] Only evals/files/12/design/system-design.md is modified; the design is not presented as implemented or validated."
       ]
     },
