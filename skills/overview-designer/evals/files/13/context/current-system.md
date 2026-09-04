@@ -5,5 +5,5 @@
 - Audit Service currently applies no retention; the store has grown since launch.
 - A nightly maintenance job framework exists and is used by other services to run per-tenant tasks.
 - Deletion of a partition is atomic and cheap; deletion of individual events within a partition is not supported by the store.
-- Compliance reads are made by a small internal tool that queries Audit Service; there is no external consumer of the retention decision.
+- Compliance reads are made by a small internal tool that queries Audit Service. No consumer can read the store directly, so Audit Service can make an expired partition unreadable at the policy boundary before the nightly job physically deletes it. There is no external consumer of the retention decision.
 - The store, the maintenance framework and the bus are all region-scoped resources. Nothing in the current platform is multi-region.

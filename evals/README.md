@@ -41,7 +41,7 @@
 - `ux-reviewer` 覆盖有证据支持的体验问题与不应臆造问题的完整路径；
 - `e2e-verifier` 包含两个 planning-only case 和一个可真实执行的隔离 CLI 旅程；
 - `supervisor` 包含恢复后专业委派准备、异步状态守护、合并既有普通 Worker 结果后收敛终态、删除专业能力后的负向路由、两个真实 Worker 闭环，以及针对真实使用缺陷的回归：能力目录只在正确时机刷新、兼容查询合并为一个 explore Worker、不兼容授权边界保持拆分、新 checkpoint 优先使用有效既有载体或 Owner 项目 `.supervisor/`、无项目时回退系统临时目录、使用真实 Markdown 内容，并在没有保留义务时清理；
-- `overview-designer` 覆盖两个不同领域的完整设计重写、greenfield 目标设计、责任边界无法闭合时的正向系统重构，以及显式调用但实际不是目标设计任务时的退出；同时验证错误理论锚定、已采纳路线失效但无替换授权，以及仅证据修正时保持设计稳定。
+- `overview-designer` 覆盖完整设计重写、greenfield 目标设计、责任边界无法闭合时的正向系统重构，以及显式调用但实际不是目标设计任务时的退出；同时验证错误理论或技术边界导致的问题表述偏差、已采纳路线失效但无替换授权、证据修正与已接受 intent change 的分类、局部 Key Design 不扩张为全系统结构、两个可行方向间的 selection proof、未承诺未来不产生当前机制，以及通过责任归属调整消解同步问题。
 
 Prompt 只陈述真实任务、目标和用户授权；决定结论的事实放在 fixture 中。Expectations 以彼此可区分的必需结果为单位，同时覆盖副作用边界、证据范围和等价合法实现，避免把一种实现措辞当作唯一答案。`evals/run-evals` 使用 `pass_threshold: 1.0`，任一必需结果失败都会使 case 失败，不能由其他次要结果抵消。Reviewer 的正向 case 用于抑制“总是拒绝”的偏差；planning-only E2E case 必须把未执行门禁标为 `Not Requested`，不能把 fixture 未提供的 cleanup owner 当作 Skill 应当臆造的事实。它应把缺失 owner 或 retention policy 记录为未来执行前置或事实恢复缺口。本地执行 case 只证明其隔离 fixture，不代表真实外部产品旅程。
 

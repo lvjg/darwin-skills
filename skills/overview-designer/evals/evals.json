@@ -79,13 +79,13 @@
     {
       "id": 5,
       "prompt": "$overview-designer 根据 `evals/files/5/context/corrected-evidence.md` 修正并重写 `evals/files/5/design/system-design.md`。设计路线已经确认，本次没有重新设计授权；只修改该设计文件，不实现代码。",
-      "expected_output": "The artifact corrects the current endpoint evidence while preserving the adopted gateway projection design. It does not manufacture a route revision, revision record, migration, compatibility layer or new recovery machinery from an evidence-only correction.",
+      "expected_output": "The artifact corrects the current endpoint evidence while preserving the adopted gateway projection design and its confirmed administrator-visible fields. It does not expose artifact_digest merely because it exists in the owner contract, or manufacture a route revision, revision record, migration, compatibility layer or new recovery machinery from an evidence-only correction.",
       "files": [
         "evals/files/5/context/corrected-evidence.md",
         "evals/files/5/design/system-design.md"
       ],
       "expectations": [
-        "[evidence-correction-only] Replace the obsolete /build-info evidence with the authoritative /internal/build-manifest endpoint and its current response contract.",
+        "[evidence-correction-only] Replace the obsolete /build-info evidence with the authoritative /internal/build-manifest endpoint while preserving the confirmed build_id, source_revision and built_at projection; artifact_digest is not added to the UI result without a new accepted obligation.",
         "[route-preservation] Preserve the confirmed build-service to gateway to admin-UI projection route and its responsibility boundaries.",
         "[no-invented-revision] Do not claim a route change or substantive design revision, and do not create a Revision Record for the evidence correction alone.",
         "[no-lifecycle-expansion] Do not add dual endpoint support, migration, persistent synchronization, cache, event stream or additional recovery state without an established obligation.",
@@ -106,7 +106,7 @@
         "[authority-and-result] Keep Policy Service authoritative for accepted policy content and revision identity; each regional runtime serves only an applied accepted revision and exposes its applied revision or an owned unavailable/lagging result.",
         "[minimal-capability-route] Reuse the existing durable regional bus and immutable revision read rather than adding a second authority, polling controller, global cache, database or parallel event system.",
         "[contract-and-state-formation] Define the published revision handoff, receiver validation, idempotent or superseding regional application, consumer-visible behavior for invalid or unavailable revisions, and the minimal durable applied-revision state needed for local serving.",
-        "[failure-and-convergence] Define retry, supersession and terminal unresolved failure ownership without inventing rollback history, offline edit or multi-version retention obligations.",
+        "[failure-and-convergence] Use the accepted_at-to-readiness contract to make the five-second result decidable: each active region is either ready on the accepted revision or exposes policy_lagging and serves an unavailable result; define retry, supersession and terminal unresolved failure ownership without inventing rollback history, offline edit or multi-version retention obligations.",
         "[artifact-boundary] Only evals/files/6/design/system-design.md is created or modified, and the proposal is not presented as implemented, deployed or externally validated."
       ]
     },
@@ -122,8 +122,8 @@
       "expectations": [
         "[restructuring-selected] Select a structural responsibility change rather than extending the existing three-writer route with another reconciliation mechanism.",
         "[single-authority] Make Preference Service the sole authority and mutation owner for notification preference decisions; Account, Campaign and Support may consume bounded projections but do not retain independent writable truth.",
-        "[observable-obligation] Define how an accepted user change becomes effective for subsequent sends within the one-minute obligation and how consumers expose or handle an unavailable or lagging decision without silently using conflicting writable copies.",
-        "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
+        "[observable-obligation] Close the one-minute result at send time by comparing each consumer's applied projection with Preference Service's authoritative current decision and revision, or by an equally evidenced authoritative read; withhold the send with an owned unavailable result when the decision cannot be obtained or the projection is stale. Durable event delivery alone does not prove the time bound.",
+        "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, the authoritative pre-send decision boundary, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
         "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition, and states the obligation the retired reconciliation path was built to serve and why that obligation no longer holds.",
         "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation."
       ]
@@ -144,8 +144,8 @@
     },
     {
       "id": 9,
-      "prompt": "$overview-designer 根据 `evals/files/9/context/` 中已接受的新义务，在已确认路线内补全 `evals/files/9/design/system-design.md`。本次是路线内的设计修订，不允许替换路线；请按文档现有约定记录修订。只修改该设计文件，不实现代码。",
-      "expected_output": "A within-route design revision that projects failure_code (not failure_detail) through the existing gateway, and records exactly that substantive change in the existing revision record.",
+      "prompt": "$overview-designer 根据 `evals/files/9/context/` 中已接受的新义务，在不替换已确认路线的前提下补全 `evals/files/9/design/system-design.md`。新义务改变了 required result；请正确分类并按文档现有约定记录修订。只修改该设计文件，不实现代码。",
+      "expected_output": "An accepted intent change within the unchanged route that projects failure_code (not failure_detail) through the existing gateway and records exactly that substantive change in the existing revision record.",
       "files": [
         "evals/files/9/context/current-system.md",
         "evals/files/9/context/new-obligation.md",
@@ -153,11 +153,11 @@
         "evals/files/9/design/system-design.md"
       ],
       "expectations": [
-        "[within-route-revision] The design adds a failure reason to the operator view by extending the existing Export Service -> Gateway -> Operations UI projection; it does not replace the route, add a new service, store or event stream.",
+        "[intent-change-within-existing-route] The design classifies the accepted new required result as an intent change, adds a failure reason through the existing Export Service -> Gateway -> Operations UI projection, and does not replace the route or add a new service, store or event stream.",
         "[security-boundary-respected] `failure_code` is projected to authorized operators; `failure_detail` is stated not to leave Export Service, citing the security owner's ruling from the fixture.",
         "[derived-from-owner] The failure reason shown is derived from Export Service's `failure_code`; the design does not have the UI or Gateway infer a reason from state or timing.",
         "[revision-record-present-and-bounded] The existing revision record table gains one entry describing the substantive change (failure reason projection), its impact, and its basis (the accepted new obligation). The prior entry is preserved. No entries are added for wording or evidence-only changes.",
-        "[classification-correct] The artifact treats this as a design revision within the adopted route, not as an evidence correction and not as a route change; design status remains Confirmed or is set Pending Confirmation only with a stated reason.",
+        "[classification-correct] The artifact treats this as an accepted intent change whose consequences stay within the adopted route, not as an evidence correction, route change or merely within-route design revision; design status remains Confirmed because the actual authority has already accepted the changed result.",
         "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated."
       ]
     },
@@ -178,6 +178,25 @@
         "[downstream-preserved] Payment and Fulfillment continue to key their exactly-once effects on `order_id`; the design does not add a second idempotency layer there.",
         "[support-explanation] Support can identify a suppressed duplicate from Order Service records without a customer-facing list or new store.",
         "[artifact-and-claim-boundary] Only evals/files/10/design/system-design.md is modified; the design is not presented as implemented or validated."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "$overview-designer 根据 `evals/files/11/context/`，只补全 `evals/files/11/design/gateway-download-authorization.md` 这个局部 Key Design。遵守已采用的外围设计和外部 owner contract；不要扩写成完整系统设计，也不要实现代码。",
+      "expected_output": "A local Gateway download-authorization design replaces the template-shaped draft. It states the scoped judgment, inputs, outputs, responsibility boundary and surrounding handoffs without creating Overall Design or Key Designs, keeps authorization meaning with Access Service, and exposes the unavailable stable denial-reason contract as an external condition rather than inventing or changing it.",
+      "files": [
+        "evals/files/11/context/root-intent.md",
+        "evals/files/11/context/current-system.md",
+        "evals/files/11/design/gateway-download-authorization.md"
+      ],
+      "expectations": [
+        "[local-skeleton-only] Replace the draft with one local design judgment and only the inputs, outputs, responsibility boundary, handoffs and supporting detail it depends on; do not create an Overall Design or Key Designs structure or restate the complete export-download system.",
+        "[scoped-operating-result] State that Download Gateway accepts an authenticated actor and completed-export handoff and returns exactly one of a five-minute signed link, bounded denial, or unavailable result without becoming export or authorization authority.",
+        "[surrounding-owners-preserved] Keep Export Service authoritative for completion and artifact identity, Access Service authoritative for allow or deny, and the object-store signer responsible for URL issuance; reference these surrounding contracts without redesigning them.",
+        "[external-contract-condition] Do not infer a denial reason from request or export fields. Record stable denial reason presentation as conditional on Access Service owner acceptance of a reason-code contract, and identify that owner decision without silently adopting the change.",
+        "[handoff-and-failure] Validate the completed-export handoff and require an allow result before signing; present deny and dependency or signer failure as distinct owned outcomes, never use a stale authorization decision, and do not expose object-store credentials.",
+        "[no-unsupported-state] Remove the proposed authorization cache and history because no active obligation or consumer requires them.",
+        "[artifact-and-claim-boundary] Modify only evals/files/11/design/gateway-download-authorization.md and do not claim implementation, deployment or external validation."
       ]
     },
     {
@@ -203,7 +222,7 @@
     {
       "id": 13,
       "prompt": "$overview-designer 根据 `evals/files/13/context/` 重写 `evals/files/13/design/system-design.md`，形成单区域租户审计日志保留期的目标系统设计。只修改该设计文件，不实现代码。",
-      "expected_output": "A minimal single-region retention design that reuses Tenant Config history and partition deletion, adds no multi-region machinery, and states which decisions it deliberately leaves open and which it closes.",
+      "expected_output": "A minimal single-region retention design that uses the UTC calendar-day policy, Tenant Config history, read-time expiry enforcement and later atomic partition deletion, adds no multi-region machinery, and states which decisions it deliberately leaves open and which it closes.",
       "files": [
         "evals/files/13/context/current-system.md",
         "evals/files/13/context/root-intent.md",
@@ -211,11 +230,12 @@
       ],
       "expectations": [
         "[no-uncommitted-build] The design does not introduce a region-aware policy registry, cross-region replication, pluggable deletion backend, or any mechanism justified only by possible future multi-region expansion.",
-        "[reuse-established-capabilities] Retention decisions derive from Tenant Config Service's `audit_retention_days` and its existing change history; deletion uses atomic partition deletion via the nightly maintenance framework.",
+        "[retention-boundary] Apply the setting effective for each UTC event day, make the partition unreadable at the start of its expiry day through Audit Service even when physical deletion is delayed, and state that a later retention extension does not restore expired data.",
+        "[reuse-established-capabilities] Retention decisions derive from Tenant Config Service's `audit_retention_days` and its existing change history; physical cleanup uses atomic partition deletion via the nightly maintenance framework without becoming the unreadability boundary.",
         "[provability] Compliance can prove the effective retention period on any past date by reading Tenant Config's setting history (or an equivalent owner-held record), without Audit Service becoming a second authority for the setting.",
         "[open-and-closed-decisions-named] The artifact explicitly names which decisions it deliberately leaves open for a possible future multi-region deployment (e.g., where the retention authority would live per region) and which it closes now, each with a one-line reason, without proposing phases, roadmap or timelines.",
         "[no-roadmap] There is no 'phase 2', 'future work' roadmap, or compatibility path for the uncommitted multi-region case.",
-        "[failure-semantics] The design states what happens when a nightly deletion fails or a setting change arrives late, at the owning boundary.",
+        "[failure-semantics] A failed or late nightly deletion remains observable and retryable but cannot make an expired partition readable; a setting change takes effect only at its next UTC day boundary and is resolved from Tenant Config history.",
         "[artifact-and-claim-boundary] Only evals/files/13/design/system-design.md is modified; the design is not presented as implemented or validated."
       ]
     },
