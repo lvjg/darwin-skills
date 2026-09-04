@@ -1,13 +1,13 @@
 ---
 name: overview-designer
-description: Use only when the user explicitly invokes $overview-designer to create, complete, revise, or rewrite a system-level design artifact, or to drill down into a specific key design or local part of one. Do not use for current-state explanation, descriptive overview, implementation task planning, read-only review, code review, debugging, or delivery acceptance.
+description: Use only when the user explicitly invokes $overview-designer to create a system-level design artifact, or to modify an existing one by completing, revising, or rewriting it, including drilling into a specific key design or local part of it. Do not use for current-state explanation, descriptive overview, implementation task planning, read-only review, code review, debugging, or delivery acceptance.
 ---
 
 # Overview Designer
 
 ## Purpose and Boundaries
 
-You are designing this system for the people who rely on it, run it, and will change it next. A design that is merely sound and minimal has cleared the floor; you are after the structure the problem itself would choose.
+You are designing this system for the people who rely on it, run it, and will change it next. Sound and minimal is necessary, not the goal; you are after the structure that best fits the problem's obligations, authority, and change, without adding machinery nothing supports.
 
 Form the target system design the user needs—the whole system, or the key design or local part the user names—and express it as a coherent design artifact. Start from the observable result and the obligation behind it, establish the evidence-backed task model, explore and deepen viable system directions, form the smallest complete target design, challenge both the task model and the design, and draft only after the judgment converges. Explain the current system only when it establishes a fact, problem, preservation obligation, constraint, or evolution condition that changes the target design.
 
@@ -27,7 +27,7 @@ Here you settle what result must hold, whose decision each part of it is, and ho
 
 Identify who owns intent, external commitments, facts, and route adoption, and whether route selection or redesign has been delegated within fixed outcome, scope, constraint, and risk bounds. Any route may be challenged, but finding that an adopted route is invalid does not itself authorize selecting a replacement. Without route-change authority, preserve a valid adopted route; if evidence invalidates it, stop extending it, expose the conflict and viable alternatives, and leave the route decision to its authority.
 
-For completion or rewrite, establish the revision anchor from the latest applicable authority and evidence: required judgment, outcomes and preserved behavior, scope and non-goals, constraints and allowed degradation, adopted route, acceptance meaning, current evidence, still-material design content, and the source of each consequential item. Applicable means governing for this scope and authority, not merely the newest text. Stage 4 classifies the final revision; do not decide it here.
+For completion, revision, or rewrite, establish the revision anchor from the latest applicable authority and evidence: required judgment, outcomes and preserved behavior, scope and non-goals, constraints and allowed degradation, adopted route, acceptance meaning, current evidence, still-material design content, and the source of each consequential item. Applicable means governing for this scope and authority, not merely the newest text. Stage 4 classifies the final revision; do not decide it here.
 
 ### Exit
 
@@ -37,7 +37,7 @@ Proceed when each of the following can be stated independently of the repository
 - scope, non-goals, and preservation obligations;
 - material constraints and allowed degradation;
 - who owns intent, facts, and route adoption, and whether route change is permitted;
-- the revision anchor, when completing or rewriting;
+- the revision anchor, when completing, revising, or rewriting;
 - the unknowns that could change the judgment.
 
 ## Stage 2: Establish the Evidence-Backed Task Model
@@ -48,15 +48,15 @@ Establish the smallest task-specific representation of the system and design pro
 
 ### Work
 
-Here you come to know the system well enough to say what must never break, what is essential and what is accidental, and whose the facts are—before you form any opinion about what it should become. Plan the smallest investigation that can change the result, obligation, responsibility boundary, viable direction, acceptance, or major risk. When an existing path matters, trace one representative scenario end to end using actual project names. Locate the responsible boundary for every material fact, rule, decision, state change, effect, and recovery action. Dependencies, reuse, proximity, and call order show collaboration, not ownership.
+Here you come to know the system well enough to say what must never break, which complexity still constrains and which is only current state, and whose the facts are—before you form any opinion about what it should become. Plan the smallest investigation that can change the result, obligation, responsibility boundary, viable direction, acceptance, or major risk. When an existing path matters, trace one representative scenario end to end using actual project names. Locate the responsible boundary for every material fact, rule, decision, state change, effect, and recovery action. Dependencies, reuse, proximity, and call order show collaboration, not ownership.
 
 For material information and handoffs, establish why the system depends on them, which source determines their meaning, what the receiver can observe, how validity and conflicts are handled, and what follows partial or indeterminate completion. Treat proposed changes to externally owned contracts as route-changing conditions. Establish the current contract, semantic owner, actual consumers, authority to request a change, and owner acceptance. Until acceptance, keep contract-dependent conclusions conditional and separately test the unchanged contract and the smallest system-owned mapping.
 
 Form a provisional task model from evidence and authority rather than generic architecture slogans or invented terminology. It should contain only what can change the design:
 
 - the observable result and the obligation behind it;
-- what the system must never violate, stated as facts a design can be checked against;
-- which of the current system's complexity the problem itself requires and which only a past choice requires—only the former constrains the target design;
+- non-negotiable obligations, each with the authority or active contract that establishes it;
+- which of the current system's complexity the problem requires, and which a past choice left behind that still carries an active obligation, consumer, contract, or transition cost—complexity carrying none of these is current state to challenge, not a constraint;
 - relevant facts, decisions, state, effects, authorities, and consumers;
 - causal relationships and structural tensions shaping the solution space;
 - hard constraints, preserved behavior, and active commitments;
@@ -71,7 +71,7 @@ Treat theories, analogies, patterns, and model-generated abstractions as hypothe
 Proceed when:
 
 - every relevant current-system claim is bounded by its evidence;
-- what must never be violated is stated, and current complexity is separated into what the problem requires and what a past choice left behind;
+- non-negotiable obligations are stated with their source, and current complexity is separated into what still constrains the design and what is only current state;
 - the design problem and its causal model are explicit;
 - the conditions that would change direction are visible;
 - every remaining unknown is immaterial to the next design judgment, explicitly conditional, or assigned to its fact or decision owner (the **unknown rule**);
@@ -85,9 +85,9 @@ Use breadth and depth together: discover genuinely different system directions, 
 
 ### Work
 
-Here you form the design: from the obligations outward, from the simplest viable route upward, from more than one reading of the problem, toward the smallest structure the domain would recognize as its own.
+Here you form the design: from the obligations outward, from the most direct plausible route upward, from more than one reading of the problem, toward the smallest structure the domain would recognize as its own.
 
-Before exploring directions, write the most naive route that satisfies the established obligations; every structure you add beyond it must name what the naive route cannot do.
+Before exploring directions, form the most direct plausible route as a comparison baseline; do not assume it is valid, and do not write it into the artifact. Every structure you add beyond it must name what the baseline cannot do.
 
 Derive your directions from the task model before you select one. Wherever it is plausible, consider changing the system directly, reusing a boundary or maintained capability that already owns the responsibility, deleting machinery the result does not need, moving a responsibility or information authority to where it belongs, and taking a structurally different route. When the current responsibility, authority, state, or change boundaries cannot close the result, restructuring the system is an ordinary candidate, not a last resort. Keep the current route among the candidates only while it remains viable. You are looking for genuinely different directions, so stop when the real ones are on the table: a fixed number of alternatives, or variants that differ only in implementation, adds nothing. When the task model records an alternative problem representation, derive at least one direction from it, and for each direction ask whether moving or removing a responsibility dissolves the problem rather than solving it.
 
@@ -97,7 +97,7 @@ Close each plausible direction only as far as you need to compare it on those cr
 
 For each consequential choice that has a real alternative, keep a compact **selection proof**: the direction you selected, the obligations it satisfies, the strongest viable alternative, why the simpler route falls short, what the selected route gives up and who bears that, the evidence boundary, and the condition under which you would reconsider. A fact, a constraint, an inevitable consequence, or an interchangeable implementation is not a choice; give it no decision record. While missing evidence or an external authority can still change the route, hold it as conditional.
 
-Now form the selected route's operating model: how it is initiated, who collaborates, which facts and authorized decisions it rests on, what state it must hold, what effects it produces, where it hands off, what result it makes observable, and who takes over on failure. Decide which affected responsibilities and paths remain, move, merge, or disappear. Prefer boundaries where responsibility, change, authority, and knowledge coincide, so that one change touches one place and the party that decides is the party that knows.
+Now form the selected route's operating model: how it is initiated, who collaborates, which facts and authorized decisions it rests on, what state it must hold, what effects it produces, where it hands off, what result it makes observable, and who takes over on failure. Decide which affected responsibilities and paths remain, move, merge, or disappear. Where one boundary legitimately owns responsibility, change, authority, and knowledge together, prefer it, so that one change touches one place and the party that decides is the party that knows; otherwise keep the distinct owners and make the authoritative handoff between them explicit.
 
 For every material contract or handoff your route creates, replaces, or reinterprets, design only the guarantees the result depends on, and state the **handoff guarantee**: what the sender promises, where the receiver accepts or validates, and what the consumer sees when the contract is violated. Where identity, mutation, concurrency or idempotency, dependency, validation, authorization, or result semantics are already established, either preserve them or supersede them explicitly. Design handling for absent, malformed, stale, conflicting, or unauthorized input where that condition can prevent or corrupt an established result, and nowhere else. When you reach for validation or a defensive path, first find the owner's contract; if it already closes the case, add nothing.
 
@@ -112,8 +112,8 @@ Proceed when:
 - every invalid direction is eliminated with the obligation or constraint it violates;
 - the selected or conditional route can be argued end to end: result, responsibilities, material information and state, failure semantics, lifecycle implications, and evidence limits;
 - each consequential choice with a real alternative has its selection proof;
-- each material handoff has its handoff guarantee—sender contract, receiver validation boundary, and consumer-visible result of a violation—each with an owner;
-- established identity, mutation, concurrency or idempotency, dependency, validation, authorization, and result semantics are each preserved or explicitly superseded;
+- each material handoff has its handoff guarantee—sender contract, receiver validation boundary, and consumer-visible result of an applicable violation—each with an owner;
+- each applicable established semantic—identity, mutation, concurrency or idempotency, dependency, validation, authorization, result—is preserved or explicitly superseded;
 - the independently design-significant mechanisms are identified.
 
 ## Stage 4: Argue, Challenge, and Converge the Design
@@ -138,9 +138,9 @@ For the overall route and each consequential choice with a real alternative, att
 
 Pick the few end-to-end scenarios and changes most likely to disprove a material claim, and run the design through them. Name what in the design bears load—what must hold under the changes and failures you consider most likely—and what is negotiable. Trace facts, decisions, state, handoffs, effects, and consumer-visible results through the success path, and through only those failure, concurrency, re-entry, transition, rollback, or change-propagation paths that could change your conclusion. If a category has nothing in it, leave it empty; inventing an obligation or a mechanism to fill it is a design error.
 
-Try to break every Stage 3 mapping from outcome to owner and mechanism, and from new mechanism to its basis. Take each new mechanism out and say what breaks, for whom, and whether that is an established obligation; keep it only if it is. Before you remove an existing mechanism, say what obligation it was built to serve and what evidence shows that obligation no longer holds. When you notice a window in which a crash could occur, do not conclude a recovery obligation from the window alone. If a mechanism has no basis, or durable state it requires has no closed lifecycle, the affected design is invalid; return it to Stage 3 rather than finishing it here.
+Try to break every Stage 3 mapping from outcome to owner and mechanism, and from new mechanism to its basis. Take each new mechanism out and say what breaks, for whom, and whether that is an established obligation; keep it only if it is. Before you remove an existing mechanism, identify any active obligation, contract, or consumer it still serves; do not invent a historical justification when none is evidenced. When you notice a window in which a crash could occur, do not conclude a recovery obligation from the window alone. If a mechanism has no basis, or durable state it requires has no closed lifecycle, the affected design is invalid; return it to Stage 3 rather than finishing it here.
 
-Hit each Stage 3 handoff guarantee with the violation most likely to disprove its result. A guarantee you find missing or unowned goes back to Stage 3. When completing or rewriting, classify each guarantee the revision anchor still holds active as preserved, intentionally changed with authority, corrected by evidence, or no longer applicable for a reason you state.
+Hit each Stage 3 handoff guarantee with the violation most likely to disprove its result. A guarantee you find missing or unowned goes back to Stage 3. When completing, revising, or rewriting, classify each guarantee the revision anchor still holds active as preserved, intentionally changed with authority, corrected by evidence, or no longer applicable for a reason you state.
 
 #### Converge
 
@@ -148,7 +148,7 @@ Revise the design only when new evidence changes a premise, a logical contradict
 
 Return each failure to the stage that owns that kind of judgment; reopen only dependent conclusions and remove their superseded state, recovery, compatibility, migration, and evolution as one semantic chain. An expression-only gap belongs to Stage 5.
 
-For completion or rewrite, classify the converged design against the revision anchor. Stage 4 is the sole owner of this classification:
+For completion, revision, or rewrite, classify the converged design against the revision anchor. Stage 4 is the sole owner of this classification:
 
 - An **intent change** alters the required result, scope, constraint, allowed degradation, or acceptance.
 - An **evidence correction** changes what can be claimed about current behavior without changing the design.
@@ -167,7 +167,7 @@ Converge when:
 - the route and each significant mechanism has an evidence-bounded design argument;
 - no identified valid route is stronger on the established criteria;
 - the Stage 2 unknown rule holds for the converged design;
-- for completion or rewrite, the revision classification is decided;
+- for completion, revision, or rewrite, the revision classification is decided;
 - design status is set.
 
 ## Stage 5: Draft and Reconcile the Artifact
@@ -178,9 +178,9 @@ Express the converged target design without allowing document structure to creat
 
 ### Work
 
-Here you let the artifact be nothing more than the design you have already converged. Enter only when the Stage 2–4 exits hold. Read `references/overview-standard.md` in full. Map the overall operating model to Overall Design and independently design-significant mechanisms to Key Designs. Keep consequential choices with their owning mechanism. Include evolution, acceptance, unresolved matters, status, and a revision record only when Stage 4 established that they are material. Do not output investigation steps, abandoned routes, method commentary, review ceremony, or a standalone Key Decisions chapter unless a rejected route still determines a live tradeoff or evolution condition.
+Here you let the artifact be nothing more than the design you have already converged. Enter only when the Stage 1–4 exits hold. Read `references/overview-standard.md` in full. Map the overall operating model to Overall Design and independently design-significant mechanisms to Key Designs. Keep consequential choices with their owning mechanism. Include evolution, acceptance, unresolved matters, status, and a revision record only when Stage 4 established that they are material. Do not output investigation steps, abandoned routes, method commentary, review ceremony, or a standalone Key Decisions chapter unless a rejected route still determines a live tradeoff or evolution condition.
 
-For completion or rewrite, compare the finished artifact with the revision anchor, still-material existing content, and the working change plan when used. Confirm that every semantic change is expressed; preserved or reassigned responsibilities have owners; removed mechanisms have a basis and closed consequences; and restructuring did not drop a valid handoff, failure response, compatibility obligation, or acceptance condition. Return any semantic gap to its owning stage instead of concealing it with drafting.
+For completion, revision, or rewrite, compare the finished artifact with the revision anchor, still-material existing content, and the working change plan when used. Confirm that every semantic change is expressed; preserved or reassigned responsibilities have owners; removed mechanisms have a basis and closed consequences; and restructuring did not drop a valid handoff, failure response, compatibility obligation, or acceptance condition. Return any semantic gap to its owning stage instead of concealing it with drafting.
 
 ### Exit
 
@@ -190,4 +190,4 @@ Finish when the artifact:
 - keeps claims within their evidence and authority;
 - distinguishes adoption from implementation and validation;
 - lets a reader recover the overall result, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton;
-- gives a consumer, an operator, and the engineer who changes it next each what they need to act.
+- gives each applicable party—consumer, operator, the engineer who changes it next—what they need to act.

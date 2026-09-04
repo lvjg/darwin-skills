@@ -34,7 +34,7 @@ Darwin 是一组面向 Codex 的系统级工程 Skills，用于在复杂任务�
 | Skill | 适用场景 | 核心做法 |
 | --- | --- | --- |
 | [`$supervisor`](skills/supervisor/SKILL.md) | 在跨操作、交接、等待和状态变化的长程任务中维持可恢复控制。 | 维护目标、决定与授权依据、权威对象、未完成事项、证据和活动动作；每轮确认实际责任方，把一个受控动作派给匹配的专业 Worker 或普通 Worker，并处理等待、交回、未知副作用、恢复和重新建立基线。 |
-| [`$overview-designer`](skills/overview-designer/SKILL.md) | 创建、补全或重写目标系统设计产物。 | 从可观察结果和真实约束建立问题，比较可行路线与最强简单替代，明确责任、合同、状态、失败和演进语义，再用关键场景挑战设计并形成最小完整方案。 |
+| [`$overview-designer`](skills/overview-designer/SKILL.md) | 创建目标系统设计产物，或对既有设计进行补全、修订、重写，包括对某个关键设计或局部的下钻设计。 | 从可观察结果和真实约束建立问题，比较可行路线与最强简单替代，明确责任、合同、状态、失败和演进语义，再用关键场景挑战设计并形成最小完整方案。 |
 | [`$design-reviewer`](skills/design-reviewer/SKILL.md) | 独立评审尚未实施的技术设计，包括 Agent/Harness 设计。 | 重建问题和真实起点，挑战关键设计判断；涉及 Agent/Harness 时检查模型自由度、有效组合、确定性约束、权威效果和验证设计，但不把设计判断扩张为交付或运行验收。 |
 | [`$code-reviewer`](skills/code-reviewer/SKILL.md) | 验收指定的代码交付，而不是根据 diff 大小、测试数量、已批准设计或实现者声明判断完成。 | 从真实消费者和实际选中路径检查实现、接线、合同、状态、依赖、失败语义、迁移、运维和验证证据；对模型等非确定性运行行为的结论不超出相应证据。 |
 | [`$code-simplifier`](skills/code-simplifier/SKILL.md) | 在行为目标和代码候选边界已明确后，优化实现过程中产生的候选代码。 | 逐项解释候选的实质改动，删除没有现存义务的内容；对必要实现按实际问题选择复用既有能力、调整责任、简化流程或重组结构，并只为已成立的不变量、消费者或真实边界增加最小结构，最终证明行为不变且总维护负担下降。 |
@@ -81,7 +81,7 @@ npx skills add lvjg/darwin-skills --skill '*' --global --agent codex --yes
 ruby scripts/validate-skills.rb --base HEAD
 ```
 
-需要验证模型行为时，再按 [Skill 评测指南](evals/README.md) 运行独立 eval。静态包校验不证明行为正确，eval 也不替代发布结构检查。
+需要回归已覆盖的模型行为时，再按 [Skill 评测指南](evals/README.md) 运行独立 eval。eval 不是 benchmark 或行为真源；真实任务中的用户目标、领域权威和实际缺陷优先，不能为了通过 case 扭曲 Skill。静态包校验不证明行为正确，eval 也不替代发布结构检查。
 
 Pull Request 和 `main` 分支上的两类检查由 [Validation workflow](.github/workflows/validation.yml) 执行：`skill-packages` 校验全部 Skill 的静态发布合同，`eval-format` 用固定 Skill-Up 版本校验 Anthropic `evals.json`。PR 不调用模型；真实行为运行需要在目标 engine/model 和权限边界下另行执行。
 
