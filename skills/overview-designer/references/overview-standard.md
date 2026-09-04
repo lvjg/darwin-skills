@@ -20,6 +20,8 @@ Keep background to the observable result, impact, preserved behavior, allowed de
 
 ## Overall Design
 
+For a whole-system artifact, this chapter expresses the overall operating model; Key Designs express the independently design-significant mechanisms. For a key design or local scope, follow the scope rule above instead of this structure.
+
 Lead with a paragraph that independently states the operating conclusion: what the system does, who collaborates, who owns the decisive facts and decisions, how the parts produce the observable result, the material change from the relevant starting state, the governing limits, and—when a decision would be affected by a plausible but uncommitted future—what the design deliberately leaves open and what it closes. Include only applicable elements, and make clear when a route is proposed rather than implemented.
 
 Then trace a representative end-to-end flow using actual project objects and actions across initiation, facts, decisions, information or state changes, effects, result handoffs, and cross-mechanism failure takeover. Add a second flow only when its difference explains a material branch, change, or evolution requirement. Make responsibility boundaries and dependency direction visible where they determine the result. State what each Key Design contributes; leave its internal rules and local failure handling to its own section.
