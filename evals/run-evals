@@ -79,17 +79,21 @@ end
 
 failed_skills = []
 
-PROGRAM_OWNED_EXPECTATION_PREFIXES = %w[
-  [actual-worker-dispatch]
-  [single-worker-dispatch]
+WORKER_ROUNDTRIP_EXPECTATION_PREFIXES = %w[
+  [worker-roundtrip]
+  [single-worker-roundtrip]
 ].freeze
 CHECKPOINT_MARKDOWN_EXPECTATION = /\A\[checkpoint-markdown path=([^\s\]]+)\]/
 CHECKPOINT_ABSENT_EXPECTATION = /\A\[checkpoint-absent path=([^\s\]]+)\]/
 
-def program_owned_expectation?(expectation)
-  PROGRAM_OWNED_EXPECTATION_PREFIXES.any? { |prefix| expectation.start_with?(prefix) } ||
-    expectation.match?(CHECKPOINT_MARKDOWN_EXPECTATION) ||
-    expectation.match?(CHECKPOINT_ABSENT_EXPECTATION)
+def worker_roundtrip_expectation?(expectation)
+  WORKER_ROUNDTRIP_EXPECTATION_PREFIXES.any? { |prefix| expectation.start_with?(prefix) }
+end
+
+def program_owned_expectation?(expectation, engine:)
+  expectation.match?(CHECKPOINT_MARKDOWN_EXPECTATION) ||
+    expectation.match?(CHECKPOINT_ABSENT_EXPECTATION) ||
+    (engine == "codex" && worker_roundtrip_expectation?(expectation))
 end
 
 def checkpoint_program_expectations(item)
@@ -108,20 +112,24 @@ def checkpoint_program_expectations(item)
   end
 end
 
-def requires_actual_worker_dispatch?(item)
+def requires_worker_roundtrip?(item)
+  item.fetch("expectations").any? { |expectation| worker_roundtrip_expectation?(expectation) }
+end
+
+def requires_single_worker_roundtrip?(item)
   item.fetch("expectations").any? do |expectation|
-    expectation.start_with?("[actual-worker-dispatch]") ||
-      expectation.start_with?("[single-worker-dispatch]")
+    expectation.start_with?("[single-worker-roundtrip]")
   end
 end
 
-def requires_single_worker_dispatch?(item)
-  item.fetch("expectations").any? do |expectation|
-    expectation.start_with?("[single-worker-dispatch]")
-  end
+def bounded_codex_context?(arguments)
+  fork_turns = arguments["fork_turns"]
+  fork_turns == "none" ||
+    (fork_turns.is_a?(String) && fork_turns.match?(/\A[1-9]\d*\z/)) ||
+    (fork_turns.is_a?(Integer) && fork_turns.positive?)
 end
 
-def completed_worker_dispatch?(rollout_path, single_worker: false)
+def completed_codex_worker_roundtrip?(rollout_path, single_worker: false)
   collaboration_calls = {}
   completed_calls = {}
   worker_returns = []
@@ -146,7 +154,7 @@ def completed_worker_dispatch?(rollout_path, single_worker: false)
     next unless payload["name"] == "spawn_agent" && completed_calls.key?(call_id)
 
     arguments = JSON.parse(payload.fetch("arguments", "{}"))
-    next unless arguments["fork_turns"] == "none"
+    next unless bounded_codex_context?(arguments)
 
     output = JSON.parse(completed_calls.fetch(call_id))
     output["task_name"]
@@ -231,11 +239,11 @@ def verify_checkpoint_artifacts(output_dir, evals, previous_artifacts, case_patt
   errors
 end
 
-def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_patterns)
+def verify_codex_worker_roundtrips(output_dir, evals, previous_rollouts, case_patterns)
   required_cases = evals.fetch("evals").map do |item|
-    next unless requires_actual_worker_dispatch?(item)
+    next unless requires_worker_roundtrip?(item)
 
-    ["case-#{item.fetch("id")}", requires_single_worker_dispatch?(item)]
+    ["case-#{item.fetch("id")}", requires_single_worker_roundtrip?(item)]
   end.compact.to_h
   if case_patterns && !case_patterns.empty?
     required_cases.select! do |case_id, _single_worker|
@@ -254,18 +262,18 @@ def verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, case_p
     next unless required_cases.key?(case_id)
     seen_case_ids << case_id
     single_worker = required_cases.fetch(case_id)
-    next if rollouts.any? { |rollout| completed_worker_dispatch?(rollout, single_worker: single_worker) }
+    next if rollouts.any? { |rollout| completed_codex_worker_roundtrip?(rollout, single_worker: single_worker) }
 
     relative = Pathname.new(configuration_dir).relative_path_from(Pathname.new(output_dir))
     if single_worker
-      errors << "#{relative}: expectation [single-worker-dispatch] requires exactly one completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that Worker in this run's raw Codex rollout"
+      errors << "#{relative}: expectation [single-worker-roundtrip] requires the Codex evidence adapter to find exactly one completed Worker dispatch with bounded inherited context, a non-timeout completion observation, and a non-empty return"
     else
-      errors << "#{relative}: expectation [actual-worker-dispatch] requires a completed fork_turns=none collaboration.spawn_agent call, a non-timeout collaboration.wait_agent return, and a plaintext agent_message from that dispatched Worker in this run's raw Codex rollout"
+      errors << "#{relative}: expectation [worker-roundtrip] requires the Codex evidence adapter to find a completed Worker dispatch with bounded inherited context, a non-timeout completion observation, and a non-empty return"
     end
   end
   (required_cases.keys - seen_case_ids).each do |case_id|
-    marker = required_cases.fetch(case_id) ? "[single-worker-dispatch]" : "[actual-worker-dispatch]"
-    errors << "#{case_id}: expectation #{marker} has no raw Codex rollout from this run"
+    marker = required_cases.fetch(case_id) ? "[single-worker-roundtrip]" : "[worker-roundtrip]"
+    errors << "#{case_id}: expectation #{marker} has no execution trace available to the Codex evidence adapter"
   end
   errors
 end
@@ -283,39 +291,43 @@ eval_targets.each do |skill_dir, evals|
       context_files = item.fetch("files", []).to_h do |relative_path|
         [relative_path, fixture_content(skill_dir, relative_path)]
       end
-      abort "fixture reserves AGENTS.md for the evaluation harness" if context_files.key?("AGENTS.md")
+      if options.fetch(:engine) == "codex"
+        abort "fixture reserves AGENTS.md for the Codex adapter" if context_files.key?("AGENTS.md")
 
-      context_files["AGENTS.md"] = if skill_name == "supervisor"
-                                      <<~MARKDOWN
-                                        # Skill evaluation harness
+        context_files["AGENTS.md"] = if skill_name == "supervisor"
+                                        <<~MARKDOWN
+                                          # Skill evaluation harness
 
-                                        The user prompt explicitly invokes `$supervisor`. Any
-                                        user-visible notice before loading it must name the task-level
-                                        purpose without announcing the Skill read or internal control
-                                        mechanics. The root Supervisor must then read
-                                        `.agents/skills/supervisor/SKILL.md` completely before any task
-                                        action and follow it. A delegated
-                                        Worker must not adopt the Supervisor role from this repository
-                                        instruction; it follows the bounded handoff and completely reads
-                                        only any professional Skill explicitly invoked in that handoff.
-                                        Check the exact installed path before claiming a Skill is
-                                        unavailable. This instruction controls Skill loading only; the
-                                        user prompt and its authorization remain the task contract.
-                                      MARKDOWN
-                                    else
-                                      <<~MARKDOWN
-                                        # Skill evaluation harness
+                                          The user prompt explicitly invokes `$supervisor`. Any
+                                          user-visible notice before loading it must name the task-level
+                                          purpose without announcing the Skill read or internal control
+                                          mechanics. The root Supervisor must then read
+                                          `.agents/skills/supervisor/SKILL.md` completely before any task
+                                          action and follow it. A delegated
+                                          Worker must not adopt the Supervisor role from this repository
+                                          instruction; it follows the bounded handoff and completely reads
+                                          only any professional Skill explicitly invoked in that handoff.
+                                          Check the exact installed path before claiming a Skill is
+                                          unavailable. This instruction controls Skill loading only; the
+                                          user prompt and its authorization remain the task contract.
+                                        MARKDOWN
+                                      else
+                                        <<~MARKDOWN
+                                          # Skill evaluation harness
 
-                                        The user prompt explicitly invokes `$#{skill_name}`. Before any
-                                        task action, read `.agents/skills/#{skill_name}/SKILL.md`
-                                        completely and follow it. Check that exact path before claiming
-                                        the Skill is unavailable. This instruction controls Skill loading
-                                        only; the user prompt and its authorization remain the task
-                                        contract.
-                                      MARKDOWN
-                                    end
+                                          The user prompt explicitly invokes `$#{skill_name}`. Before any
+                                          task action, read `.agents/skills/#{skill_name}/SKILL.md`
+                                          completely and follow it. Check that exact path before claiming
+                                          the Skill is unavailable. This instruction controls Skill loading
+                                          only; the user prompt and its authorization remain the task
+                                          contract.
+                                        MARKDOWN
+                                      end
+      end
 
-      judge_expectations = item.fetch("expectations").reject { |expectation| program_owned_expectation?(expectation) }
+      judge_expectations = item.fetch("expectations").reject do |expectation|
+        program_owned_expectation?(expectation, engine: options.fetch(:engine))
+      end
       checkpoint_expectations = checkpoint_program_expectations(item)
       deterministic_expect = {}
       checkpoint_expectations.each do |expectation|
@@ -405,13 +417,21 @@ eval_targets.each do |skill_dir, evals|
     end
 
     puts "\n==> #{skill_name}"
-    previous_rollouts = options[:output_root] ? rollout_fingerprints(output_dir) : {}
+    previous_rollouts = if options[:output_root] && options.fetch(:engine) == "codex"
+                          rollout_fingerprints(output_dir)
+                        else
+                          {}
+                        end
     previous_checkpoint_artifacts = options[:output_root] ? checkpoint_artifact_fingerprints(output_dir) : {}
     succeeded = system(*command, chdir: skill_dir)
     if succeeded && !options[:dry_run] && options[:output_root]
-      dispatch_errors = verify_actual_worker_dispatches(output_dir, evals, previous_rollouts, options[:cases])
+      roundtrip_errors = if options.fetch(:engine) == "codex"
+                           verify_codex_worker_roundtrips(output_dir, evals, previous_rollouts, options[:cases])
+                         else
+                           []
+                         end
       checkpoint_errors = verify_checkpoint_artifacts(output_dir, evals, previous_checkpoint_artifacts, options[:cases])
-      program_errors = dispatch_errors + checkpoint_errors
+      program_errors = roundtrip_errors + checkpoint_errors
       unless program_errors.empty?
         warn program_errors.join("\n")
         succeeded = false

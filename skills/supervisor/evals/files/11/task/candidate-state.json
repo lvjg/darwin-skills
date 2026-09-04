@@ -1,0 +1,8 @@
+{
+  "repository": "connector-service",
+  "checkout": "/workspace/connector-service",
+  "branch": "feature/request-connector",
+  "head": "7e4c2d1",
+  "exists": true,
+  "source": "execution-environment candidate metadata"
+}

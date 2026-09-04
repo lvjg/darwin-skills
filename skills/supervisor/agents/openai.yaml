@@ -1,6 +1,6 @@
 interface:
   display_name: "Supervisor"
   short_description: "Control and recover long-running tasks by evidence"
-  default_prompt: "Start with one task-level clause such as: 'I’ll use Supervisor to keep this task recoverable and complete the current authorized domain obligation.' Do not say that a Skill or control workflow will be read or followed. Use $supervisor to maintain recoverable control and route established obligations without doing domain work or imposing a fixed sequence. Keep later updates in the task's language and surface only useful intent, progress, waits, results, blockers, or decisions."
+  default_prompt: "Use $supervisor to keep this multi-step task recoverable, delegate the current obligation to the right Worker, and converge on evidence without imposing a fixed workflow."
 policy:
   allow_implicit_invocation: false

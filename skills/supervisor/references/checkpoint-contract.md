@@ -1,6 +1,6 @@
 # Checkpoint 文件合同
 
-本合同只在 Supervisor 已确认当前控制信息必须在现有上下文之外继续存在、且不能仅从领域 Owner 的权威状态安全恢复时加载。Checkpoint 是 Supervisor 私有的当前控制快照，不是产品设计、任务报告、活动日志、证据库或 Worker 交接。
+本合同只在 Supervisor 已确认当前控制信息必须在现有上下文之外继续存在、且不能仅从领域 Owner 的权威状态安全恢复时加载。Checkpoint 是 Supervisor 私有的当前控制快照，不是产品设计、任务报告、活动日志、证据库或被委派执行者的交接材料。
 
 ## 选择唯一载体
 
@@ -10,11 +10,11 @@
 2. 当前任务存在属于交付 Owner、可写的项目根目录时，使用该项目下 `.supervisor/<task-id>.md`；
 3. 没有适用的项目根目录时，使用操作系统临时目录中的任务专属子目录及 `checkpoint.md`。
 
-多仓任务选择拥有当前交付物或主要副作用的项目根，而不是机械使用当前工作目录。没有稳定 task id 时使用不会与另一任务冲突的唯一名称。
+多仓任务选择拥有当前交付物或主要副作用的项目根，而不是机械使用当前工作目录。Task id 优先使用用户、任务或执行环境提供的稳定标识；都没有时，使用可识别任务的短名称加随机 UUID 或等价的抗冲突后缀，并在后续恢复中沿用同一名称。
 
-不得另建平行 checkpoint，也不得写入全局 `.codex`、`visualizations`、memory、session、Skill 安装目录、用户配置目录或仅因可写而选中的其他产品目录。项目内 checkpoint 是运行产物，不得被 stage、commit 或放入 MR。
+不得另建平行 checkpoint，也不得写入执行框架（harness）或其它工具拥有的全局状态、配置、缓存、日志、可视化、记忆或安装目录，也不得写入仅因可写而选中的其他产品目录。项目内 checkpoint 是运行产物，不得被 stage、commit 或放入 MR；不得为了它修改项目或 Git 配置。若当前执行边界无法保证它不进入产品提交，则该项目载体不适用，使用临时目录。
 
-项目目录必须实际拥有当前交付物或主要副作用；不得为了获得稳定路径而选用无关仓库。临时目录只保证当前 Host 和目录生命周期内的恢复，使用时在 checkpoint 中写明这一限制。项目根存在时不要仅因为临时目录足以覆盖当前等待就改用临时目录；但仍不得仅为同步委派创建 checkpoint。
+项目目录必须实际拥有当前交付物或主要副作用；不得为了获得稳定路径而选用无关仓库。临时目录只保证当前运行实例和目录生命周期内的恢复，使用时在 checkpoint 中写明这一限制。项目根存在时不要仅因为临时目录足以覆盖当前等待就改用临时目录；但仍不得仅为同步委派创建 checkpoint。
 
 ## 文件格式
 
@@ -28,7 +28,7 @@
 - Task: `<stable task reference>`
 - State: `Active | Waiting | Blocked | Complete`
 - Revision: `<only when stale snapshots must be distinguished>`
-- Recovery boundary: `<project/host/temp lifetime when material>`
+- Recovery boundary: `<project/runtime/temp lifetime when material>`
 
 ## Result and acceptance boundary
 
@@ -50,7 +50,7 @@
 
 ## Current action
 
-- Owner: <Worker 或真实领域 Owner>
+- Owner: <被委派执行者或真实领域 Owner>
 - Inputs: <有界引用>
 - Effect boundary: <允许作用与副作用>
 - Expected result: <可观察结果>
@@ -78,7 +78,7 @@
 
 用稳定、可读取的引用代替正文复制。设计决定当前路线时记录 `design ref`；设计可变时附可区分当前依据的版本。Complete 指向已验收产物及其 revision、commit 或 diff 依据，不用文件大小、行数或修改时间标识版本。
 
-不要求通用 action ID、runtime ref 或 Worker 身份协议。领域 Owner 提供恢复查询必需的稳定标识时，把它作为领域对象引用。
+不要求通用 action ID、runtime ref 或执行者身份协议。领域 Owner 提供恢复查询必需的稳定标识时，把它作为领域对象引用。
 
 ## 状态语义
 
@@ -99,7 +99,7 @@
 4. 返回、超时、失败或效果未知时，先对照原责任核对反馈并确定受支持的状态，再更新，之后才能重试或选择下一动作；
 5. 交还控制或进入 `Blocked` 前更新；完成时按下述退出规则处理载体。
 
-优先使用载体自身的版本；只有需要区分陈旧快照时才维护 revision。没有新权威状态的重复等待、轮询、普通进度、Skill 读取和内部路由不触发写入。
+优先使用载体自身的版本；只有需要区分陈旧快照时才维护 revision。没有新权威状态的重复等待、轮询、普通进度、能力读取和内部路由不触发写入。
 
 如果动作可能已经产生效果，但对应 `Waiting` 尚未落盘就发生中断，恢复时把效果视为未知，不得依据旧 `Active` 直接重试。恢复后先读取 checkpoint，再刷新可能变化的权威来源。
 
@@ -120,5 +120,5 @@
 - 用户决定、权威版本或对象状态改变后，依赖旧前提的动作、阻塞、结论和证据已经删除或替换；
 - 不同时保留“尚未发生”和“已经完成”的同一事实；
 - `Complete` 没有开放义务、活动动作或未知效果；
-- 不保存秘密、完整提示词、Skill 描述、能力目录、Worker 对话、旧候选、活动历史或未证明的未来阶段；
+- 不保存秘密、完整提示词、能力描述或目录、被委派执行者的对话、旧候选、活动历史或未证明的未来阶段；
 - 文件位置仍属于当前任务的恢复边界，并且不会进入产品提交。

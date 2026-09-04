@@ -15,8 +15,8 @@ evidence that the proposed design has been implemented.
 
 Current responsibility and authorization boundary:
 
-- The current Session system prompt's initial `Available skills` snapshot lists
-  only unrelated capabilities and omits every repository professional Skill.
+- The execution environment's current capability catalog lists only unrelated
+  capabilities and omits every repository professional Skill.
 - The Design Owner owns `design.md` and can rewrite it.
 - Independent design review and implementation are not yet eligible.
 

@@ -157,17 +157,20 @@ supervisor_file = ROOT.join("skills/supervisor/SKILL.md")
 if supervisor_file.file?
   supervisor_text = supervisor_file.read
   discovery_section = supervisor_text[/^## 发现专业能力\n(.*?)(?=^## |\z)/m, 1]
-  if discovery_section.nil?
-    errors << "skills/supervisor/SKILL.md: missing professional capability discovery section"
+  errors << "skills/supervisor/SKILL.md: missing professional capability discovery section" if discovery_section.nil?
+
+  fallback_file = supervisor_file.parent.join("references/capability-fallback.md")
+  if !fallback_file.file?
+    errors << "skills/supervisor/references/capability-fallback.md: missing"
   else
-    built_in_names = discovery_section.scan(/^- `\$([a-z0-9]+(?:-[a-z0-9]+)*)`\s*$/).flatten
-    expected_built_in_names = skill_names.reject { |name| name == "supervisor" }
-    duplicate_built_in_names = built_in_names.group_by(&:itself).select { |_name, items| items.length > 1 }.keys
-    unless duplicate_built_in_names.empty?
-      errors << "skills/supervisor/SKILL.md: duplicate built-in professional Skills #{duplicate_built_in_names.inspect}"
+    fallback_names = fallback_file.read.scan(/^- `([a-z0-9]+(?:-[a-z0-9]+)*)`\s*$/).flatten
+    expected_fallback_names = skill_names.reject { |name| name == "supervisor" }
+    duplicate_fallback_names = fallback_names.group_by(&:itself).select { |_name, items| items.length > 1 }.keys
+    unless duplicate_fallback_names.empty?
+      errors << "#{fallback_file.relative_path_from(ROOT)}: duplicate professional Skills #{duplicate_fallback_names.inspect}"
     end
-    unless built_in_names.sort == expected_built_in_names.sort
-      errors << "skills/supervisor/SKILL.md: built-in professional Skills must exactly match repository specialists (expected #{expected_built_in_names.sort.inspect}, got #{built_in_names.sort.inspect})"
+    unless fallback_names.sort == expected_fallback_names.sort
+      errors << "#{fallback_file.relative_path_from(ROOT)}: fallback Skills must exactly match repository specialists (expected #{expected_fallback_names.sort.inspect}, got #{fallback_names.sort.inspect})"
     end
   end
 end
