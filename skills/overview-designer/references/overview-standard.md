@@ -2,7 +2,7 @@
 
 Use this standard only to express the target-design judgment completed in `SKILL.md`. Do not decide the goal, route, mechanism significance, ownership, state, failure semantics, adoption, or revision classification while drafting. Return an exposed semantic gap to the stage that owns it instead of inventing a mechanism through document structure.
 
-When the requested scope is a key design or a local part of an existing design, express only that judgment and its inputs, outputs, responsibilities, and constraints toward the surrounding system. Do not build a full Overall Design or additional Key Designs to satisfy the template; reference the adopted surrounding design where it governs.
+The artifact has one of two skeletons, decided by the requested scope. A whole-system artifact uses Overall Design plus Key Designs, as described below. A key design or local part of an existing design uses a local skeleton: an opening paragraph stating the local judgment, then its inputs and outputs, its responsibility boundary, and its handoffs to the surrounding system; it references the adopted surrounding design where that governs and does not build an Overall Design or additional Key Designs to satisfy the template. Wherever this standard names Overall Design or Key Designs, read it as the corresponding part of the local skeleton when the scope is local.
 
 Write in the requested language, or otherwise the request's primary language. Preserve established project terms, identifiers, code symbols, interface names, and quoted contracts unless translation is requested. Use direct project language rather than the reasoning vocabulary from `SKILL.md`.
 
@@ -10,7 +10,7 @@ Write in the requested language, or otherwise the request's primary language. Pr
 
 Include only what the reader needs to understand or decide. Do not preselect a template or organize the artifact around modules, files, implementation tasks, investigation steps, alternatives explored, or the Skill method. Describe existing behavior only when it establishes the problem, explains the operating model, constrains the design, or makes an evolution decision understandable.
 
-Keep current facts, proposed design, adoption, implementation, and evidence limitations distinguishable wherever confusion would affect a decision. Do not create parallel sections merely to label these states. An executive summary may index conclusions already established by the Overall Design and Key Designs, but cannot replace them.
+Keep current facts, proposed design, adoption, implementation, and evidence limitations distinguishable wherever confusion would affect a decision. Do not create parallel sections merely to label these states. An executive summary may index conclusions already established by the skeleton's design sections, but cannot replace them.
 
 ## Information Before the Design
 
@@ -40,7 +40,7 @@ After the opening, include only the facts and inputs, information authority, nec
 
 Include evolution only when coexistence or transition affects correctness. Describe each necessary operating state through its responsibilities, reads and writes, compatibility boundary, cutover, rollback locations, irreversible points, and old-path exit. Do not add a roadmap, future phases, or compatibility for inactive consumers or uncommitted possibilities.
 
-Include a dedicated Acceptance section when the proposed result must be qualified. Organize it around the few end-to-end scenarios and evidence that distinguish whether observable outcomes, preserved behavior, constraints, and major risks are satisfied. Reference Key Designs without repeating their mechanisms.
+Include a dedicated Acceptance section when the proposed result must be qualified. Organize it around the few end-to-end scenarios and evidence that distinguish whether observable outcomes, preserved behavior, constraints, and major risks are satisfied. Reference the skeleton's design sections without repeating their mechanisms.
 
 Keep assumptions, risks, and unresolved conditions with their owning design, including impact, responsible source, and the smallest evidence or authority decision needed. Use a final Unresolved Matters section only for items that can change the overall route or next system judgment and cannot be owned locally; omit it when empty.
 
@@ -57,8 +57,8 @@ Aggregate related changes and point to the owning design. Do not output an empty
 
 ## Drafting Checks
 
-- **Skeleton:** From the Overall Design opening and representative flow plus every Key Design title and opening paragraph, a reader can restate the whole judgment, each owned outcome, key responsibility boundaries, and the basis and status of consequential claims.
-- **Support and ownership:** Every later paragraph, list, table, and diagram proves, explains, or bounds its opening judgment. Overall Design owns the global result, cross-mechanism constraints, and handoffs; Key Designs own their mechanisms; Evolution owns coexistence and exit. A rule, failure, or choice is argued once at its owner.
+- **Skeleton:** From the skeleton's opening judgment and representative flow plus every design-section title and opening paragraph, a reader can restate the whole judgment within the requested scope, each owned outcome, key responsibility boundaries, and the basis and status of consequential claims.
+- **Support and ownership:** Every later paragraph, list, table, and diagram proves, explains, or bounds its opening judgment. For a whole-system artifact, Overall Design owns the global result, cross-mechanism constraints, and handoffs and Key Designs own their mechanisms; for a local scope, the opening judgment owns the scoped result and the handoffs to the surrounding system. Evolution owns coexistence and exit. A rule, failure, or choice is argued once at its owner.
 - **System consistency:** Prose, diagrams, terminology, information, state, contracts, failures, acceptance, and evolution describe the same system across applicable conditional, parallel, and re-entry paths. Factual claims remain within evidence, and proposed design remains distinguishable from implementation.
 - **Revision expression:** For completion, revision, or rewrite, every preserved, corrected, changed, or removed item in the established semantic change surface appears consistently in the artifact. Valid mechanisms and evidence remain; superseded machinery and claims do not. If a design change is missing, return to `SKILL.md` rather than deriving it here.
 

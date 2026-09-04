@@ -134,7 +134,7 @@ Build a **design argument** for the overall route and for each independently des
 
 `claim -> established result or obligation -> authoritative basis -> causal responsibilities and mechanism -> observable result -> credible invalidator -> evidence boundary and remaining condition -> judgment`
 
-For the overall route and each consequential choice with a real alternative, attach the Stage 3 selection proof. The argument is how you reason, not how you will head the document. The overall operating model, not any single mechanism, answers for the global outcome, the constraints that cross mechanisms, the direction of dependency, and the handoffs.
+For the overall route and each consequential choice with a real alternative, attach the Stage 3 selection proof. The argument is how you reason, not how you will head the document. The operating model, not any single mechanism, answers for the result within the requested scope, the constraints that cross mechanisms, the direction of dependency, and the handoffs—including, for a local scope, the handoffs to the surrounding system. Only a whole-system design answers for the global outcome.
 
 Pick the few end-to-end scenarios and changes most likely to disprove a material claim, and run the design through them. Name what in the design bears load—what must hold under the changes and failures you consider most likely—and what is negotiable. Trace facts, decisions, state, handoffs, effects, and consumer-visible results through the success path, and through only those failure, concurrency, re-entry, transition, rollback, or change-propagation paths that could change your conclusion. If a category has nothing in it, leave it empty; inventing an obligation or a mechanism to fill it is a design error.
 
@@ -189,5 +189,5 @@ Finish when the artifact:
 - states one coherent target design;
 - keeps claims within their evidence and authority;
 - distinguishes adoption from implementation and validation;
-- lets a reader recover the overall result, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton;
+- lets a reader recover the result within the requested scope, responsibility boundaries, significant mechanisms, consequential choices, conditions, and acceptance from the document's design skeleton;
 - gives each applicable party—consumer, operator, the engineer who changes it next—what they need to act.
