@@ -167,7 +167,8 @@
         "[revision-record-present-and-bounded] The existing revision record table gains one entry describing the substantive change (failure reason projection), its impact, and its basis (the accepted new obligation). The prior entry is preserved. No entries are added for wording or evidence-only changes.",
         "[classification-correct] The artifact treats this as an accepted intent change whose consequences stay within the adopted route, not as an evidence correction, route change or merely within-route design revision; design status remains Confirmed because the actual authority has already accepted the changed result.",
         "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated.",
-        "[artifact-markdown path=evals/files/9/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/9/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。",
+        "[澄清与失败区分] 已接受的新义务按意图变化处理，不用新增的失败原因展示要求倒推旧范围未完成；仅记录这次真实意图变化及其影响。"
       ]
     },
     {
@@ -290,6 +291,23 @@
         "[no-speculation] 不预建 API、缓存、数据库或泛化平台来满足未承诺消费者；可说明另一条路线及重考虑条件，但不把它写成同时实施的路线。",
         "[evidence-and-artifact] 仅修改 evals/files/15/design/system-design.md；区分原型测量、计划估计、目标设计与未完成的生产验证。",
         "[artifact-markdown path=evals/files/15/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "$overview-designer 请根据 `evals/files/16/context/root-intent.md` 整理 `evals/files/16/design/system-design.md`，使维护者能够理解已确认的设计。只修改该设计文件。",
+      "expected_output": "实际设计文件从按源码文件和实施步骤组织，改为局部运行结论与责任、结果交接和必要设计细节；保留状态和安全语义，不改变已确认路线，不虚构修订或验证结果。",
+      "files": [
+        "evals/files/16/context/root-intent.md",
+        "evals/files/16/design/system-design.md"
+      ],
+      "expectations": [
+        "[局部设计可理解] 最终文件的开篇和相邻交接说明使读者能够理解 Export Service、Gateway 和 Operations UI 如何产生用户可见结果；结构围绕责任与设计判断，不再以源文件、参数或实施任务作为正文骨架。不要求固定标题，不能靠添加一段摘要而保留原实施清单主体通过。",
+        "[有效语义保留] Export Service 继续唯一拥有导出状态与文件身份；Gateway 传递认证参与者并读取当前可见状态；UI 展示结果。完成、失败与读取不可用保持区分，failure_code 可展示，failure_detail 不离开 Owner。",
+        "[实际成稿检查] 执行记录应表明读取所调用 Skill 和适用成稿标准，修改后读取实际最终文件并检查其结构与语义；裁判读取该实际文件判定质量，不能以最终回复中的摘要或检查声明代替文件。",
+        "[纯表述修复] 本次语义和路线保持不变，不新增修订记录、版本号、缓存、同步服务、状态推断、迁移或恢复机制；不把现有文件结构问题描述成已确认设计或用户意图失败。",
+        "[边界] 仅修改授权设计文件，保持局部范围，不扩写外围系统，不声称实现、部署或真实外部验证通过。",
+        "[artifact-markdown path=evals/files/16/design/system-design.md] 实际交付文件是可直接读取的 Markdown，正文完整，不以对话预览或形式正确但内容未整理的文件代替。"
       ]
     }
   ]

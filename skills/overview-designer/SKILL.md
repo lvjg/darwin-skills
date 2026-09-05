@@ -200,7 +200,7 @@ For completion, revision, or rewrite, compare the finished artifact with the rev
 
 ### Exit
 
-Finish when the artifact:
+Finish only after reading the actual final artifact and checking it against the applicable Drafting Checks in `references/overview-standard.md`. Correct expression gaps in Stage 5 and return semantic gaps to their owning stage. This applies to creation, completion, revision, and rewrite; a summary or verification of another deliverable does not establish that the design artifact is ready. Finish when the artifact:
 
 - states one coherent complete or conditional target design, or the bounded unresolved result of a suspension;
 - keeps claims within their evidence and authority;
