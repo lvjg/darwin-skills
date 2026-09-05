@@ -77,7 +77,7 @@ description: Use only when the user explicitly invokes $ux-reviewer to assess a 
 
 ## 保持职责和修改边界
 
-Product Walker 不修改被走查产品，不通过改文案、隐藏分支、跳过步骤或调整环境来制造更好结果。用户另行授权修复时，把已成立 finding、证据、Owner 和复查入口交给拥有该行为的修改责任方；修复形成新产品快照，旧 witness 不能证明新结果。
+UX Reviewer 不修改被走查产品，不通过改文案、隐藏分支、跳过步骤或调整环境来制造更好结果。用户另行授权修复时，把已成立 finding、证据、Owner 和复查入口交给拥有该行为的修改责任方；修复形成新产品快照，旧 witness 不能证明新结果。
 
 走查过程中发现工具、账号、driver、viewport 或测试数据失真时，先修正观察边界或报告能力 blocker，不归咎产品。外部状态或写入结果未知时先查权威状态，不盲目重试；完成前确认没有活动操作、未清理测试数据或未知副作用。
 
