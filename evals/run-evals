@@ -75,7 +75,9 @@ def fixture_content(skill_dir, relative_path)
   abort "fixture does not exist: #{source}" unless File.file?(source)
 
   # Skill-Up context.files contains text, not YAML binary values.
-  File.read(source, encoding: "UTF-8")
+  content = File.read(source, encoding: "UTF-8")
+  abort "fixture is not valid UTF-8 text: #{relative_path}" unless content.valid_encoding? && !content.include?("\0")
+  content
 end
 
 failed_skills = []
@@ -85,6 +87,7 @@ WORKER_ROUNDTRIP_EXPECTATION_PREFIXES = %w[
   [single-worker-roundtrip]
 ].freeze
 CHECKPOINT_MARKDOWN_EXPECTATION = /\A\[checkpoint-markdown path=([^\s\]]+)\]/
+ARTIFACT_MARKDOWN_EXPECTATION = /\A\[artifact-markdown path=([^\s\]]+)\]/
 CHECKPOINT_ABSENT_EXPECTATION = /\A\[checkpoint-absent path=([^\s\]]+)\]/
 
 def worker_roundtrip_expectation?(expectation)
@@ -101,6 +104,8 @@ def checkpoint_program_expectations(item)
   item.fetch("expectations").each_with_object([]) do |expectation, assertions|
     if (match = expectation.match(CHECKPOINT_MARKDOWN_EXPECTATION))
       type = :markdown
+    elsif (match = expectation.match(ARTIFACT_MARKDOWN_EXPECTATION))
+      type = :text
     elsif (match = expectation.match(CHECKPOINT_ABSENT_EXPECTATION))
       type = :absent
     else
@@ -224,16 +229,19 @@ def check_case_evidence(configuration_dir, item, current_artifacts, current_roll
     available = current_artifacts.include?(artifact) && File.file?(artifact)
     content = available ? File.read(artifact, encoding: "UTF-8") : ""
     text_valid = content.valid_encoding? && !content.include?("\0") && !content.strip.empty?
-    valid = text_valid && content.lines.find { |line| !line.strip.empty? }&.strip&.match?(/\A#\s+\S/)
+    valid = text_valid && (assertion[:type] == :text || content.lines.find { |line| !line.strip.empty? }&.strip&.match?(/\A#\s+\S/))
     reason = if !available
                "本次运行未采集所需文件：#{assertion.fetch(:path)}"
+             elsif !valid && assertion[:type] == :text
+               "保存的文件必须包含非空 UTF-8 文本：#{assertion.fetch(:path)}"
              elsif !valid
                "保存的文件首个非空行必须为 Markdown H1：#{assertion.fetch(:path)}"
              else
                "已核对本次保存的文件：#{assertion.fetch(:path)}"
              end
     unavailable << reason unless available
-    checks << { "text" => "[runner-markdown] #{assertion.fetch(:path)}", "passed" => !!valid, "evidence" => reason }
+    label = assertion[:type] == :text ? "runner-text" : "runner-markdown"
+    checks << { "text" => "[#{label}] #{assertion.fetch(:path)}", "passed" => !!valid, "evidence" => reason }
   end
 
   if engine == "codex" && requires_worker_roundtrip?(item)
@@ -411,7 +419,7 @@ eval_targets.each do |skill_dir, evals|
       checkpoint_expectations = checkpoint_program_expectations(item)
       deterministic_expect = {}
       checkpoint_expectations.each do |expectation|
-        key = expectation.fetch(:type) == :markdown ? "files_exist" : "files_not_exist"
+        key = expectation.fetch(:type) == :absent ? "files_not_exist" : "files_exist"
         (deterministic_expect[key] ||= []) << expectation.fetch(:path)
       end
       case_config = {
@@ -434,7 +442,7 @@ eval_targets.each do |skill_dir, evals|
         case_config["judge"]["skills"].first["target"] = ".agents/skills/judge-evidence"
       end
       markdown_artifacts = checkpoint_expectations.each_with_object([]) do |expectation, artifacts|
-        artifacts << expectation.fetch(:path) if expectation.fetch(:type) == :markdown
+        artifacts << expectation.fetch(:path) unless expectation.fetch(:type) == :absent
       end
       case_config["collect_artifacts"] = (item.fetch("files", []) + markdown_artifacts).uniq
       File.write(case_path, YAML.dump(case_config))

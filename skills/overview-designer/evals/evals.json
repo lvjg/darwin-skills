@@ -18,7 +18,8 @@
         "[editing-finalize-and-routing] Permit incomplete editing states, reserve whole-graph closure for finalize, and make Edge the sole typed owner of outcome and optional condition without raw expressions or competing rule representations.",
         "[behavioral-understanding-contract] Define extraction of business facts, explicit-versus-assumed decisions, ambiguity and unsupported handling, dependency-aware mutation sequencing and reconciliation under the selected workflow-owned policy, and the prohibition on invented business facts.",
         "[runtime-publication-and-validation] Preserve existing runtime behavior, separate finalize from signed human publication unavailable to the model, define focused owner-level proof, and record E2E/external journey evidence as excluded and unproven.",
-        "[prohibited-design-scope] The response does not retain unsupported source lifecycle, make generic document acquisition a maintained Skill responsibility, claim implementation/review/E2E, write outside the requested artifact or invoke another repository Skill."
+        "[prohibited-design-scope] The response does not retain unsupported source lifecycle, make generic document acquisition a maintained Skill responsibility, claim implementation/review/E2E, write outside the requested artifact or invoke another repository Skill.",
+        "[artifact-markdown path=evals/files/1/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -37,7 +38,8 @@
         "[minimal-route] Reuse the existing authenticated gateway and manifest read; do not introduce a database, cache, event stream or synchronization lifecycle without an established consumer.",
         "[failure-and-security] Define manifest-unavailable, malformed-response and authorization behavior at their owners without exposing internal storage credentials to the browser.",
         "[acceptance-boundary] Specify focused contract/integration/UI-state proof while distinguishing proposed design from implementation, deployment and production validation.",
-        "[artifact-and-claim-boundary] The response does not claim the endpoint or UI is implemented, deployed or externally validated, and does not modify files outside evals/files/2/design/system-design.md."
+        "[artifact-and-claim-boundary] The response does not claim the endpoint or UI is implemented, deployed or externally validated, and does not modify files outside evals/files/2/design/system-design.md.",
+        "[artifact-markdown path=evals/files/2/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -55,7 +57,8 @@
         "[owner-and-authority] Configuration Service remains authoritative for accepted revision identity; the durable queue carries work; the worker owns compilation execution without becoming configuration authority.",
         "[minimal-complete-route] Reuse revision coalescing, durable queue delivery and idempotent compilation; do not add a polling controller, controller-owned persistent state or a parallel desired-state source.",
         "[failure-and-convergence] Define retry and supersession behavior around durable jobs and the latest authoritative revision, including an observable terminal result or owned unresolved failure.",
-        "[artifact-boundary] Only evals/files/3/design/system-design.md is modified, and the proposal is not presented as implemented or externally validated."
+        "[artifact-boundary] Only evals/files/3/design/system-design.md is modified, and the proposal is not presented as implemented or externally validated.",
+        "[artifact-markdown path=evals/files/3/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -73,7 +76,9 @@
         "[fact-and-conflict] It states that browser-direct vendor access conflicts with the authoritative security and vendor constraints and therefore cannot produce the required result.",
         "[conditional-alternative] The existing authenticated gateway is presented as a viable route for authority decision, not silently selected as the confirmed target design.",
         "[status-and-next-decision] The design is Pending Confirmation or equivalently unresolved, names the route decision owner and the smallest decision needed, and does not claim implementation or validation.",
-        "[artifact-boundary] Only evals/files/4/design/system-design.md is modified."
+        "[artifact-boundary] Only evals/files/4/design/system-design.md is modified.",
+        "[bounded-suspension] 在授权设计文件中交付路线失效依据、仍有效的结果与约束、受阻范围和所需路线决定；不因无法形成完整目标而只回复无法继续，也不补造完整机制来满足成稿流程。",
+        "[artifact-markdown path=evals/files/4/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -89,7 +94,8 @@
         "[route-preservation] Preserve the confirmed build-service to gateway to admin-UI projection route and its responsibility boundaries.",
         "[no-invented-revision] Do not claim a route change or substantive design revision, and do not create a Revision Record for the evidence correction alone.",
         "[no-lifecycle-expansion] Do not add dual endpoint support, migration, persistent synchronization, cache, event stream or additional recovery state without an established obligation.",
-        "[claim-boundary] Keep the design distinct from implementation, deployment and production validation, and modify only evals/files/5/design/system-design.md."
+        "[claim-boundary] Keep the design distinct from implementation, deployment and production validation, and modify only evals/files/5/design/system-design.md.",
+        "[artifact-markdown path=evals/files/5/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -107,7 +113,8 @@
         "[minimal-capability-route] Reuse the existing durable regional bus and immutable revision read rather than adding a second authority, polling controller, global cache, database or parallel event system.",
         "[contract-and-state-formation] Define the published revision handoff, receiver validation, idempotent or superseding regional application, consumer-visible behavior for invalid or unavailable revisions, and the minimal durable applied-revision state needed for local serving.",
         "[failure-and-convergence] Use the accepted_at-to-readiness contract to make the five-second result decidable: each active region is either ready on the accepted revision or exposes policy_lagging and serves an unavailable result; define retry, supersession and terminal unresolved failure ownership without inventing rollback history, offline edit or multi-version retention obligations.",
-        "[artifact-boundary] Only evals/files/6/design/system-design.md is created or modified, and the proposal is not presented as implemented, deployed or externally validated."
+        "[artifact-boundary] Only evals/files/6/design/system-design.md is created or modified, and the proposal is not presented as implemented, deployed or externally validated.",
+        "[artifact-markdown path=evals/files/6/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -125,7 +132,8 @@
         "[observable-obligation] Close the one-minute result at send time by comparing each consumer's applied projection with Preference Service's authoritative current decision and revision, or by an equally evidenced authoritative read; withhold the send with an owned unavailable result when the decision cannot be obtained or the projection is stale. Durable event delivery alone does not prove the time bound.",
         "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, the authoritative pre-send decision boundary, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
         "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition, and states the obligation the retired reconciliation path was built to serve and why that obligation no longer holds.",
-        "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation."
+        "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation.",
+        "[artifact-markdown path=evals/files/7/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -158,7 +166,8 @@
         "[derived-from-owner] The failure reason shown is derived from Export Service's `failure_code`; the design does not have the UI or Gateway infer a reason from state or timing.",
         "[revision-record-present-and-bounded] The existing revision record table gains one entry describing the substantive change (failure reason projection), its impact, and its basis (the accepted new obligation). The prior entry is preserved. No entries are added for wording or evidence-only changes.",
         "[classification-correct] The artifact treats this as an accepted intent change whose consequences stay within the adopted route, not as an evidence correction, route change or merely within-route design revision; design status remains Confirmed because the actual authority has already accepted the changed result.",
-        "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated."
+        "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated.",
+        "[artifact-markdown path=evals/files/9/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -177,7 +186,8 @@
         "[authority-respected] Cart Service remains the owner of `checkout_session_id` meaning; Order Service does not redefine it; the design states what Order Service does if the identity is absent or invalid.",
         "[downstream-preserved] Payment and Fulfillment continue to key their exactly-once effects on `order_id`; the design does not add a second idempotency layer there.",
         "[support-explanation] Support can identify a suppressed duplicate from Order Service records without a customer-facing list or new store.",
-        "[artifact-and-claim-boundary] Only evals/files/10/design/system-design.md is modified; the design is not presented as implemented or validated."
+        "[artifact-and-claim-boundary] Only evals/files/10/design/system-design.md is modified; the design is not presented as implemented or validated.",
+        "[artifact-markdown path=evals/files/10/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -191,32 +201,34 @@
       ],
       "expectations": [
         "[local-skeleton-only] Replace the draft with one local design judgment and only the inputs, outputs, responsibility boundary, handoffs and supporting detail it depends on; do not create an Overall Design or Key Designs structure or restate the complete export-download system.",
-        "[scoped-operating-result] State that Download Gateway accepts an authenticated actor and completed-export handoff and returns exactly one of a five-minute signed link, bounded denial, or unavailable result without becoming export or authorization authority.",
+        "[scoped-operating-result] Download Gateway 接受认证参与者和已完成导出的交接；当前 allow 且签名成功时返回五分钟链接，deny 时返回有界拒绝，依赖或签名不可用时返回明确失败而非拒绝或成功。允许将请求或交接校验失败单独分类，也允许区分授权不可用与签名不可用；源合同未规定封闭的三值响应枚举。Gateway 不成为导出或授权语义权威。",
         "[surrounding-owners-preserved] Keep Export Service authoritative for completion and artifact identity, Access Service authoritative for allow or deny, and the object-store signer responsible for URL issuance; reference these surrounding contracts without redesigning them.",
         "[external-contract-condition] Do not infer a denial reason from request or export fields. Record stable denial reason presentation as conditional on Access Service owner acceptance of a reason-code contract, and identify that owner decision without silently adopting the change.",
         "[handoff-and-failure] Validate the completed-export handoff and require an allow result before signing; present deny and dependency or signer failure as distinct owned outcomes, never use a stale authorization decision, and do not expose object-store credentials.",
         "[no-unsupported-state] Remove the proposed authorization cache and history because no active obligation or consumer requires them.",
-        "[artifact-and-claim-boundary] Modify only evals/files/11/design/gateway-download-authorization.md and do not claim implementation, deployment or external validation."
+        "[artifact-and-claim-boundary] Modify only evals/files/11/design/gateway-download-authorization.md and do not claim implementation, deployment or external validation.",
+        "[independent-progress] 签名链接、deny 与 unavailable 的局部设计继续形成；仅稳定拒绝原因的展示保留外部合同条件，不因这一条件停止所有设计，也不声称指定 Access Service owner 就已解决条件。",
+        "[artifact-markdown path=evals/files/11/design/gateway-download-authorization.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
       "id": 12,
-      "prompt": "$overview-designer 根据 `evals/files/12/context/` 重写 `evals/files/12/design/system-design.md`，在两条已知可行的路线中形成目标系统设计并说明选择依据。只修改该设计文件，不实现代码。",
-      "expected_output": "Both routes are valid and minimal; the design selects the ShipmentEligibility capability because it names a domain concept, hides carrier-rule volatility behind its owner, and the alternative would force Checkout to know what it should not.",
+      "prompt": "$overview-designer 根据 `evals/files/12/context/` 重写 `evals/files/12/design/system-design.md`，形成寄送资格目标设计并说明选择依据。只修改该设计文件，不实现代码。",
+      "expected_output": "两条路线均满足结果和硬约束；按六个月工程投入优先级选择 Logistics 内的 ShipmentEligibility API。解释抽象、调用和变化责任，保留额外 API 的成本及不确定性，不能把 SDK 路线误判成职责违规。",
       "files": [
         "evals/files/12/context/current-system.md",
         "evals/files/12/context/root-intent.md",
         "evals/files/12/design/system-design.md"
       ],
       "expectations": [
-        "[route-a-selected] The design selects the Logistics-owned `ShipmentEligibility` capability (or an equivalently domain-named capability owned by the team that owns the rules) rather than the pass-through AggregatorService.",
-        "[abstraction-argued-by-what-it-hides] The selection basis states what the chosen abstraction hides that varies independently (carrier coverage and hazmat acceptance rules changing weekly) and who owns that variation.",
-        "[alternative-argued-by-what-consumers-would-know] The design states that under Route B Checkout would have to learn or apply carrier-specific rules (coverage, hazmat acceptance) that change frequently and that the owning team does not want Checkout to hold. Verbatim attribution to a named team is not required if the constraint itself is stated.",
-        "[single-owner-per-decision] Eligibility meaning (eligible / restricted / no_coverage / oversize) has one owner; Checkout only presents it. Catalog and Address remain fact owners consulted by the capability.",
-        "[no-speculative-consumer] The design does not add generality, caching or a shared platform layer justified by Marketing's uncommitted interest.",
-        "[failure-semantics] The design states what Checkout shows when the capability is unavailable or returns a malformed response, at the owner boundary.",
-        "[selection-cost-named] The selection basis states what Route A gives up (for example Checkout's dependency on Logistics availability before payment, or Logistics owning an additional consumer-facing capability) and who bears it.",
-        "[artifact-and-claim-boundary] Only evals/files/12/design/system-design.md is modified; the design is not presented as implemented or validated."
+        "[both-routes-valid] 识别两条路线都满足功能、250 ms 上限与语义归属；不得声称使用 Logistics SDK 会使 Checkout 成为规则权威或必然违反团队合同。",
+        "[priority-and-selection] 基于已确定的合计工程投入优先级选择 Route A 或语义等价的 Logistics API 路线：六个月估计为 16 + 6×2 = 28 小时，Route B 为 26×4 = 104 小时；承认 B 延迟更低但两者均达标。",
+        "[abstraction-and-change] API 内由 Logistics 拥有资格语义并隐藏 SDK 规则版本变化；Checkout 只呈现逐行结果。保持 Catalog、Address 的事实归属；B 的代价是消费方需要跟随 SDK 发布，不是规则所有权被转移。",
+        "[cost-and-condition] 说明新增 API 的初始与运行成本由谁承担，投入和频率是计划或估计；指出规则更新次数减少或成本变化可能使 B 更优，不把 API 描述成所有场景下唯一合理方案。",
+        "[operating-and-failure] 描述付款前的输入、权威查询、资格计算、展示及交接；依赖不可用或无效输入显示暂不可确定，不伪造 eligible 或业务拒绝。",
+        "[bounded-structure] 不因 Marketing 未承诺需求增加缓存、数据库、泛化平台或兼容层；已有 Carrier Service 内的 API 有明确责任，不虚构新的服务集群。",
+        "[evidence-and-artifact] 仅修改 evals/files/12/design/system-design.md；区分原型测量、未来投入估计与生产验证，不声称实现、上线或外部验收。",
+        "[artifact-markdown path=evals/files/12/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -236,7 +248,8 @@
         "[open-and-closed-decisions-named] The artifact explicitly names which decisions it deliberately leaves open for a possible future multi-region deployment (e.g., where the retention authority would live per region) and which it closes now, each with a one-line reason, without proposing phases, roadmap or timelines.",
         "[no-roadmap] There is no 'phase 2', 'future work' roadmap, or compatibility path for the uncommitted multi-region case.",
         "[failure-semantics] A failed or late nightly deletion remains observable and retryable but cannot make an expired partition readable; a setting change takes effect only at its next UTC day boundary and is resolved from Tenant Config history.",
-        "[artifact-and-claim-boundary] Only evals/files/13/design/system-design.md is modified; the design is not presented as implemented or validated."
+        "[artifact-and-claim-boundary] Only evals/files/13/design/system-design.md is modified; the design is not presented as implemented or validated.",
+        "[artifact-markdown path=evals/files/13/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -255,7 +268,28 @@
         "[tax-rule-timing] The design states when the tax rule is resolved (e.g., at issue time or on read for unissued invoices) and who owns that decision, without adding a rule cache or a second rule authority.",
         "[consumers-preserved] Reports, exports and the customer PDF continue to read the total from Invoice Service unchanged.",
         "[portal-transition] The design states how Billing Portal's existing PATCH of `total` is retired or ignored and what the portal displays instead.",
-        "[artifact-and-claim-boundary] Only evals/files/14/design/system-design.md is modified; the design is not presented as implemented or validated."
+        "[artifact-and-claim-boundary] Only evals/files/14/design/system-design.md is modified; the design is not presented as implemented or validated.",
+        "[artifact-markdown path=evals/files/14/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "$overview-designer 根据 `evals/files/15/context/` 重写 `evals/files/15/design/system-design.md`，形成寄送资格目标设计并说明选择依据。只修改该设计文件，不实现代码。",
+      "expected_output": "在相同能力和质量标准下，规则计划更新一次，因此选择现有 Logistics SDK 路线；保留规则封装和事实 Owner，说明变更的消费方代价，不为形式上的服务边界增加 API。",
+      "files": [
+        "evals/files/15/context/current-system.md",
+        "evals/files/15/context/root-intent.md",
+        "evals/files/15/design/system-design.md"
+      ],
+      "expectations": [
+        "[both-routes-valid] 两条路线均满足功能、250 ms 与资格语义归属；不得以没有独立 API 为由否认 Logistics SDK 的真实抽象边界。",
+        "[priority-and-selection] 选择 Route B 或语义等价的直接使用 Logistics SDK 路线；六个月计划一次更新的增量投入为 4 小时，低于 API 的 28 小时。没有为额外 API 虚构义务，也不需要虚构所选简单路线不成立。",
+        "[owned-abstraction] Checkout 获取权威输入并调用 Logistics 维护的 SDK、呈现逐行结果；不自行解析或改写承运商规则。Logistics、Catalog、Address 保持各自语义和事实归属。",
+        "[change-and-reconsideration] 承认每次 SDK 更新需要 Checkout 升级、验证并发布；规则更新频率或成本变化时重新比较 API，不能宣称简单路线无代价或永远最优。",
+        "[operating-and-failure] 说明付款前的调用和协作；依赖不可用、SDK 失败或输入无效时显示资格暂不可确定，不伪造 eligible 或确定性拒绝。",
+        "[no-speculation] 不预建 API、缓存、数据库或泛化平台来满足未承诺消费者；可说明另一条路线及重考虑条件，但不把它写成同时实施的路线。",
+        "[evidence-and-artifact] 仅修改 evals/files/15/design/system-design.md；区分原型测量、计划估计、目标设计与未完成的生产验证。",
+        "[artifact-markdown path=evals/files/15/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     }
   ]

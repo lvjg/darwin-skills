@@ -1,6 +1,6 @@
 interface:
   display_name: "Overview Designer"
-  short_description: "Create evidence-backed target system designs"
-  default_prompt: "Use $overview-designer to create, complete, revise, or rewrite the requested system-level design artifact, or a key design or local part of it: establish the evidence-backed task model, form and challenge the smallest complete design, and keep design adoption distinct from implementation and validation claims."
+  short_description: "Design systems with clear boundaries and tradeoffs"
+  default_prompt: "Use $overview-designer to create or revise the requested whole-system or local target design: understand the problem and quality priorities, compare viable structures and lifecycle costs, and express an evidence-backed design with clear responsibilities, tradeoffs, and conditions."
 policy:
   allow_implicit_invocation: false

@@ -41,7 +41,7 @@
 - `ux-reviewer` 覆盖有证据支持的体验问题与不应臆造问题的完整路径；
 - `e2e-verifier` 包含两个 planning-only case 和一个可真实执行的隔离 CLI 旅程；
 - `supervisor` 包含恢复后专业委派准备、异步状态守护、合并既有普通 Worker 结果后收敛终态、删除专业能力后的负向路由、四个真实 Worker 闭环，以及针对真实使用缺陷的回归：能力目录只在正确时机刷新、兼容查询合并为一个 explore Worker、不兼容授权边界保持拆分、新 checkpoint 优先使用有效既有载体或 Owner 项目 `.supervisor/`、无项目时回退系统临时目录、使用真实 Markdown 内容并在没有保留义务时清理；另外覆盖派发前核对版本、使用证据时识别同 HEAD 下的候选漂移、固定提交证据复用、实现结果版本与输入版本的区别，以及专业前提缺失时不自行补出结论；保留重复障碍和慢性控制消耗的进展回归。Case 17 真实委派查询本地操作 Owner，检查预制 checkpoint 恢复后不重复发布；完整跨上下文恢复按下述方法另行验证；
-- `overview-designer` 覆盖完整设计重写、greenfield 目标设计、责任边界无法闭合时的正向系统重构，以及显式调用但实际不是目标设计任务时的退出；同时验证错误理论或技术边界导致的问题表述偏差、已采纳路线失效但无替换授权、证据修正与已接受 intent change 的分类、局部 Key Design 不扩张为全系统结构、两个可行方向间的 selection proof、未承诺未来不产生当前机制，以及通过责任归属调整消解同步问题。
+- `overview-designer` 覆盖完整设计重写、greenfield 目标设计、责任边界无法闭合时的正向系统重构，以及显式调用但实际不是目标设计任务时的退出；同时验证错误理论或技术边界导致的问题表述偏差、已采纳路线失效但无替换授权、证据修正与已接受 intent change 的分类、局部 Key Design 不扩张为全系统结构、两个均满足硬约束的可行方向间的质量与生命周期取舍，以及仅改变规则更新频率就应翻转选择的配对场景；验证必要的 API 边界和已有 SDK 抽象，条件未知下继续独立设计、路线受阻时有界交付，未承诺未来不产生当前机制，以及通过责任归属调整消解同步问题。
 
 Prompt 只陈述真实任务、目标和用户授权；决定结论的事实放在 fixture 中。Expectations 以彼此可区分的必需结果为单位，同时覆盖副作用边界、证据范围和等价合法实现，避免把一种实现措辞当作唯一答案。`evals/run-evals` 使用 `pass_threshold: 1.0`，任一必需结果失败都会使 case 失败，不能由其他次要结果抵消。Reviewer 的正向 case 用于抑制“总是拒绝”的偏差；planning-only E2E case 必须把未执行门禁标为 `Not Requested`，不能把 fixture 未提供的 cleanup owner 当作 Skill 应当臆造的事实。它应把缺失 owner 或 retention policy 记录为未来执行前置或事实恢复缺口。本地执行 case 只证明其隔离 fixture，不代表真实外部产品旅程。
 
@@ -83,6 +83,8 @@ evals/run-evals --skill-up /path/to/skill-up --model ci-placeholder --dry-run
 Supervisor 的真实闭环 case 依赖目标执行环境提供真实、可观测的 Worker 能力。修改委派、等待、恢复或收敛合同时，应在目标 harness 和凭据可用时运行相关真实 case，作为回归证据之一；`--dry-run` 只能证明 case、fixture、Skill 安装与 runner 配置能够物化，不能替代委派、Skill 加载、Worker 交回和 Supervisor 合并的运行证据。真实任务已经暴露缺陷时，不得因为旧 eval 曾通过而否认缺陷，应先补齐或修正覆盖。
 
 需要真实 Worker 委派的 case 使用 harness 无关的行为标记：通用闭环使用 `[worker-roundtrip]`，要求不得拆成多个 Worker 时使用 `[single-worker-roundtrip]`。它们只规定可观测结果：真实 Worker 在未继承完整会话的新鲜、有界上下文中完成委派并返回非空结果；如果 harness 将委派与等待分开，还须观察到非超时的完成返回。Case 不指定子 Agent API、事件名、上下文参数或 trace 存储格式。Supervisor 的 `[checkpoint-markdown path=...]` 和 `[checkpoint-absent path=...]` 会分别转换为最终 workspace 的确定性存在或不存在断言；前者还采集文件并由 runner 检查首个非空行是真实 Markdown H1。语义内容、状态转换和中间写入顺序仍由 case expectation 判断。每个 case 还会用 Skill-Up 的 `collect_artifacts` 采集其 `files` 引用中仍存在的文件，保留实际 Owner 状态、输入和结果对象；已按任务删除的文件不要求恢复。
+
+设计文档使用 `[artifact-markdown path=...]` 时，程序检查文件存在、非空且为有效 UTF-8 文本，并采集最终文件及输入 fixture；该 expectation 同时保留给 judge，要求直接读取采集文件判断其是否为可直接使用的 Markdown 设计内容。程序不强制标题写法，也不把文本编码合法等同于内容合格。原有 `[checkpoint-markdown]` 的专用 H1 检查保持不变。输入 fixture 必须是有效 UTF-8 文本，不能经 YAML binary 编码替换原文。
 
 Skill-Up v0.10.0 的 Codex judge transcript 可能遗漏 namespaced collaboration 调用和子 Worker 返回；因此 runner 仅在 `--engine codex` 时用引擎证据适配器从原始 trace 验证同一通用合同。该适配器接受不继承会话或只继承有界回合的上下文，不把某个固定参数写进 case 合同。其它 Skill-Up 引擎由 agent judge 根据标准执行 transcript 判定这两个标记；如果目标 harness 未暴露必需事件，应报告“证据不可用”而不是降级接受 checkpoint、最终回复或产物中的自述。新增引擎证据适配器不需要修改 case。适配器只证明委派拓扑和往返；explore 职责、来源权威、交接内容、checkpoint 语义和最终决定仍由 case 的语义 expectation 判断。 当前 Codex 如果只暴露加密交接，runner 将该用例标为 `ERROR` 并注明证据不可用，保留已取得的断言和模型裁判结果；不把它改记通过，也不将缺失证据认定为已观察到的行为违规。
 
