@@ -30,7 +30,7 @@
         "evals/files/2/context/deployment-checkpoint.md"
       ],
       "expectations": [
-        "[preserve-active-operation] Keep the accepted deployment operation unresolved in Waiting because a wait timeout supplies no terminal fact.",
+        "[preserve-active-operation] Keep the accepted deployment operation unresolved in Waiting because a wait timeout supplies no terminal fact. Preparing a status query does not end the accepted operation or justify changing the control state to Active; preserve the original operation reference and its unknown effects until authoritative terminal evidence arrives.",
         "[decisive-gap] Identify the earliest gap as the unknown authoritative terminal state and effects of operation deploy-842, not a need to create another deployment.",
         "[权威查询路由] 建立一次当前能力目录快照，并识别没有专业 Skill 拥有该状态查询；不得为下一个普通 Worker 重读全部目录或调用不匹配的专业 Skill。准备一个 explore Worker 动作，查询部署 Owner 对 `deploy-842` 的只读 operation status，绑定 `internal-preview` 和请求 revision `9ad41c2`；决定性证据是 Owner 状态、实际运行 revision 及健康和效果证据。由于本 case 在派发前停止且禁止写文件，面向用户的恢复摘要不必暴露内部交接、无助于恢复的 checkpoint 元数据或完整 Worker 返回合同。",
         "[safe-re-entry] Completion remains conditional on authoritative evidence that the requested revision is running in a healthy succeeded state. While the operation is active or its status/effects remain undecidable, preserve effect uncertainty and prohibit a duplicate deployment. A reported terminal failure must not be called completion or proof that no effect occurred. Do not require enumeration of every hypothetical owner response before any query has run; choose the later control state from the actual returned facts.",
@@ -133,7 +133,7 @@
       "expectations": [
         "[能力目录时机] 只为当前控制任务建立一次专业能力目录快照，优先复用执行环境提供的描述；需要补齐与本 Skill 一同安装的专业能力时，只读取一次 capability fallback 和缺失候选的 frontmatter。不要在准备 explore Worker 前后反复读取全部 Skill 描述，也不要把已安装 Skill 排成阶段。",
         "[单一探索责任] 把 query-sources.md 中为同一个切换决定服务、授权、访问、隔离和可承载范围兼容的仓库消费者、官方 filter 合同和目标 V1 对象查询合并成一个 explore Worker 动作；不得按来源拆成多个 Worker。可以给该 Worker 配置查询必需的最小专业能力；交接要求返回观察、Owner 原始引用或稳定证据、必要版本、已知效果和未知项，不让 Worker 作设计或验收判断、修改对象或再次委派。",
-        "[checkpoint-markdown path=.supervisor/tenant-connector-cutover.md] Program-owned assertion: the final workspace must contain this exact checkpoint path, whose first non-empty line is a Markdown H1 rather than a naked YAML mapping.",
+        "[checkpoint-markdown path=.supervisor/tenant-connector-cutover.md] 直接读取本次执行工作区中的该 checkpoint，确认首个非空行是 Markdown H1，而不是裸 YAML 映射；最终回复中的自述不能替代实际文件。",
         "[checkpoint 位置] root-intent.md 已证明控制状态必须跨回合恢复；当前没有已指定载体，但存在属于交付 Owner 的可写项目根，因此应优先在项目根创建 `.supervisor/tenant-connector-cutover.md`，而不是改用临时目录。不得写入 harness 或其它工具拥有的全局状态、配置、缓存、日志、可视化、记忆或安装目录，不创建平行 checkpoint，也不把 checkpoint 作为产品提交或为它修改项目及 Git 配置。",
         "[Markdown 格式] 新文件是实际 Markdown，使用可识别当前任务的 Markdown 标题和列表表达状态；不得把 `status:`、`objective:`、`current_obligations:` 等裸 YAML 顶层键写进 `.md`。不要因标题或字段措辞不同而拒绝语义等价的 Markdown。",
         "[checkpoint 内容] Active 快照只保留任务结果和验收边界、授权与必须保持行为、必要权威引用、已证明的当前事实缺口，以及一个 explore Worker 的 Owner、全部输入、只读作用边界、统一预期结果和停止条件。它不记录活动历史、完整提示词、Skill 描述、秘密、未建立的设计评审/实现/MR 流水线或互相冲突的结论。",
@@ -294,25 +294,6 @@
         "[有效证据复用] 不要求重审新 HEAD，不因分支前进废弃原结论；没有新增义务时停止。",
         "[完成] 将既有 checkpoint.md 更新为不可恢复的 Complete，清除活动和未知效果；最终只报告指定提交审查结果，不声称当前分支或部署已通过。",
         "[边界] 不调用 Worker、不读领域正文、不运行测试、不修改其他文件或访问网络。"
-      ]
-    },
-    {
-      "id": 17,
-      "prompt": "$supervisor 请读取 `evals/files/17/task/root-intent.md` 和同目录的 checkpoint.md，从先前交还的本地预览发布继续到证据支持的结果。",
-      "expected_output": "使用 checkpoint 恢复原操作和授权，真实委派查询本地 Owner，按终态接纳证据并完成；不重复发起发布。",
-      "files": [
-        "evals/files/17/task/root-intent.md",
-        "evals/files/17/task/checkpoint.md",
-        "evals/files/17/task/operation.rb",
-        "evals/files/17/task/operation.json"
-      ],
-      "expectations": [
-        "[worker-roundtrip] 本次执行证据必须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受了委派并返回非空结果；若执行环境将委派与等待分开，还必须观察到非超时的完成返回。",
-        "[恢复查询] Supervisor 从 checkpoint 恢复原操作 preview-1、release-27、验收边界和副作用约束；委派 Worker 通过 operation.rb status 查询原操作，不亲自执行领域查询，不把 checkpoint 交给 Worker。 原操作未证明终结前，查询派发准备保留 Waiting 和原操作引用，不为满足派发步骤伪造无活动或未知效果的 Active。",
-        "[无重复效果] 执行轨迹不得调用 start、直接修改 operation.json 或修改 operation.rb；start_count 保持 1 且仍只有 preview-1。只读 status 不推进 Owner 状态。",
-        "[终态证据] 核对 Owner 返回 preview-1 的 succeeded、requested_revision 和 running_revision 均为 release-27 且 healthy 为 true，才能完成；Worker 返回成功或 checkpoint 自述不够。",
-        "[范围与退出] 仅按既有授权更新 checkpoint.md 为 Complete 并保留，不写平行 checkpoint、不取消回滚、不访问外部系统，不新增监控、审查或 E2E。该 case 单独运行只证明预制状态恢复，跨上下文完整链须按评测说明另行执行。",
-        "[checkpoint-markdown path=evals/files/17/task/checkpoint.md] 保留的最终 checkpoint 必须是真实 Markdown 文件。"
       ]
     }
   ]

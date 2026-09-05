@@ -80,449 +80,94 @@ def fixture_content(skill_dir, relative_path)
   content
 end
 
+# Reject the known evidence gap before spending tokens or producing misleading reports.
+if options.fetch(:engine) == "codex" && !options[:dry_run]
+  unsupported = eval_targets.flat_map do |_skill_dir, evals|
+    evals.fetch("evals").map do |item|
+      case_id = "case-#{item.fetch('id')}"
+      selected = options.fetch(:cases, []).empty? || options.fetch(:cases).any? { |pattern| File.fnmatch?(pattern, case_id) }
+      needs_worker = item.fetch("expectations").any? { |text| text.match?(/\A\[(?:single-)?worker-roundtrip\]/) }
+      "#{evals.fetch('skill_name')}/#{case_id}" if selected && needs_worker
+    end.compact
+  end
+  abort "证据不可用：Skill-Up 0.10.0 的 Codex 通道不能完整提供 Worker 交接与返回；未运行 #{unsupported.join(', ')}。请用 --case 选择其他用例，或在能提供所需证据的执行环境验证。" unless unsupported.empty?
+end
+
 failed_skills = []
-
-WORKER_ROUNDTRIP_EXPECTATION_PREFIXES = %w[
-  [worker-roundtrip]
-  [single-worker-roundtrip]
-].freeze
-CHECKPOINT_MARKDOWN_EXPECTATION = /\A\[checkpoint-markdown path=([^\s\]]+)\]/
-ARTIFACT_MARKDOWN_EXPECTATION = /\A\[artifact-markdown path=([^\s\]]+)\]/
-CHECKPOINT_ABSENT_EXPECTATION = /\A\[checkpoint-absent path=([^\s\]]+)\]/
-
-def worker_roundtrip_expectation?(expectation)
-  WORKER_ROUNDTRIP_EXPECTATION_PREFIXES.any? { |prefix| expectation.start_with?(prefix) }
-end
-
-def program_owned_expectation?(expectation, engine:)
-  expectation.match?(CHECKPOINT_MARKDOWN_EXPECTATION) ||
-    expectation.match?(CHECKPOINT_ABSENT_EXPECTATION) ||
-    (engine == "codex" && worker_roundtrip_expectation?(expectation))
-end
-
-def checkpoint_program_expectations(item)
-  item.fetch("expectations").each_with_object([]) do |expectation, assertions|
-    if (match = expectation.match(CHECKPOINT_MARKDOWN_EXPECTATION))
-      type = :markdown
-    elsif (match = expectation.match(ARTIFACT_MARKDOWN_EXPECTATION))
-      type = :text
-    elsif (match = expectation.match(CHECKPOINT_ABSENT_EXPECTATION))
-      type = :absent
-    else
-      next
-    end
-
-    path = Pathname.new(match[1])
-    abort "checkpoint assertion path must stay inside the case workspace: #{match[1]}" if path.absolute? || path.each_filename.include?("..")
-    assertions << { type: type, path: match[1] }
-  end
-end
-
-def requires_worker_roundtrip?(item)
-  item.fetch("expectations").any? { |expectation| worker_roundtrip_expectation?(expectation) }
-end
-
-def requires_single_worker_roundtrip?(item)
-  item.fetch("expectations").any? do |expectation|
-    expectation.start_with?("[single-worker-roundtrip]")
-  end
-end
-
-def bounded_codex_context?(arguments)
-  fork_turns = arguments["fork_turns"]
-  fork_turns == "none" ||
-    (fork_turns.is_a?(String) && fork_turns.match?(/\A[1-9]\d*\z/)) ||
-    (fork_turns.is_a?(Integer) && fork_turns.positive?)
-end
-
-def completed_codex_worker_roundtrip?(rollout_path, single_worker: false)
-  collaboration_calls = {}
-  completed_calls = {}
-  worker_returns = []
-
-  File.foreach(rollout_path) do |line|
-    event = JSON.parse(line)
-    next unless event["type"] == "response_item"
-
-    payload = event.fetch("payload", {})
-    if payload["type"] == "function_call" && payload["namespace"] == "collaboration"
-      collaboration_calls[payload["call_id"]] = payload
-    elsif payload["type"] == "function_call_output"
-      completed_calls[payload["call_id"]] = payload["output"]
-    elsif payload["type"] == "agent_message"
-      worker_returns << payload
-    end
-  rescue JSON::ParserError
-    next
-  end
-
-  spawned_workers = collaboration_calls.map do |call_id, payload|
-    next unless payload["name"] == "spawn_agent" && completed_calls.key?(call_id)
-
-    arguments = JSON.parse(payload.fetch("arguments", "{}"))
-    next unless bounded_codex_context?(arguments)
-
-    output = JSON.parse(completed_calls.fetch(call_id))
-    output["task_name"]
-  rescue JSON::ParserError
-    nil
-  end.compact
-  wait_returned = collaboration_calls.any? do |call_id, payload|
-    next false unless payload["name"] == "wait_agent" && completed_calls.key?(call_id)
-
-    output = JSON.parse(completed_calls.fetch(call_id))
-    output["timed_out"] == false
-  rescue JSON::ParserError
-    false
-  end
-  if single_worker
-    spawn_calls = collaboration_calls.values.count { |payload| payload["name"] == "spawn_agent" }
-    return false unless spawn_calls == 1 && spawned_workers.length == 1
-  end
-  worker_returned = worker_returns.any? do |payload|
-    next false unless spawned_workers.include?(payload["author"])
-
-    payload.fetch("content", []).any? do |part|
-      next false unless part.is_a?(Hash)
-
-      text = part.fetch("text", "")
-      if part["type"] == "input_text"
-        # A MESSAGE envelope alone can precede encrypted content; it is not a return.
-        text.match?(/\AMessage Type: FINAL_ANSWER\n.*?\nPayload:\s*\S/m)
-      else
-        part["type"] == "text" && !text.strip.empty?
-      end
-    end
-  end
-  !spawned_workers.empty? && wait_returned && worker_returned
-end
-
-def rollout_fingerprints(output_dir)
-  Dir[File.join(output_dir, "iteration-*", "case-*", "*", "outputs/agent/run/rollout-*.jsonl")].to_h do |path|
-    stat = File.stat(path)
-    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
-  end
-end
-
-def checkpoint_artifact_fingerprints(output_dir)
-  pattern = File.join(output_dir, "iteration-*", "case-*", "*", "outputs/workspace", "**/*")
-  Dir.glob(pattern, File::FNM_DOTMATCH).select { |path| File.file?(path) }.to_h do |path|
-    stat = File.stat(path)
-    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
-  end
-end
-
-def result_fingerprints(output_dir)
-  Dir[File.join(output_dir, "iteration-*", "result.json")].to_h do |path|
-    stat = File.stat(path)
-    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
-  end
-end
-
-def check_case_evidence(configuration_dir, item, current_artifacts, current_rollouts, engine:)
-  checks = []
-  unavailable = []
-  checkpoint_program_expectations(item).each do |assertion|
-    next if assertion[:type] == :absent
-
-    artifact = File.join(configuration_dir, "outputs/workspace", assertion.fetch(:path))
-    available = current_artifacts.include?(artifact) && File.file?(artifact)
-    content = available ? File.read(artifact, encoding: "UTF-8") : ""
-    text_valid = content.valid_encoding? && !content.include?("\0") && !content.strip.empty?
-    valid = text_valid && (assertion[:type] == :text || content.lines.find { |line| !line.strip.empty? }&.strip&.match?(/\A#\s+\S/))
-    reason = if !available
-               "本次运行未采集所需文件：#{assertion.fetch(:path)}"
-             elsif !valid && assertion[:type] == :text
-               "保存的文件必须包含非空 UTF-8 文本：#{assertion.fetch(:path)}"
-             elsif !valid
-               "保存的文件首个非空行必须为 Markdown H1：#{assertion.fetch(:path)}"
-             else
-               "已核对本次保存的文件：#{assertion.fetch(:path)}"
-             end
-    unavailable << reason unless available
-    label = assertion[:type] == :text ? "runner-text" : "runner-markdown"
-    checks << { "text" => "[#{label}] #{assertion.fetch(:path)}", "passed" => !!valid, "evidence" => reason }
-  end
-
-  if engine == "codex" && requires_worker_roundtrip?(item)
-    rollouts = current_rollouts.select { |path| path.start_with?(configuration_dir + "/outputs/agent/run/") }
-    completed = rollouts.any? do |path|
-      completed_codex_worker_roundtrip?(path, single_worker: requires_single_worker_roundtrip?(item))
-    end
-    checks << {
-      "text" => "[runner-worker-roundtrip]",
-      "passed" => completed,
-      "evidence" => completed ? "原始轨迹包含有界上下文委派、非超时完成和非空 Worker 返回。" : "原始轨迹未证明所要求的真实 Worker 往返。"
-    }
-    # The current Codex harness may retain only an encrypted handoff. Do not
-    # treat an unreadable execution boundary as either compliant or violated.
-    handoffs = []
-    rollouts.each do |path|
-      File.foreach(path) do |line|
-        event = JSON.parse(line)
-        payload = event.fetch("payload", {})
-        next unless event["type"] == "response_item" && payload["type"] == "function_call" &&
-                    payload["namespace"] == "collaboration" && payload["name"] == "spawn_agent"
-
-        handoffs << JSON.parse(payload.fetch("arguments", "{}"))["message"]
-      rescue JSON::ParserError
-        unavailable << "原始 Codex 轨迹含无法解析的事件。"
-      end
-    end
-    if handoffs.empty? || handoffs.any? { |message| !message.is_a?(String) || message.strip.empty? || message.start_with?("gAAAA") }
-      unavailable << "Codex 未提供可读的实际 Worker 交接；无法核对私有 checkpoint 隔离和执行边界。"
-    end
-  end
-  unless unavailable.empty?
-    checks << { "text" => "[runner-evidence-available]", "passed" => false, "evidence" => unavailable.uniq.join("\n") }
-  end
-  [checks, unavailable.uniq]
-end
-
-def finalize_results(output_dir, evals, previous_results, previous_artifacts, previous_rollouts, case_patterns, engine:, engine_succeeded:)
-  items = evals.fetch("evals").to_h { |item| ["case-#{item.fetch('id')}", item] }
-  if case_patterns && !case_patterns.empty?
-    items.select! { |case_id, _| case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) } }
-  end
-  result_paths = result_fingerprints(output_dir).map { |path, fingerprint| path if previous_results[path] != fingerprint }.compact
-  if result_paths.empty?
-    warn "本次运行没有生成新 result.json；不使用旧报告判断通过。"
-    return false
-  end
-  results = result_paths.to_h { |path| [path, JSON.parse(File.read(path))] }
-  current_artifacts = checkpoint_artifact_fingerprints(output_dir).map { |path, fingerprint| path if previous_artifacts[path] != fingerprint }.compact
-  current_rollouts = rollout_fingerprints(output_dir).map { |path, fingerprint| path if previous_rollouts[path] != fingerprint }.compact
-  unexplained_failure = !engine_succeeded && results.values.all? do |result|
-    result.fetch("case_results").all? { |row| row["status"] == "PASS" }
-  end
-  all_passed = true
-  results.each do |result_path, result|
-    iteration_dir = File.dirname(result_path)
-    raw_dir = File.join(iteration_dir, "skill-up")
-    FileUtils.mkdir_p(raw_dir)
-    # Preserve upstream evidence, but retire its pre-program-check summaries.
-    %w[result.json report.json benchmark.json benchmark.md].each do |name|
-      path = File.join(iteration_dir, name)
-      next unless File.file?(path)
-
-      FileUtils.cp(path, File.join(raw_dir, name))
-      FileUtils.rm(path) if name.start_with?("benchmark")
-    end
-    rows = result.fetch("case_results")
-    (items.keys - rows.map { |row| row.fetch("case_id") }).each do |case_id|
-      rows << { "case_id" => case_id, "title" => case_id, "configuration" => "with_skill", "status" => "ERROR", "error" => "本次运行缺少该用例的结果。" }
-    end
-    rows.each do |row|
-      item = items[row.fetch("case_id")]
-      next unless item
-
-      configuration_dir = File.join(iteration_dir, row.fetch("case_id"), row.fetch("configuration", "with_skill"))
-      checks, unavailable = check_case_evidence(configuration_dir, item, current_artifacts, current_rollouts, engine: engine)
-      if unexplained_failure
-        unavailable << "Skill-Up 命令失败，但模型报告未包含失败原因。"
-        checks << { "text" => "[runner-process]", "passed" => false, "evidence" => unavailable.last }
-      end
-      original_status = row.fetch("status")
-      row["status"] = if original_status == "ERROR" || !unavailable.empty?
-                        "ERROR"
-                      elsif original_status != "PASS" || checks.any? { |check| !check.fetch("passed") }
-                        "FAIL"
-                      else
-                        "PASS"
-                      end
-      row["error"] = [row["error"], ("证据不可用：" + unavailable.join("；") unless unavailable.empty?)].compact.join("\n") if row["status"] == "ERROR"
-      grading = row["grading"] ||= { "status" => "FAIL", "assertion_results" => [] }
-      grading.fetch("assertion_results").concat(checks)
-      grading["status"] = row["status"] == "PASS" ? "PASS" : "FAIL"
-      grading_path = File.join(configuration_dir, "grading.json")
-      if File.file?(grading_path)
-        raw_grading = File.join(raw_dir, row.fetch("case_id"), row.fetch("configuration", "with_skill"), "grading.json")
-        FileUtils.mkdir_p(File.dirname(raw_grading))
-        FileUtils.cp(grading_path, raw_grading)
-        case_grading = JSON.parse(File.read(grading_path))
-      else
-        case_grading = {}
-      end
-      assertions = grading.fetch("assertion_results")
-      passed = assertions.count { |assertion| assertion.fetch("passed") }
-      case_grading["expectations"] = assertions
-      grading["summary"] = { "passed" => passed, "failed" => assertions.length - passed, "total" => assertions.length, "pass_rate" => assertions.empty? ? 0.0 : passed.fdiv(assertions.length) }
-      case_grading["summary"] = grading.fetch("summary")
-      case_grading["status"] = row.fetch("status")
-      case_grading["error"] = row["error"] if row["error"]
-      FileUtils.mkdir_p(configuration_dir)
-      File.write(grading_path, JSON.pretty_generate(case_grading) + "\n")
-      all_passed &&= row["status"] == "PASS"
-      puts "最终 #{row.fetch('case_id')}: #{row.fetch('status')}"
-      warn row["error"] if row["error"] && row["status"] == "ERROR"
-    end
-    serialized = JSON.pretty_generate(result) + "\n"
-    File.write(result_path, serialized)
-    File.write(File.join(iteration_dir, "report.json"), serialized)
-  end
-  all_passed && engine_succeeded
-rescue JSON::ParserError, KeyError => e
-  warn "无法合并本次评测结果：#{e.message}"
-  false
-end
-
 eval_targets.each do |skill_dir, evals|
   skill_name = evals.fetch("skill_name")
-
   Dir.mktmpdir(".skill-up-", File.join(skill_dir, "evals")) do |runtime_dir|
-    cases_dir = File.join(runtime_dir, "cases")
-    FileUtils.mkdir_p(cases_dir)
+    unless system(options.fetch(:skill_up), "import", File.join(skill_dir, "evals/evals.json"), "--output", runtime_dir, out: File::NULL)
+      abort "Skill-Up import failed: #{skill_name}"
+    end
 
-    case_files = evals.fetch("evals").map do |item|
-      case_id = "case-#{item.fetch("id")}"
-      case_path = File.join(cases_dir, "#{case_id}.yaml")
-      context_files = item.fetch("files", []).to_h do |relative_path|
-        [relative_path, fixture_content(skill_dir, relative_path)]
-      end
+    evals.fetch("evals").each do |item|
+      case_path = File.join(runtime_dir, "cases/case-#{item.fetch('id')}.yaml")
+      case_config = YAML.safe_load(File.read(case_path))
+      # Native import leaves path placeholders; context.files requires actual text.
+      context_files = item.fetch("files", []).to_h { |path| [path, fixture_content(skill_dir, path)] }
       if options.fetch(:engine) == "codex"
         abort "fixture reserves AGENTS.md for the Codex adapter" if context_files.key?("AGENTS.md")
+        context_files["AGENTS.md"] = <<~MARKDOWN
+          # Skill evaluation harness
 
-        context_files["AGENTS.md"] = if skill_name == "supervisor"
-                                        <<~MARKDOWN
-                                          # Skill evaluation harness
+          The user explicitly invokes `$#{skill_name}`. The root task agent must
+          read `.agents/skills/#{skill_name}/SKILL.md` completely before acting.
+          Check that path before claiming the Skill is unavailable. This instruction
+          controls Skill loading only; the user prompt and authorization still govern.
+          Delegated Workers follow their bounded handoff, not the root agent's role,
+          and read any professional Skill explicitly invoked in that handoff.
+        MARKDOWN
+        context_files["AGENTS.md"] += "Before loading Supervisor, any user-visible notice must describe the task purpose without announcing Skill reads or internal control mechanics.\n" if skill_name == "supervisor"
+      end
+      case_config["context"]["files"] = context_files
+      case_config["judge"]["model"] = options.fetch(:judge_model)
+      case_config["expect"] = { "exit_code" => 0 }
+      artifacts = item.fetch("files", []).dup
+      item.fetch("expectations").each do |expectation|
+        match = expectation.match(/\A\[(checkpoint-markdown|artifact-markdown|checkpoint-absent) path=([^\s\]]+)\]/)
+        next unless match
 
-                                          The user prompt explicitly invokes `$supervisor`. Any
-                                          user-visible notice before loading it must name the task-level
-                                          purpose without announcing the Skill read or internal control
-                                          mechanics. The root Supervisor must then read
-                                          `.agents/skills/supervisor/SKILL.md` completely before any task
-                                          action and follow it. A delegated
-                                          Worker must not adopt the Supervisor role from this repository
-                                          instruction; it follows the bounded handoff and completely reads
-                                          only any professional Skill explicitly invoked in that handoff.
-                                          Check the exact installed path before claiming a Skill is
-                                          unavailable. This instruction controls Skill loading only; the
-                                          user prompt and its authorization remain the task contract.
-                                        MARKDOWN
-                                      else
-                                        <<~MARKDOWN
-                                          # Skill evaluation harness
-
-                                          The user prompt explicitly invokes `$#{skill_name}`. Before any
-                                          task action, read `.agents/skills/#{skill_name}/SKILL.md`
-                                          completely and follow it. Check that exact path before claiming
-                                          the Skill is unavailable. This instruction controls Skill loading
-                                          only; the user prompt and its authorization remain the task
-                                          contract.
-                                        MARKDOWN
-                                      end
+        kind, path = match.captures
+        relative = Pathname.new(path)
+        abort "artifact path must stay inside the workspace: #{path}" if relative.absolute? || relative.each_filename.include?("..")
+        key = kind == "checkpoint-absent" ? "files_not_exist" : "files_exist"
+        (case_config["expect"][key] ||= []) << path
+        artifacts << path unless kind == "checkpoint-absent"
       end
-
-      judge_expectations = item.fetch("expectations").reject do |expectation|
-        program_owned_expectation?(expectation, engine: options.fetch(:engine))
-      end
-      checkpoint_expectations = checkpoint_program_expectations(item)
-      deterministic_expect = {}
-      checkpoint_expectations.each do |expectation|
-        key = expectation.fetch(:type) == :absent ? "files_not_exist" : "files_exist"
-        (deterministic_expect[key] ||= []) << expectation.fetch(:path)
-      end
-      case_config = {
-        "id" => case_id,
-        "title" => "#{skill_name} - #{item.fetch("id")}",
-        "description" => item.fetch("expected_output"),
-        "tag" => "functional_test",
-        "input" => { "prompt" => item.fetch("prompt") },
-        "context" => { "files" => context_files },
-        "constraints" => {},
-        "expect" => deterministic_expect,
-        "judge" => {
-          "type" => "agent_judge",
-          "model" => options.fetch(:judge_model),
-          "skills" => [{ "source" => "local_path", "path" => File.join(repo_root, "evals/judge-evidence") }],
-          "criteria" => judge_expectations
-        }
-      }
-      if options.fetch(:engine) == "codex"
-        case_config["judge"]["skills"].first["target"] = ".agents/skills/judge-evidence"
-      end
-      markdown_artifacts = checkpoint_expectations.each_with_object([]) do |expectation, artifacts|
-        artifacts << expectation.fetch(:path) unless expectation.fetch(:type) == :absent
-      end
-      case_config["collect_artifacts"] = (item.fetch("files", []) + markdown_artifacts).uniq
+      case_config["collect_artifacts"] = artifacts.uniq
       File.write(case_path, YAML.dump(case_config))
-      Pathname.new(case_path).relative_path_from(Pathname.new(skill_dir)).to_s
     end
-
-    skill_context = options.fetch(:skill_context)
-    skill_context = skill_name == "supervisor" ? "repository" : "target" if skill_context == "auto"
-    installed_skill_dirs = if skill_context == "repository"
-                             repository_skill_dirs = Dir[File.join(repo_root, "skills/*/SKILL.md")].sort.map { |path| File.dirname(path) }
-                             [skill_dir] + repository_skill_dirs.reject { |path| path == skill_dir }
-                           else
-                             [skill_dir]
-                           end
-
-    skill_refs = installed_skill_dirs.map do |installed_skill_dir|
-      installed_skill_name = File.basename(installed_skill_dir)
-      skill_ref = { "source" => "local_path", "path" => installed_skill_dir }
-      if options.fetch(:engine) == "codex"
-        # Codex discovers repository Skills from .agents/skills. Skill-Up v0.10.0
-        # still defaults to the retired .codex/skills location, so make the
-        # supported target explicit until the upstream adapter changes.
-        skill_ref["target"] = File.join(".agents/skills", installed_skill_name)
-      end
-      skill_ref
-    end
-
-    eval_config = {
-      "schema_version" => "v1alpha1",
-      "environment" => { "type" => "none", "workspace_mount" => "/workspace" },
-      "mcp" => { "servers" => [] },
-      "skills" => skill_refs,
-      "engine" => {
-        "name" => options.fetch(:engine),
-        "model" => { "provider" => "", "name" => options.fetch(:model) }
-      },
-      "cases" => {
-        "files" => case_files,
-        "defaults" => { "timeout_seconds" => options.fetch(:timeout), "max_turns" => 10 },
-        "parallelism" => options.fetch(:parallelism)
-      },
-      "judge" => {
-        "type" => "agent_judge",
-        "model" => options.fetch(:judge_model),
-        "pass_threshold" => 1.0,
-        "criteria" => ["Each imported Anthropic case defines its own criteria."]
-      },
-      "benchmark" => { "enabled" => false },
-      "report" => { "formats" => ["json"], "artifacts" => ["transcript"] }
-    }
 
     eval_path = File.join(runtime_dir, "eval.yaml")
-    File.write(eval_path, YAML.dump(eval_config))
+    config = YAML.safe_load(File.read(eval_path))
+    context = options.fetch(:skill_context)
+    context = skill_name == "supervisor" ? "repository" : "target" if context == "auto"
+    installed_dirs = [skill_dir]
+    installed_dirs |= Dir[File.join(repo_root, "skills/*/SKILL.md")].sort.map { |path| File.dirname(path) } if context == "repository"
+    config["skills"] = installed_dirs.map do |path|
+      ref = { "source" => "local_path", "path" => path }
+      ref["target"] = ".agents/skills/#{File.basename(path)}" if options.fetch(:engine) == "codex"
+      ref
+    end
+    config["engine"] = { "name" => options.fetch(:engine), "model" => { "name" => options.fetch(:model) } }
+    config["cases"]["defaults"]["timeout_seconds"] = options.fetch(:timeout)
+    config["cases"]["parallelism"] = options.fetch(:parallelism)
+    config["judge"] = { "type" => "agent_judge", "model" => options.fetch(:judge_model), "pass_threshold" => 1.0 }
+    config["benchmark"] = { "enabled" => false }
+    config["report"] = { "formats" => ["json"], "artifacts" => ["transcript"] }
+    File.write(eval_path, YAML.dump(config))
 
-    command = [options.fetch(:skill_up), "run", eval_path, "--engine", options.fetch(:engine), "--model", options.fetch(:model), "--parallelism", options.fetch(:parallelism).to_s]
-    command.concat(["--iteration", options.fetch(:iteration).to_s]) unless options[:dry_run]
-    command << "--dry-run" if options[:dry_run]
-    command << "--verbose" if options[:verbose]
+    command = [options.fetch(:skill_up), "run", eval_path]
+    if options[:dry_run]
+      command << "--dry-run"
+    else
+      command.concat(["--iteration", options.fetch(:iteration).to_s, "--output-dir", File.join(options.fetch(:output_root), skill_name)])
+    end
     options.fetch(:cases, []).each { |pattern| command.concat(["--include-case-name", pattern]) }
-    if options[:output_root]
-      output_dir = File.join(options.fetch(:output_root), skill_name)
-      FileUtils.mkdir_p(output_dir)
-      command.concat(["--output-dir", output_dir])
-    end
-
+    command << "--verbose" if options[:verbose]
     puts "\n==> #{skill_name}"
-    previous_rollouts = if options[:output_root] && options.fetch(:engine) == "codex"
-                          rollout_fingerprints(output_dir)
-                        else
-                          {}
-                        end
-    previous_checkpoint_artifacts = options[:output_root] ? checkpoint_artifact_fingerprints(output_dir) : {}
-    previous_results = options[:output_root] ? result_fingerprints(output_dir) : {}
-    succeeded = system(*command, chdir: skill_dir)
-    unless options[:dry_run]
-      succeeded = finalize_results(output_dir, evals, previous_results, previous_checkpoint_artifacts, previous_rollouts,
-                                   options[:cases], engine: options.fetch(:engine), engine_succeeded: succeeded)
-    end
-    failed_skills << skill_name unless succeeded
+    failed_skills << skill_name unless system(*command, chdir: skill_dir)
   end
 end
-
-abort "Skill evaluation failed: #{failed_skills.join(", ")}" unless failed_skills.empty?
+abort "Skill evaluation failed: #{failed_skills.join(', ')}" unless failed_skills.empty?

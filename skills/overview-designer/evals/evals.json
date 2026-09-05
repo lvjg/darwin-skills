@@ -19,7 +19,7 @@
         "[behavioral-understanding-contract] Define extraction of business facts, explicit-versus-assumed decisions, ambiguity and unsupported handling, dependency-aware mutation sequencing and reconciliation under the selected workflow-owned policy, and the prohibition on invented business facts.",
         "[runtime-publication-and-validation] Preserve existing runtime behavior, separate finalize from signed human publication unavailable to the model, define focused owner-level proof, and record E2E/external journey evidence as excluded and unproven.",
         "[prohibited-design-scope] The response does not retain unsupported source lifecycle, make generic document acquisition a maintained Skill responsibility, claim implementation/review/E2E, write outside the requested artifact or invoke another repository Skill.",
-        "[artifact-markdown path=evals/files/1/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/1/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -39,7 +39,7 @@
         "[failure-and-security] Define manifest-unavailable, malformed-response and authorization behavior at their owners without exposing internal storage credentials to the browser.",
         "[acceptance-boundary] Specify focused contract/integration/UI-state proof while distinguishing proposed design from implementation, deployment and production validation.",
         "[artifact-and-claim-boundary] The response does not claim the endpoint or UI is implemented, deployed or externally validated, and does not modify files outside evals/files/2/design/system-design.md.",
-        "[artifact-markdown path=evals/files/2/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/2/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -58,7 +58,7 @@
         "[minimal-complete-route] Reuse revision coalescing, durable queue delivery and idempotent compilation; do not add a polling controller, controller-owned persistent state or a parallel desired-state source.",
         "[failure-and-convergence] Define retry and supersession behavior around durable jobs and the latest authoritative revision, including an observable terminal result or owned unresolved failure.",
         "[artifact-boundary] Only evals/files/3/design/system-design.md is modified, and the proposal is not presented as implemented or externally validated.",
-        "[artifact-markdown path=evals/files/3/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/3/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -78,7 +78,7 @@
         "[status-and-next-decision] The design is Pending Confirmation or equivalently unresolved, names the route decision owner and the smallest decision needed, and does not claim implementation or validation.",
         "[artifact-boundary] Only evals/files/4/design/system-design.md is modified.",
         "[bounded-suspension] 在授权设计文件中交付路线失效依据、仍有效的结果与约束、受阻范围和所需路线决定；不因无法形成完整目标而只回复无法继续，也不补造完整机制来满足成稿流程。",
-        "[artifact-markdown path=evals/files/4/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/4/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -95,7 +95,7 @@
         "[no-invented-revision] Do not claim a route change or substantive design revision, and do not create a Revision Record for the evidence correction alone.",
         "[no-lifecycle-expansion] Do not add dual endpoint support, migration, persistent synchronization, cache, event stream or additional recovery state without an established obligation.",
         "[claim-boundary] Keep the design distinct from implementation, deployment and production validation, and modify only evals/files/5/design/system-design.md.",
-        "[artifact-markdown path=evals/files/5/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/5/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -114,7 +114,7 @@
         "[contract-and-state-formation] Define the published revision handoff, receiver validation, idempotent or superseding regional application, consumer-visible behavior for invalid or unavailable revisions, and the minimal durable applied-revision state needed for local serving.",
         "[failure-and-convergence] Use the accepted_at-to-readiness contract to make the five-second result decidable: each active region is either ready on the accepted revision or exposes policy_lagging and serves an unavailable result; define retry, supersession and terminal unresolved failure ownership without inventing rollback history, offline edit or multi-version retention obligations.",
         "[artifact-boundary] Only evals/files/6/design/system-design.md is created or modified, and the proposal is not presented as implemented, deployed or externally validated.",
-        "[artifact-markdown path=evals/files/6/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/6/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -133,7 +133,7 @@
         "[handoff-contracts] Define accepted revision identity, projection receiver validation, idempotent or superseding application, the authoritative pre-send decision boundary, and consumer-visible handling of malformed, stale or unauthorized updates only where they affect the result.",
         "[transition-and-exit] Account for all named active consumers, cut over their reads and writes, bound any temporary compatibility, and give the old writers and reconciliation path an explicit retirement condition, and states the obligation the retired reconciliation path was built to serve and why that obligation no longer holds.",
         "[artifact-boundary] Only evals/files/7/design/system-design.md is modified, and the design does not claim implementation, deployment or external validation.",
-        "[artifact-markdown path=evals/files/7/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/7/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -167,7 +167,7 @@
         "[revision-record-present-and-bounded] The existing revision record table gains one entry describing the substantive change (failure reason projection), its impact, and its basis (the accepted new obligation). The prior entry is preserved. No entries are added for wording or evidence-only changes.",
         "[classification-correct] The artifact treats this as an accepted intent change whose consequences stay within the adopted route, not as an evidence correction, route change or merely within-route design revision; design status remains Confirmed because the actual authority has already accepted the changed result.",
         "[artifact-boundary] Only evals/files/9/design/system-design.md is modified and the design is not presented as implemented or validated.",
-        "[artifact-markdown path=evals/files/9/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/9/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -187,7 +187,7 @@
         "[downstream-preserved] Payment and Fulfillment continue to key their exactly-once effects on `order_id`; the design does not add a second idempotency layer there.",
         "[support-explanation] Support can identify a suppressed duplicate from Order Service records without a customer-facing list or new store.",
         "[artifact-and-claim-boundary] Only evals/files/10/design/system-design.md is modified; the design is not presented as implemented or validated.",
-        "[artifact-markdown path=evals/files/10/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/10/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -208,7 +208,7 @@
         "[no-unsupported-state] Remove the proposed authorization cache and history because no active obligation or consumer requires them.",
         "[artifact-and-claim-boundary] Modify only evals/files/11/design/gateway-download-authorization.md and do not claim implementation, deployment or external validation.",
         "[independent-progress] 签名链接、deny 与 unavailable 的局部设计继续形成；仅稳定拒绝原因的展示保留外部合同条件，不因这一条件停止所有设计，也不声称指定 Access Service owner 就已解决条件。",
-        "[artifact-markdown path=evals/files/11/design/gateway-download-authorization.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/11/design/gateway-download-authorization.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -228,7 +228,7 @@
         "[operating-and-failure] 描述付款前的输入、权威查询、资格计算、展示及交接；依赖不可用或无效输入显示暂不可确定，不伪造 eligible 或业务拒绝。",
         "[bounded-structure] 不因 Marketing 未承诺需求增加缓存、数据库、泛化平台或兼容层；已有 Carrier Service 内的 API 有明确责任，不虚构新的服务集群。",
         "[evidence-and-artifact] 仅修改 evals/files/12/design/system-design.md；区分原型测量、未来投入估计与生产验证，不声称实现、上线或外部验收。",
-        "[artifact-markdown path=evals/files/12/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/12/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -249,7 +249,7 @@
         "[no-roadmap] There is no 'phase 2', 'future work' roadmap, or compatibility path for the uncommitted multi-region case.",
         "[failure-semantics] A failed or late nightly deletion remains observable and retryable but cannot make an expired partition readable; a setting change takes effect only at its next UTC day boundary and is resolved from Tenant Config history.",
         "[artifact-and-claim-boundary] Only evals/files/13/design/system-design.md is modified; the design is not presented as implemented or validated.",
-        "[artifact-markdown path=evals/files/13/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/13/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -269,7 +269,7 @@
         "[consumers-preserved] Reports, exports and the customer PDF continue to read the total from Invoice Service unchanged.",
         "[portal-transition] The design states how Billing Portal's existing PATCH of `total` is retired or ignored and what the portal displays instead.",
         "[artifact-and-claim-boundary] Only evals/files/14/design/system-design.md is modified; the design is not presented as implemented or validated.",
-        "[artifact-markdown path=evals/files/14/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/14/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
     {
@@ -289,7 +289,7 @@
         "[operating-and-failure] 说明付款前的调用和协作；依赖不可用、SDK 失败或输入无效时显示资格暂不可确定，不伪造 eligible 或确定性拒绝。",
         "[no-speculation] 不预建 API、缓存、数据库或泛化平台来满足未承诺消费者；可说明另一条路线及重考虑条件，但不把它写成同时实施的路线。",
         "[evidence-and-artifact] 仅修改 evals/files/15/design/system-design.md；区分原型测量、计划估计、目标设计与未完成的生产验证。",
-        "[artifact-markdown path=evals/files/15/design/system-design.md] 直接读取采集的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
+        "[artifact-markdown path=evals/files/15/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     }
   ]
