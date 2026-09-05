@@ -1,0 +1,9 @@
+{
+  "owner": "执行环境引用元数据",
+  "repository": "api-service",
+  "requested_commit": "41ab09c",
+  "requested_object_exists": true,
+  "requested_object_immutable": true,
+  "branch_HEAD": "7e4c2d1",
+  "branch_change": "分支前进，未改变用户指定提交及其不可变内容"
+}

@@ -100,7 +100,7 @@
         "[private-checkpoint-handoff] Keep checkpoint.md private to the Supervisor. Give the Worker a self-sufficient bounded handoff containing its one-line implementation responsibility, the root-intent and accepted-contract references, exact writable objects, execution boundary and compact return contract; do not give it a checkpoint reference or revision or duplicate complete source contents and control history.",
         "[worker-owned-implementation] The ordinary Worker, not the Supervisor, updates lib/policy_config.rb and test/policy_config_test.rb so absent input remains advisory, strict and advisory values are accepted, malformed JSON or values raise PolicyConfigError, and the focused Ruby test distinguishes all four paths. It runs the focused test and modifies no other task artifact.",
         "[worker-return] Compare the Worker return with the original implementation handoff and require artifact diff or version, the focused test command and result, side effects and active operations, unknowns and invalidated inputs; the Worker neither knows nor reports checkpoint state and does not write the checkpoint, make route decisions or silently redelegate.",
-        "[supervisor-convergence] The Supervisor validates that the returned objects and evidence cover the handoff, merges the result, advances only the existing checkpoint.md to a non-resumable Complete state when the implementation and focused proof are present, and clears every outstanding or effect-unknown action before its final response; it does not inspect the full code or test artifacts, implement, execute tests or otherwise redo the Worker's domain work.",
+        "[supervisor-convergence] The Supervisor validates that the returned objects and evidence cover the handoff, merges the result, advances only the existing checkpoint.md to a non-resumable Complete state when the implementation and focused proof are present, and clears every outstanding or effect-unknown action before its final response; it does not inspect the full code or test artifacts, implement, execute tests or otherwise redo the Worker's domain work. 派发基线 84c21ad 是修改输入；返回的 diff 或结果版本及测试证据应绑定修改后的实际候选，不得因正常实现产生新版本而拒绝或要求恢复输入版本。",
         "[no-invented-stages] Do not create or dispatch design, review, cleanup, E2E, release or external work that the current task has not established."
       ]
     },
@@ -245,6 +245,74 @@
         "[用户可见进展] 用任务的领域语言简要说明：已确认实现对象和合同，但尚无代码或测试交付；剩余义务是实现和聚焦测试；下一项动作是直接完成这两项。不枚举 Supervisor 机制或每个调研步骤。",
         "[直接下一动作] 准备一个普通实现 Worker 交接，只允许根据 accepted-contract.md 修改 `lib/quota_parser.rb` 和 `test/quota_parser_test.rb`，运行聚焦测试，并返回 diff、命令、结果、副作用和未知项。",
         "[不转移决策] 因为直接实现仍在原授权、成本和用户预期内，不要求用户重新授权或决定是否继续，不进入 Blocked。本 case 不实际派发、修改文件、创建 checkpoint 或运行测试。"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "$supervisor 请读取 `evals/files/14/task/`，接纳已有取证返回并为 Connector 兼容决定准备下一动作。遵守其中的派发前停止边界。",
+      "expected_output": "识别零计数没有覆盖可恢复实例，不补出专业前提；准备由专业责任方解释恢复合同和审计覆盖的最小动作。",
+      "files": [
+        "evals/files/14/task/root-intent.md",
+        "evals/files/14/task/worker-return.md"
+      ],
+      "expectations": [
+        "[专业前提] 区分已审计三类状态计数为零与 archived 实例可恢复性尚未判定；不得据此宣布不存在兼容义务，也不得仅因 7 个绑定存在就断言必须迁移。",
+        "[控制判断] 保留是否存在兼容义务的决定未闭合；缺口是恢复合同和消费者范围的专业解释，不是重新统计所有已确认事实。",
+        "[完整责任] 为 Workflow Recovery Engineering 的合同解释准备有界专业或普通 Worker 交接，可在该责任内取证并判断审计是否覆盖相关消费者；不将专业判断塞给只返回事实的 explore Worker，不误派代码验收或设计重写。",
+        "[边界] 不派发、不写文件、不创建 checkpoint、不读取领域正文或访问外部系统；不扩大为删除、迁移或发布，不向用户索取已经授权的重复确认。"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "$supervisor 请读取 `evals/files/15/task/`，接纳独立审查返回并继续当前候选的验收。遵守文件中的写入和停止边界。",
+      "expected_output": "核对实际工作区版本，识别 HEAD 未变但候选内容变化；旧审查不用于当前候选，只保留受影响的审查义务并准备下一动作。",
+      "files": [
+        "evals/files/15/task/root-intent.md",
+        "evals/files/15/task/checkpoint.md",
+        "evals/files/15/task/worker-return.md",
+        "evals/files/15/task/candidate-state.json"
+      ],
+      "expectations": [
+        "[使用对象] Supervisor 直接核对当前候选元数据，识别派发和返回的 a 指纹不同于当前 b 指纹，即使 HEAD 都是 41ab09c。",
+        "[不误验收] review-A 只证明旧候选；不得将当前候选标为已审查或任务 Complete，也不得否定 review-A 对其原对象的有效性。",
+        "[受影响义务] 清除已结束的旧审查等待，保留当前候选的审查义务，准备绑定当前完整候选的独立审查交接；有可行动作时不因版本变化自动 Blocked，不重开设计、实现或发布阶段。",
+        "[边界] 仅更新既有 checkpoint.md，不派发 Worker，不读取代码或测试正文，不运行测试，不修改候选或访问外部系统。"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "$supervisor 请读取 `evals/files/16/task/`，接纳固定提交的独立审查结果并更新当前任务。",
+      "expected_output": "用户指定的不可变提交仍与返回证据一致，分支前进不使该固定对象结论失效；直接完成原审查任务。",
+      "files": [
+        "evals/files/16/task/root-intent.md",
+        "evals/files/16/task/checkpoint.md",
+        "evals/files/16/task/worker-return.md",
+        "evals/files/16/task/candidate-state.json"
+      ],
+      "expectations": [
+        "[固定对象] 以用户指定的 41ab09c 而不是分支当前 HEAD 7e4c2d1 为完成对象，核对 review-fixed-41ab09c 的绑定。",
+        "[有效证据复用] 不要求重审新 HEAD，不因分支前进废弃原结论；没有新增义务时停止。",
+        "[完成] 将既有 checkpoint.md 更新为不可恢复的 Complete，清除活动和未知效果；最终只报告指定提交审查结果，不声称当前分支或部署已通过。",
+        "[边界] 不调用 Worker、不读领域正文、不运行测试、不修改其他文件或访问网络。"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "$supervisor 请读取 `evals/files/17/task/root-intent.md` 和同目录的 checkpoint.md，从先前交还的本地预览发布继续到证据支持的结果。",
+      "expected_output": "使用 checkpoint 恢复原操作和授权，真实委派查询本地 Owner，按终态接纳证据并完成；不重复发起发布。",
+      "files": [
+        "evals/files/17/task/root-intent.md",
+        "evals/files/17/task/checkpoint.md",
+        "evals/files/17/task/operation.rb",
+        "evals/files/17/task/operation.json"
+      ],
+      "expectations": [
+        "[worker-roundtrip] 本次执行证据必须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受了委派并返回非空结果；若执行环境将委派与等待分开，还必须观察到非超时的完成返回。",
+        "[恢复查询] Supervisor 从 checkpoint 恢复原操作 preview-1、release-27、验收边界和副作用约束；委派 Worker 通过 operation.rb status 查询原操作，不亲自执行领域查询，不把 checkpoint 交给 Worker。 原操作未证明终结前，查询派发准备保留 Waiting 和原操作引用，不为满足派发步骤伪造无活动或未知效果的 Active。",
+        "[无重复效果] 执行轨迹不得调用 start、直接修改 operation.json 或修改 operation.rb；start_count 保持 1 且仍只有 preview-1。只读 status 不推进 Owner 状态。",
+        "[终态证据] 核对 Owner 返回 preview-1 的 succeeded、requested_revision 和 running_revision 均为 release-27 且 healthy 为 true，才能完成；Worker 返回成功或 checkpoint 自述不够。",
+        "[范围与退出] 仅按既有授权更新 checkpoint.md 为 Complete 并保留，不写平行 checkpoint、不取消回滚、不访问外部系统，不新增监控、审查或 E2E。该 case 单独运行只证明预制状态恢复，跨上下文完整链须按评测说明另行执行。",
+        "[checkpoint-markdown path=evals/files/17/task/checkpoint.md] 保留的最终 checkpoint 必须是真实 Markdown 文件。"
       ]
     }
   ]

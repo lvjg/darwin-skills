@@ -1,0 +1,10 @@
+{
+  "owner": "执行环境候选元数据",
+  "repository": "api-service",
+  "checkout": "/workspace/api-service",
+  "branch": "feature/connector",
+  "HEAD": "41ab09c",
+  "worktree_fingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "previous_fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "change": "reviewer 读取完成后，未提交候选发生内容变化；当前元数据覆盖全部待交付修改"
+}

@@ -74,7 +74,8 @@ def fixture_content(skill_dir, relative_path)
   abort "fixture escapes Skill root: #{relative_path}" unless source.start_with?(allowed_prefix)
   abort "fixture does not exist: #{source}" unless File.file?(source)
 
-  File.binread(source)
+  # Skill-Up context.files contains text, not YAML binary values.
+  File.read(source, encoding: "UTF-8")
 end
 
 failed_skills = []
@@ -177,7 +178,15 @@ def completed_codex_worker_roundtrip?(rollout_path, single_worker: false)
     next false unless spawned_workers.include?(payload["author"])
 
     payload.fetch("content", []).any? do |part|
-      part.is_a?(Hash) && part["type"] == "text" && !part.fetch("text", "").strip.empty?
+      next false unless part.is_a?(Hash)
+
+      text = part.fetch("text", "")
+      if part["type"] == "input_text"
+        # A MESSAGE envelope alone can precede encrypted content; it is not a return.
+        text.match?(/\AMessage Type: FINAL_ANSWER\n.*?\nPayload:\s*\S/m)
+      else
+        part["type"] == "text" && !text.strip.empty?
+      end
     end
   end
   !spawned_workers.empty? && wait_returned && worker_returned
@@ -198,84 +207,155 @@ def checkpoint_artifact_fingerprints(output_dir)
   end
 end
 
-def verify_checkpoint_artifacts(output_dir, evals, previous_artifacts, case_patterns)
-  required_cases = evals.fetch("evals").each_with_object([]) do |item, cases|
-    assertions = checkpoint_program_expectations(item).select { |assertion| assertion[:type] == :markdown }
-    cases << ["case-#{item.fetch("id")}", assertions] unless assertions.empty?
-  end.to_h
-  if case_patterns && !case_patterns.empty?
-    required_cases.select! do |case_id, _assertions|
-      case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) }
-    end
+def result_fingerprints(output_dir)
+  Dir[File.join(output_dir, "iteration-*", "result.json")].to_h do |path|
+    stat = File.stat(path)
+    [path, [stat.size, stat.mtime.to_i, stat.mtime.nsec]]
   end
-  return [] if required_cases.empty?
-
-  current_artifacts = checkpoint_artifact_fingerprints(output_dir).each_with_object([]) do |(path, fingerprint), artifacts|
-    artifacts << path if previous_artifacts[path] != fingerprint
-  end
-  errors = []
-  seen_case_ids = []
-  current_artifacts.group_by { |path| path.split("/outputs/workspace/", 2).first }.each do |configuration_dir, _paths|
-    case_id = File.basename(File.dirname(configuration_dir))
-    next unless required_cases.key?(case_id)
-
-    seen_case_ids << case_id
-    required_cases.fetch(case_id).each do |assertion|
-      artifact = File.join(configuration_dir, "outputs/workspace", assertion.fetch(:path))
-      unless File.file?(artifact)
-        errors << "#{case_id}: checkpoint artifact is missing at #{assertion.fetch(:path)}"
-        next
-      end
-
-      first_line = File.foreach(artifact).find { |line| !line.strip.empty? }&.strip
-      unless first_line&.match?(/\A#\s+\S/)
-        errors << "#{case_id}: #{assertion.fetch(:path)} must start with a Markdown H1, not a naked YAML mapping"
-      end
-    end
-  end
-  (required_cases.keys - seen_case_ids).each do |case_id|
-    errors << "#{case_id}: expectation [checkpoint-markdown] has no collected workspace artifact from this run"
-  end
-  errors
 end
 
-def verify_codex_worker_roundtrips(output_dir, evals, previous_rollouts, case_patterns)
-  required_cases = evals.fetch("evals").map do |item|
-    next unless requires_worker_roundtrip?(item)
+def check_case_evidence(configuration_dir, item, current_artifacts, current_rollouts, engine:)
+  checks = []
+  unavailable = []
+  checkpoint_program_expectations(item).each do |assertion|
+    next if assertion[:type] == :absent
 
-    ["case-#{item.fetch("id")}", requires_single_worker_roundtrip?(item)]
-  end.compact.to_h
+    artifact = File.join(configuration_dir, "outputs/workspace", assertion.fetch(:path))
+    available = current_artifacts.include?(artifact) && File.file?(artifact)
+    content = available ? File.read(artifact, encoding: "UTF-8") : ""
+    text_valid = content.valid_encoding? && !content.include?("\0") && !content.strip.empty?
+    valid = text_valid && content.lines.find { |line| !line.strip.empty? }&.strip&.match?(/\A#\s+\S/)
+    reason = if !available
+               "本次运行未采集所需文件：#{assertion.fetch(:path)}"
+             elsif !valid
+               "保存的文件首个非空行必须为 Markdown H1：#{assertion.fetch(:path)}"
+             else
+               "已核对本次保存的文件：#{assertion.fetch(:path)}"
+             end
+    unavailable << reason unless available
+    checks << { "text" => "[runner-markdown] #{assertion.fetch(:path)}", "passed" => !!valid, "evidence" => reason }
+  end
+
+  if engine == "codex" && requires_worker_roundtrip?(item)
+    rollouts = current_rollouts.select { |path| path.start_with?(configuration_dir + "/outputs/agent/run/") }
+    completed = rollouts.any? do |path|
+      completed_codex_worker_roundtrip?(path, single_worker: requires_single_worker_roundtrip?(item))
+    end
+    checks << {
+      "text" => "[runner-worker-roundtrip]",
+      "passed" => completed,
+      "evidence" => completed ? "原始轨迹包含有界上下文委派、非超时完成和非空 Worker 返回。" : "原始轨迹未证明所要求的真实 Worker 往返。"
+    }
+    # The current Codex harness may retain only an encrypted handoff. Do not
+    # treat an unreadable execution boundary as either compliant or violated.
+    handoffs = []
+    rollouts.each do |path|
+      File.foreach(path) do |line|
+        event = JSON.parse(line)
+        payload = event.fetch("payload", {})
+        next unless event["type"] == "response_item" && payload["type"] == "function_call" &&
+                    payload["namespace"] == "collaboration" && payload["name"] == "spawn_agent"
+
+        handoffs << JSON.parse(payload.fetch("arguments", "{}"))["message"]
+      rescue JSON::ParserError
+        unavailable << "原始 Codex 轨迹含无法解析的事件。"
+      end
+    end
+    if handoffs.empty? || handoffs.any? { |message| !message.is_a?(String) || message.strip.empty? || message.start_with?("gAAAA") }
+      unavailable << "Codex 未提供可读的实际 Worker 交接；无法核对私有 checkpoint 隔离和执行边界。"
+    end
+  end
+  unless unavailable.empty?
+    checks << { "text" => "[runner-evidence-available]", "passed" => false, "evidence" => unavailable.uniq.join("\n") }
+  end
+  [checks, unavailable.uniq]
+end
+
+def finalize_results(output_dir, evals, previous_results, previous_artifacts, previous_rollouts, case_patterns, engine:, engine_succeeded:)
+  items = evals.fetch("evals").to_h { |item| ["case-#{item.fetch('id')}", item] }
   if case_patterns && !case_patterns.empty?
-    required_cases.select! do |case_id, _single_worker|
-      case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) }
-    end
+    items.select! { |case_id, _| case_patterns.any? { |pattern| File.fnmatch?(pattern, case_id) } }
   end
-  return [] if required_cases.empty?
+  result_paths = result_fingerprints(output_dir).map { |path, fingerprint| path if previous_results[path] != fingerprint }.compact
+  if result_paths.empty?
+    warn "本次运行没有生成新 result.json；不使用旧报告判断通过。"
+    return false
+  end
+  results = result_paths.to_h { |path| [path, JSON.parse(File.read(path))] }
+  current_artifacts = checkpoint_artifact_fingerprints(output_dir).map { |path, fingerprint| path if previous_artifacts[path] != fingerprint }.compact
+  current_rollouts = rollout_fingerprints(output_dir).map { |path, fingerprint| path if previous_rollouts[path] != fingerprint }.compact
+  unexplained_failure = !engine_succeeded && results.values.all? do |result|
+    result.fetch("case_results").all? { |row| row["status"] == "PASS" }
+  end
+  all_passed = true
+  results.each do |result_path, result|
+    iteration_dir = File.dirname(result_path)
+    raw_dir = File.join(iteration_dir, "skill-up")
+    FileUtils.mkdir_p(raw_dir)
+    # Preserve upstream evidence, but retire its pre-program-check summaries.
+    %w[result.json report.json benchmark.json benchmark.md].each do |name|
+      path = File.join(iteration_dir, name)
+      next unless File.file?(path)
 
-  errors = []
-  current_rollouts = rollout_fingerprints(output_dir).map do |path, fingerprint|
-    path if previous_rollouts[path] != fingerprint
-  end.compact
-  seen_case_ids = []
-  current_rollouts.group_by { |path| File.dirname(File.dirname(File.dirname(File.dirname(path)))) }.each do |configuration_dir, rollouts|
-    case_id = File.basename(File.dirname(configuration_dir))
-    next unless required_cases.key?(case_id)
-    seen_case_ids << case_id
-    single_worker = required_cases.fetch(case_id)
-    next if rollouts.any? { |rollout| completed_codex_worker_roundtrip?(rollout, single_worker: single_worker) }
-
-    relative = Pathname.new(configuration_dir).relative_path_from(Pathname.new(output_dir))
-    if single_worker
-      errors << "#{relative}: expectation [single-worker-roundtrip] requires the Codex evidence adapter to find exactly one completed Worker dispatch with bounded inherited context, a non-timeout completion observation, and a non-empty return"
-    else
-      errors << "#{relative}: expectation [worker-roundtrip] requires the Codex evidence adapter to find a completed Worker dispatch with bounded inherited context, a non-timeout completion observation, and a non-empty return"
+      FileUtils.cp(path, File.join(raw_dir, name))
+      FileUtils.rm(path) if name.start_with?("benchmark")
     end
+    rows = result.fetch("case_results")
+    (items.keys - rows.map { |row| row.fetch("case_id") }).each do |case_id|
+      rows << { "case_id" => case_id, "title" => case_id, "configuration" => "with_skill", "status" => "ERROR", "error" => "本次运行缺少该用例的结果。" }
+    end
+    rows.each do |row|
+      item = items[row.fetch("case_id")]
+      next unless item
+
+      configuration_dir = File.join(iteration_dir, row.fetch("case_id"), row.fetch("configuration", "with_skill"))
+      checks, unavailable = check_case_evidence(configuration_dir, item, current_artifacts, current_rollouts, engine: engine)
+      if unexplained_failure
+        unavailable << "Skill-Up 命令失败，但模型报告未包含失败原因。"
+        checks << { "text" => "[runner-process]", "passed" => false, "evidence" => unavailable.last }
+      end
+      original_status = row.fetch("status")
+      row["status"] = if original_status == "ERROR" || !unavailable.empty?
+                        "ERROR"
+                      elsif original_status != "PASS" || checks.any? { |check| !check.fetch("passed") }
+                        "FAIL"
+                      else
+                        "PASS"
+                      end
+      row["error"] = [row["error"], ("证据不可用：" + unavailable.join("；") unless unavailable.empty?)].compact.join("\n") if row["status"] == "ERROR"
+      grading = row["grading"] ||= { "status" => "FAIL", "assertion_results" => [] }
+      grading.fetch("assertion_results").concat(checks)
+      grading["status"] = row["status"] == "PASS" ? "PASS" : "FAIL"
+      grading_path = File.join(configuration_dir, "grading.json")
+      if File.file?(grading_path)
+        raw_grading = File.join(raw_dir, row.fetch("case_id"), row.fetch("configuration", "with_skill"), "grading.json")
+        FileUtils.mkdir_p(File.dirname(raw_grading))
+        FileUtils.cp(grading_path, raw_grading)
+        case_grading = JSON.parse(File.read(grading_path))
+      else
+        case_grading = {}
+      end
+      assertions = grading.fetch("assertion_results")
+      passed = assertions.count { |assertion| assertion.fetch("passed") }
+      case_grading["expectations"] = assertions
+      grading["summary"] = { "passed" => passed, "failed" => assertions.length - passed, "total" => assertions.length, "pass_rate" => assertions.empty? ? 0.0 : passed.fdiv(assertions.length) }
+      case_grading["summary"] = grading.fetch("summary")
+      case_grading["status"] = row.fetch("status")
+      case_grading["error"] = row["error"] if row["error"]
+      FileUtils.mkdir_p(configuration_dir)
+      File.write(grading_path, JSON.pretty_generate(case_grading) + "\n")
+      all_passed &&= row["status"] == "PASS"
+      puts "最终 #{row.fetch('case_id')}: #{row.fetch('status')}"
+      warn row["error"] if row["error"] && row["status"] == "ERROR"
+    end
+    serialized = JSON.pretty_generate(result) + "\n"
+    File.write(result_path, serialized)
+    File.write(File.join(iteration_dir, "report.json"), serialized)
   end
-  (required_cases.keys - seen_case_ids).each do |case_id|
-    marker = required_cases.fetch(case_id) ? "[single-worker-roundtrip]" : "[worker-roundtrip]"
-    errors << "#{case_id}: expectation #{marker} has no execution trace available to the Codex evidence adapter"
-  end
-  errors
+  all_passed && engine_succeeded
+rescue JSON::ParserError, KeyError => e
+  warn "无法合并本次评测结果：#{e.message}"
+  false
 end
 
 eval_targets.each do |skill_dir, evals|
@@ -346,13 +426,17 @@ eval_targets.each do |skill_dir, evals|
         "judge" => {
           "type" => "agent_judge",
           "model" => options.fetch(:judge_model),
+          "skills" => [{ "source" => "local_path", "path" => File.join(repo_root, "evals/judge-evidence") }],
           "criteria" => judge_expectations
         }
       }
+      if options.fetch(:engine) == "codex"
+        case_config["judge"]["skills"].first["target"] = ".agents/skills/judge-evidence"
+      end
       markdown_artifacts = checkpoint_expectations.each_with_object([]) do |expectation, artifacts|
         artifacts << expectation.fetch(:path) if expectation.fetch(:type) == :markdown
       end
-      case_config["collect_artifacts"] = markdown_artifacts unless markdown_artifacts.empty?
+      case_config["collect_artifacts"] = (item.fetch("files", []) + markdown_artifacts).uniq
       File.write(case_path, YAML.dump(case_config))
       Pathname.new(case_path).relative_path_from(Pathname.new(skill_dir)).to_s
     end
@@ -423,19 +507,11 @@ eval_targets.each do |skill_dir, evals|
                           {}
                         end
     previous_checkpoint_artifacts = options[:output_root] ? checkpoint_artifact_fingerprints(output_dir) : {}
+    previous_results = options[:output_root] ? result_fingerprints(output_dir) : {}
     succeeded = system(*command, chdir: skill_dir)
-    if succeeded && !options[:dry_run] && options[:output_root]
-      roundtrip_errors = if options.fetch(:engine) == "codex"
-                           verify_codex_worker_roundtrips(output_dir, evals, previous_rollouts, options[:cases])
-                         else
-                           []
-                         end
-      checkpoint_errors = verify_checkpoint_artifacts(output_dir, evals, previous_checkpoint_artifacts, options[:cases])
-      program_errors = roundtrip_errors + checkpoint_errors
-      unless program_errors.empty?
-        warn program_errors.join("\n")
-        succeeded = false
-      end
+    unless options[:dry_run]
+      succeeded = finalize_results(output_dir, evals, previous_results, previous_checkpoint_artifacts, previous_rollouts,
+                                   options[:cases], engine: options.fetch(:engine), engine_succeeded: succeeded)
     end
     failed_skills << skill_name unless succeeded
   end

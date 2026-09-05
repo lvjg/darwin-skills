@@ -48,3 +48,5 @@ jobs:
           /tmp/skill-up --version
       - name: Validate Anthropic eval sets through Skill-Up
         run: evals/run-evals --skill-up /tmp/skill-up --model ci-placeholder --dry-run
+      - name: Test evaluation result and artifact handling
+        run: ruby evals/test-run-evals.rb
