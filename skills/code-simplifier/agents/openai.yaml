@@ -1,6 +1,6 @@
 interface:
   display_name: "Code Simplifier"
   short_description: "Reduce and restructure a bounded code candidate"
-  default_prompt: "Use $code-simplifier to optimize this bounded code candidate without changing its decided behavior; choose only the smallest justified deletion, reuse, responsibility realignment, direct simplification, or restructuring, and make no edit when the candidate is already the lowest-burden complete implementation."
+  default_prompt: "Use $code-simplifier to reduce this bounded code candidate's maintenance burden while preserving its decided behavior and contracts; make no edit when no justified improvement is needed."
 policy:
   allow_implicit_invocation: false

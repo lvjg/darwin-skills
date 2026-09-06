@@ -139,8 +139,6 @@ If the proposal would become sound only after a material change, conclude that t
 
 ## Decision Standard
 
-A mechanism is justified only when it is supported by the authorized outcome, a necessary consequence, an established protection, or an explicit guarantee.
-
 A material defect requires a causal chain:
 
 verified fact or established obligation -> failed pivotal design judgment -> affected outcome or risk -> concrete consequence

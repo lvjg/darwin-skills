@@ -1,6 +1,6 @@
 ---
 name: e2e-verifier
-description: Use only when the user explicitly invokes $e2e-verifier to derive an end-to-end acceptance case set for a concrete product or system journey or, when execution is requested and authorized, verify its functional outcome through the real entry point, consumer-visible result, authoritative terminal state, and required effects. Do not use for product experience walkthroughs, unit or integration tests alone, general UX critique, aggregate optimization of an existing case corpus, or external writes not covered by authorization.
+description: Use only when the user explicitly invokes $e2e-verifier to derive an end-to-end acceptance case set for a concrete product or system journey or, when execution is requested and authorized, verify its functional outcome at the actual acceptance boundary. Do not use for product experience walkthroughs, unit or integration tests alone, general UX critique, aggregate optimization of an existing case corpus, or external writes not covered by authorization.
 ---
 
 # E2E Verifier
@@ -61,11 +61,11 @@ description: Use only when the user explicitly invokes $e2e-verifier to derive a
 
 ## 预检并执行决定性旅程
 
-高成本或有副作用的执行前，先用只读检查确认环境、身份、tenant、目标入口、OAuth/scope、callback 可达性、授权覆盖、清理权限、fixture 新鲜度、协议和探针。工具或操作者已登录不证明被测应用、callback 或目标身份配置正确。
+按实际旅程的依赖和风险选择预检，复用仍适用于当前对象的有效证据。高成本或有副作用的执行前，用只读检查补齐会影响执行安全或判定可信度的前置证据，例如环境、身份与 tenant、入口、授权与清理能力，以及实际依赖的 OAuth/scope、callback、fixture、协议或探针。工具或操作者已登录不证明被测应用、callback 或目标身份配置正确。
 
-用正式解析器、序列化器、schema 或 conformance case 离线校验配置、端点、fixture 和 double 的请求响应。Mock 或 Provider double 只模拟明确被替代的外部传输和故障，不实现产品规则。必经真实边界缺少配置或权限时，合成路径只能形成诊断证据；说明缺失前置、Owner、最小解除动作和真实重跑入口。
+配置、端点、fixture 或 double 的请求响应存在会影响执行或证据的未确认条件时，用正式解析器、序列化器、schema 或 conformance case 做最小离线校验；不为不存在的依赖补建检查。Mock 或 Provider double 只模拟明确被替代的外部传输和故障，不实现产品规则。必经真实边界缺少配置或权限时，合成路径只能形成诊断证据；说明缺失前置、Owner、最小解除动作和真实重跑入口。
 
-先用较低成本的聚焦检查定位，再从真实任务入口执行决定性 case：
+前置已确认时，直接从真实任务入口执行决定性 case；仍有会改变执行的疑点时，先做能定位它的最小聚焦检查：
 
 `真实入口动作 -> 等待可判定状态 -> 读取可见结果 -> 用 correlation 绑定权威状态、日志、receipt 与 effect`
 

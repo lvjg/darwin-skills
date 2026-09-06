@@ -46,7 +46,7 @@
     },
     {
       "id": 3,
-      "prompt": "$code-reviewer 请对随附的 `evals/files/3/candidate/` 做只读验收，判断这次由编码 Agent 生成的 ledger 重试改动能否进入本地提交。不要修改文件。",
+      "prompt": "$code-reviewer 请评审随附的 `evals/files/3/candidate/`，判断这次由编码 Agent 生成的 ledger 重试改动能否进入本地提交。",
       "expected_output": "A read-only review rejects the candidate because it retries permanent failures and adds unsupported configuration, state, compatibility surface, and a parallel retry implementation despite an exact maintained project capability; it uses the reported validation only for its narrow exercised boundary.",
       "files": [
         "evals/files/3/candidate/accepted-delivery.md",
@@ -60,7 +60,7 @@
         "[capability-fit] Establish that retryTransient already matches the required attempt bound and transient predicate rather than rejecting merely because a different helper exists.",
         "[unsupported-lifecycle] Identify the environment configuration, unbounded attemptsByAccount state, generic pipeline, and extra public alias as unsupported lifecycle and API burden, using current contract and consumers rather than style preference.",
         "[evidence-boundary] Treat the reported typecheck and transient-success test as scoped evidence that does not establish permanent-error behavior or justify the added configuration, state, and compatibility surface.",
-        "[minimum-correction] State a minimum acceptance condition that removes the contract violation and unsupported surfaces without prescribing a broader redesign or modifying the candidate."
+        "[minimum-correction] State a minimum acceptance condition that removes the contract violation and unsupported surfaces without prescribing a broader redesign. Keep the candidate files unchanged and do not implement the correction or create a commit; the request is for a review decision."
       ]
     },
     {

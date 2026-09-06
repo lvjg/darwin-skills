@@ -1,6 +1,6 @@
 interface:
   display_name: "E2E Verifier"
   short_description: "Derive or verify functional journeys end to end"
-  default_prompt: "Use $e2e-verifier to bind the exact acceptance candidate and environment, derive a minimal risk-complete case set, and, when authorization and capabilities allow, execute the real journey, bind visible outcomes to authoritative state and effects, and report evidence-scoped Pass, Fail, Blocked, or Not Requested results."
+  default_prompt: "Use $e2e-verifier to derive the minimal acceptance case set for this journey and, when execution is requested and authorized, verify its functional outcome within the actual boundary tested."
 policy:
   allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 interface:
   display_name: "Design Reviewer"
   short_description: "Assess technical and Agent/Harness designs independently"
-  default_prompt: "Use $design-reviewer to decide independently whether this submitted technical or Agent/Harness design supports the stated next decision. Establish the problem, real starting conditions, constraints, and evidence without adopting the proposal's framing; bind the judgment to the applicable proposal revision; identify and challenge the pivotal design judgments; and report the decision, achieved independence, evidence limits, established defects, decision-changing unknowns, and user-owned choices without rewriting the proposal."
+  default_prompt: "Use $design-reviewer to independently assess whether this submitted technical or Agent/Harness design supports the stated next decision, keeping the review read-only."
 policy:
   allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 ---
 name: ux-reviewer
-description: Use only when the user explicitly invokes $ux-reviewer to assess a human-facing product experience from the target user's task and report evidence-backed findings about content, information hierarchy, navigation, interaction, feedback, layout, accessibility, or recovery. Do not use for backend or system E2E acceptance, unit or integration testing, code review, generic visual taste, or functional correctness claims beyond the observed experience.
+description: Use only when the user explicitly invokes $ux-reviewer to assess a human-facing product experience from the target user's task and report evidence-backed experience findings. Do not use for backend or system E2E acceptance, unit or integration testing, code review, generic visual taste, or functional correctness claims beyond the observed experience.
 ---
 
 # UX Reviewer
