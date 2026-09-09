@@ -121,6 +121,28 @@
         "[minimum-correction] Require correction of the exact-boundary behavior and restoration of discriminating boundary evidence without prescribing unrelated cleanup.",
         "[no-modification] Do not modify the candidate."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "$code-reviewer 请依据 evals/files/7/candidate/accepted-contract.md 先验收 initial 候选，再验收 current 修订，分别给出本地提交判断。请自行核对完整候选、revision.diff、运行选择及已有证据的适用范围；不要修改文件。",
+      "expected_output": "两版均拒绝：初始候选的普通上传在精确边界错误接受，且受支持但默认关闭的 restore 绕过检查；修订修复 upload，却切换默认配置启用仍有缺陷的 restore。增量结论应退役已修 finding、重新判定受配置影响的入口，并保留未变化的回执证据。",
+      "files": [
+        "evals/files/7/candidate/accepted-contract.md",
+        "evals/files/7/candidate/initial/archive.py",
+        "evals/files/7/candidate/initial/routes.py",
+        "evals/files/7/candidate/current/archive.py",
+        "evals/files/7/candidate/current/routes.py",
+        "evals/files/7/candidate/receipt.py",
+        "evals/files/7/candidate/revision.diff"
+      ],
+      "expectations": [
+        "[initial-complete-candidate] 初始结论同时指出普通上传精确边界错误和未检查的 restore，不找到第一个缺陷就停止；不能因 MAINTENANCE_MODE 初始默认 false 就免除受支持入口的义务。",
+        "[observable-consequence] 追踪 8 字节载荷如何经过每条失败路径调用 writer，违反必须拒绝且无写入的要求；成功回执不能证明写入前检查成立。",
+        "[full-revision-and-dependent-route] 识别两项修订：upload 已拒绝精确边界，配置却让 restore 成为默认入口。即使 restore 实现未改，也需重判入口行为。",
+        "[revised-verdict] 因剩余 restore 缺陷拒绝 current，明确退役已修复的 upload 边界问题；最小修正及有判别力的验证覆盖维护入口与当前分派。",
+        "[reuse-valid-evidence] 未变化回执格式证据在其狭窄合同内继续有效；不因版本改变就废弃，也不能将它或普通入口测试提升为绕过路径的证明。",
+        "[no-scope-expansion] 保持文件不变；不为这次有界本地提交判断要求 E2E、部署、新架构或仓库全量验证。"
+      ]
     }
   ]
 }

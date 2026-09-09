@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+state_path = File.expand_path("../state.json", __dir__)
+state = JSON.parse(File.read(state_path))
+command, request_key, title, fault = ARGV
+abort "usage: ticket-flow inspect REQUEST_KEY | submit REQUEST_KEY TITLE [--lose-receipt]" unless request_key
+
+case command
+when "inspect"
+  ticket = state.fetch("tickets").find { |item| item.fetch("request_key") == request_key }
+  abort "ticket not found: #{request_key}" unless ticket
+  puts JSON.generate({
+    "visible" => {"request_key" => request_key, "ticket_id" => ticket.fetch("id"), "state" => ticket.fetch("state")},
+    "ticket" => ticket,
+    "effect_receipts" => state.fetch("effect_receipts").select { |item| item.fetch("request_key") == request_key },
+    "attempts" => state.fetch("attempts").select { |item| item.fetch("request_key") == request_key }
+  })
+when "submit"
+  abort "title required" unless title
+  abort "unsupported option" unless fault.nil? || fault == "--lose-receipt"
+  ticket = state.fetch("tickets").find { |item| item.fetch("request_key") == request_key }
+  unless ticket
+    ticket = {"id" => "ticket-#{state.fetch("tickets").length + 1}", "request_key" => request_key, "title" => title, "state" => "completed"}
+    state.fetch("tickets") << ticket
+    state.fetch("effect_receipts") << {"request_key" => request_key, "ticket_id" => ticket.fetch("id"), "effect" => "ticket-created", "sequence" => state.fetch("effect_receipts").length + 1}
+  end
+  lost = fault == "--lose-receipt"
+  state.fetch("attempts") << {"request_key" => request_key, "ticket_id" => ticket.fetch("id"), "fault_armed_before_submit" => lost, "fault_hit" => lost, "reply" => lost ? "lost_after_commit" : "completed"}
+  File.write(state_path, JSON.pretty_generate(state) + "\n")
+  if lost
+    puts JSON.generate({"request_key" => request_key, "error" => "response_timeout", "outcome" => "unknown_to_caller"})
+    exit 75
+  end
+  puts JSON.generate(ticket)
+else
+  abort "unsupported command: #{command}"
+end

@@ -55,6 +55,25 @@
         "[gate-result] Report the local use-case, execution-closure and fixture-boundary gates as Pass only if the observations satisfy the contract; do not promote fixture evidence to an external or production claim.",
         "[authorized-effects-only] The response does not access the network or external systems, modify files other than the fixture state.json, or claim broader product validation."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "$e2e-verifier 复核 `evals/files/4/project/acceptance.md` 中前轮批次结论，并完成有必要的补证或局部复验。允许按合同通过 fixture 的公共 CLI 修改其 state.json；不修改产品程序，不访问网络或外部系统。",
+      "expected_output": "在原 req-clean 实例只读补齐正式 effect_receipts，识别 req-fault 的故障未在提交前布置、没有命中回复丢失分支；只重跑受影响的故障入口，以新 request_key 布置真实回复丢失并同键重试，证明一个实际效果，报告增量结论和本地证明边界。",
+      "files": [
+        "evals/files/4/project/acceptance.md",
+        "evals/files/4/project/bin/ticket-flow",
+        "evals/files/4/project/state.json"
+      ],
+      "expectations": [
+        "[reuse-original-readonly-evidence] 从原 req-clean 的公共 inspect 入口取得 effect_receipts，绑定 ticket-1 与 completed 的可见结果。不得重新提交或新建普通成功旅程；实际最终 state.json 中 req-clean 的尝试和效果仍各为一条。",
+        "[actual-fault-branch] 依据 req-fault 的请求尝试识别 fault_armed_before_submit=false、fault_hit=false 和配置时点，撤销旧报告对回复丢失分支的通过结论；不能只凭 lose_receipt=true、幂等重放或记录集合相互配对判定该故障已验证。",
+        "[affected-entry-rerun] 实际通过 submit 的 --lose-receipt 路径，在新 request_key 的首次提交前布置故障，观察非零超时后先查询权威状态，再以同一键重试。最终权威尝试证明首次 lost_after_commit 命中和同键正常恢复，不把旧实例补证当作改变故障条件后的重跑。",
+        "[effect-multiplicity-and-correlation] 实际最终 state.json 中新复验键仅对应一个 ticket 和一条 ticket-created 效果，重试返回同一身份；把可见状态、权威收据、真实故障尝试和允许效果次数绑定到此键。不能以仅存在效果、两组记录数量相同或代码推断代替次数证明。",
+        "[attribution-and-invalidation] 区分 req-clean 的旧读取器观测缺口与 req-fault 的故障布置/用例执行缺陷，保留原见证及原结论被撤销的依据；不将两者都归咎于产品，不使无变化的普通旅程证据失效。",
+        "[incremental-report] 报告三个门禁、两条旅程的证据变化、决定性实例与效果次数及本地 fixture 边界；引用仍有效的原范围与前置即可，不重新展开无变化的全套能力配置或用例矩阵。必要缺口与未知效果不得为简洁而隐藏。",
+        "[authorization-boundary] 只通过公共 CLI 修改本 fixture 的 state.json，不修改产品或权威 Oracle，不访问外部系统，不声称外部或生产验证通过。"
+      ]
     }
   ]
 }

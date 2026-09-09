@@ -325,6 +325,81 @@
         "[保持专业边界] Supervisor 不读取领域正文自做成稿审查、不重跑代码测试、不修改文件或真正派发；不因缺成稿检查增加未要求的独立设计审查、实现、E2E 或发布阶段。",
         "[用户结果] 告知用户代码检查已完成，但设计说明仍需整理和检查，不能宣告整个交付完成；不要求用户重复授权已允许的文档修复。"
       ]
+    },
+    {
+      "id": 19,
+      "prompt": "$supervisor 从 `evals/files/19/task/root-intent.md` 恢复并继续任务，遵守本次读取入口与停止边界。",
+      "expected_output": "从真实有界输出补齐控制信息后，将膨胀历史替换为唯一当前快照；保留中段最新授权、候选、全部开放义务与效果未知的原操作，准备只读恢复而不重复部署。",
+      "files": [
+        "evals/files/19/task/checkpoint.md",
+        "evals/files/19/task/read-checkpoint.py",
+        "evals/files/19/task/root-intent.md"
+      ],
+      "expectations": [
+        "[read-before-replace] 执行证据显示先取得有界读取器的截断输出，随后在写入 checkpoint 或选择依赖恢复状态的动作之前分段回收遗漏控制内容，包含 revision 23；不能只读头尾后覆盖原文件，也不能让 Worker 恢复私有控制状态。",
+        "[current-authority-and-obligations] 实际 checkpoint 使用 9fd72b4，保留 review-9fd72b4 的局部证明边界、禁止生产写入和禁止重置 fixture-retained-19；全部未闭合义务包含原操作终态与效果、健康运行证明及返回预览访问 URL。",
+        "[unknown-effect-recovery] State 为 Waiting，保留 deploy-2319、可能已发生的效果、Platform Engineering Owner、可读恢复引用及安全重入条件；准备查询尚不等于已派发，不因发起调用已 timeout 返回而改为 Active 或新建部署。",
+        "[single-current-snapshot] 替换为一个语义一致的当前快照，移除已失效候选的待部署动作、重置计划和重复 CURRENT/已完成历史。保留有效报告引用即可，不把历史挪到平行 checkpoint、证据索引或备份；不按固定字数删去恢复所需事实。",
+        "[checkpoint-markdown path=evals/files/19/task/checkpoint.md] 直接读取最终既有 checkpoint.md 验证上述控制语义；它应是可直接阅读的 Markdown。",
+        "[bounded-action] 不调用 Worker、不查询外部系统、不创建新文件或操作、不将本地报告当作预览部署完成证明；只更新既有 checkpoint。"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "$supervisor 读取 `evals/files/20/task/`，接纳原操作的最新反馈，恢复并更新该任务。",
+      "expected_output": "效果未知但已无安全查询或等待条件时进入 Blocked，保留原操作及恢复条件，不清除未知效果或重复提交。",
+      "files": [
+        "evals/files/20/task/checkpoint.md",
+        "evals/files/20/task/platform-return.md",
+        "evals/files/20/task/root-intent.md"
+      ],
+      "expectations": [
+        "[blocked-not-active-or-waiting] 原提交返回 timeout 不决定远端效果；重复权限拒绝且没有自动恢复、回调或可等待查询时，实际 checkpoint 为 Blocked。不能因本地命令结束改 Active，也不能无限保持可等待的 Waiting。",
+        "[retain-original-effect] 保留 deploy-2020、internal-preview、6b120df、原恢复引用及效果未知状态；不得宣布部署失败无效果、成功或完成，不准备新提交。",
+        "[minimal-owner-unblock] 解除条件是 Platform Engineering 恢复查询权限或提供原操作的权威终态、实际效果和运行健康证据；不让不拥有权限的用户重复批准部署或交出凭据。",
+        "[checkpoint-markdown path=evals/files/20/task/checkpoint.md] 直接读取最终唯一 checkpoint，确认目标、禁止效果、未闭合义务和原操作恢复语义仍完整。",
+        "[scope] 只修改既有 checkpoint，不实际派发、查询、重试、新建流程或平行记录。"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "$supervisor 读取 `evals/files/21/task/`，在授权范围内准备当前验证动作，停在派发前。",
+      "expected_output": "优先让原组合作者完成会改变可行性的最小真实探针；后续验证只在依赖成立后展开，并在派发前解决共享运行资源冲突。",
+      "files": [
+        "evals/files/21/task/root-intent.md",
+        "evals/files/21/task/worker-plans.md"
+      ],
+      "expectations": [
+        "[decisive-probe-first] 当前完整责任是取得真实 cursor 往返的可行性证据，优先复用仍可用的 integration-owner-21，给出候选输入、作用边界、预期证据与停止条件；不能先跑两套昂贵回归或让依赖未决条件的 Worker 空等。",
+        "[resource-conflict-before-dispatch] 识别代码写集独立仍会因端口、数据库、报告覆盖和进程清理冲突。后续计划采用已可行的单环境 Owner 与串行旅程、按责任保存报告，或有证据同样可行的隔离方案；不只隔离文件就宣称可并行。",
+        "[bounded-progress] 不扩大成设计/实现/审查固定流水线，不新增多实例产品机制，不重开已决定接口，不重复授权，不创建仅供本次同步准备的 checkpoint，也不实际派发或执行。"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "$supervisor 读取 `evals/files/22/task/root-intent.md`，按其中的连续反馈边界接纳结果并维护恢复状态。",
+      "expected_output": "连续四次更新唯一当前快照；关闭的义务移除，以后继权威报告替代已被涵盖的旧证据，不积累已完成列表。最后仍保留真实下载义务及最初和中途生效的全部约束。",
+      "files": [
+        "evals/files/22/task/checkpoint.md",
+        "evals/files/22/task/reports/r1.md",
+        "evals/files/22/task/reports/r2.md",
+        "evals/files/22/task/reports/r3.md",
+        "evals/files/22/task/reports/r4.md",
+        "evals/files/22/task/returns/1.md",
+        "evals/files/22/task/returns/2.md",
+        "evals/files/22/task/returns/3.md",
+        "evals/files/22/task/returns/4.md",
+        "evals/files/22/task/root-intent.md"
+      ],
+      "expectations": [
+        "[successive-recovery-points] 执行顺序显示分别读取四轮反馈，每次更新并实际读回 checkpoint 后才读取后续反馈；不能一次预读全部反馈并只写最终摘要。各中间快照只依据当时已接纳的事实，能够恢复对应的剩余义务。",
+        "[no-growth-from-completed-work] 中间及最终快照没有逐轮追加已完成清单、派发/返回历史、前序快照或 LATEST 段。已闭合义务退出开放集；同一事实不会在多个章节复制。完成记录仍然真实，不是保留全部旧记录的理由。",
+        "[authoritative-evidence-replacement] 每轮使用其当前权威报告的覆盖范围与引用表示仍决定完成的局部结论；最终 reports/r4.md 足以覆盖四项已闭合结果，不要求同时保留 r1/r2/r3 的等价条目、不复制报告正文、不另造摘要文件或索引。",
+        "[preserve-unrepeated-constraints] 所有恢复点保留禁止生产发布/重置数据库、保留审计记录；第二轮后直到最终保留中文文件名九月导出.csv 的要求。约束未在最新反馈重复不代表失效。",
+        "[remaining-result-not-hidden] 最终仅真实本地下载结果仍未闭合；局部验证和独立代码验收均不能证明此结果。不宣布 Complete，不增加不必要的全量复审、固定阶段、生产发布或重复授权。",
+        "[checkpoint-markdown path=evals/files/22/task/checkpoint.md] 读取实际最终文件，确认是唯一可读当前快照，绑定 export-22@f4ac901、所有仍适用约束、剩余结果与有界下一动作；体积不是通过的唯一判据，不用硬阈值裁剪义务。",
+        "[authorized-scope] 只修改 checkpoint.md；不改反馈、报告、产品，不建历史副本，不实际派发、执行领域检查或访问外部系统。"
+      ]
     }
   ]
 }

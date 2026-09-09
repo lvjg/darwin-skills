@@ -1,0 +1,16 @@
+{
+  "tickets": [
+    {"id": "ticket-1", "request_key": "req-clean", "title": "Printer offline", "state": "completed"},
+    {"id": "ticket-2", "request_key": "req-fault", "title": "Scanner offline", "state": "completed"}
+  ],
+  "effect_receipts": [
+    {"request_key": "req-clean", "ticket_id": "ticket-1", "effect": "ticket-created", "sequence": 1},
+    {"request_key": "req-fault", "ticket_id": "ticket-2", "effect": "ticket-created", "sequence": 2}
+  ],
+  "attempts": [
+    {"request_key": "req-clean", "ticket_id": "ticket-1", "fault_armed_before_submit": false, "fault_hit": false, "reply": "completed"},
+    {"request_key": "req-fault", "ticket_id": "ticket-2", "fault_armed_before_submit": false, "fault_hit": false, "reply": "completed"},
+    {"request_key": "req-fault", "ticket_id": "ticket-2", "fault_armed_before_submit": false, "fault_hit": false, "reply": "completed"}
+  ],
+  "prior_run_configuration": {"lose_receipt": true, "configured_after_attempt": 3}
+}

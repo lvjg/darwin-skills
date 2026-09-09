@@ -1,0 +1,10 @@
+--- initial/archive.py
++++ current/archive.py
+@@ -5 +5 @@
+-    if len(payload) > LIMIT:
++    if len(payload) >= LIMIT:
+--- initial/routes.py
++++ current/routes.py
+@@ -3 +3 @@
+-MAINTENANCE_MODE = False
++MAINTENANCE_MODE = True

@@ -19,10 +19,6 @@ By default, independent means judgment independence: establish the basis and cha
 - Exact prompts, model assumptions, tool wiring, runtime composition, deployment state, and observed behavior may be inspected when they determine or test a design judgment. Keep the conclusion on the submitted design; do not convert design evidence into acceptance of an exact delivered candidate or a broader runtime population.
 - Stop when the evidence is sufficient for the named decision. Do not expand the review into an exhaustive architecture audit.
 
-The core question is:
-
-> For the decision the user needs to make, do the proposal's pivotal design judgments remain sound under the independently established problem, real starting conditions, material operating scenarios, and strongest viable counterarguments?
-
 ## Professional Review Model
 
 ### 1. Establish the Decision and Independent Basis
@@ -35,7 +31,7 @@ Identify:
 - relevant current capabilities, owners, contracts, state, consumers, and failure semantics;
 - material unknowns that could change the decision.
 
-Build this basis from authoritative evidence rather than adopting the proposal's framing. Treat proposal claims about the current system as assertions until verified.
+Establish the required outcome and must-preserve behavior within the authorized scope independently of the proposal's framing. For staged work, distinguish choices needed now from details that can remain open without changing direction. A first slice need not deliver the whole system, but must leave a viable route to the required outcome. Treat unverified current-system claims as assertions; verify those that can affect this decision.
 
 If no named next decision is supplied, use the narrowest consequential interpretation supported by the request and state it.
 
@@ -51,7 +47,7 @@ Describe the proposal neutrally:
 - affected consumers and contracts;
 - explicit exclusions and transition assumptions.
 
-Then identify the **pivotal design judgments**: proposal judgments which, if false, would change the route, outcome, material risk, reversibility, or long-lived cost.
+Identify the **pivotal design judgments**: choices which, if false or unresolved, change the route, outcome, material risk, reversibility, or long-lived cost. Before reviewing detailed contracts, check which choices the proposal settles; capabilities or alternatives alone do not settle a decision needed next.
 
 Typical pivotal judgments concern:
 

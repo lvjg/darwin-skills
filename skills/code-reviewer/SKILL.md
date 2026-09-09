@@ -17,7 +17,7 @@ Adapt the investigation to the candidate's actual risk. Pursue only questions th
 
 ### 1. Establish the Acceptance Criteria
 
-Identify the exact candidate and comparison basis. Establish the required normal and failure behavior, preserved contracts, authorized scope, material constraints, and intentional exclusions.
+Establish required behavior, preserved contracts, scope, constraints, and exclusions before selecting review targets from the diff. Bind the verdict to the actual candidate and comparison basis; judge a staged candidate against its authorized stage and preserved obligations.
 
 Use requested behavior to establish intent, active contracts and consumers to establish obligations, and current code and resolved dependencies to establish repository reality. Treat plans, comments, tests, diagnostics, and implementation summaries as evidence rather than authority to define success.
 
@@ -25,14 +25,12 @@ Keep any unresolved requirement that could change the verdict explicit.
 
 ### 2. Reconstruct the Change
 
-Read the candidate end to end before judging individual hunks.
+On the initial review, read the candidate change end to end and reconstruct the required end-to-end behavior before judging individual hunks. Use risk to direct further investigation beyond the candidate, not to skip parts of it.
 
 - Trace each required result backward through its observable effect or state, owner, runtime wiring, and entrypoint.
 - Trace each material change forward through callers, consumers, persisted data, external effects, deployment, maintenance, and removal.
 
-Separate required changes, direct consequences needed for completeness, and unsupported additions. Verify the selected runtime path and every directly affected caller, configuration, migration, generated artifact, and operational path. Check whether old, bypass, disabled, or parallel paths still affect the result.
-
-Inspect outside the submitted files only when it can change completeness, runtime selection, contracts, ownership, failure behavior, or lifecycle burden. An uninspected surface is not proof of absence; obtain the smallest relevant source when available, otherwise keep the claim as a bounded evidence gap.
+Separate required changes, necessary consequences, and unsupported additions. Verify runtime selection and contract propagation through affected producers and consumers, including composition and public contracts outside the diff. Follow configuration, persistence, old, bypass, disabled, or parallel paths, and generated artifacts where they can change the verdict. An uninspected surface is not proof of absence; obtain the smallest relevant source or retain a bounded evidence gap.
 
 ### 3. Examine the Implementation
 
@@ -54,7 +52,7 @@ Do not reject code merely because another implementation is shorter, cleaner, or
 
 ### 4. Trace Integration and Failure Paths
 
-Trace the selected implementation from its real entrypoint to the observable result, authoritative state, or external effect. Follow changed contracts, authority, state, and effects through actual consumers and through the failure and recovery paths triggered by the change.
+Reuse the entrypoint, consumer, and effect traces established in §2. Extend them only where the change exposes unresolved integration questions or affected failure and recovery paths; follow changed contracts, authority, state, and effects across those boundaries.
 
 A local helper, mock, task identifier, or successful intermediate response cannot establish an outcome owned by another boundary. Do not turn a simulated or constrained failure into a code defect until the candidate-causal path is established.
 
@@ -67,6 +65,8 @@ Challenge evidence created with the candidate. Check whether tests mirror the im
 A missing test is not automatically a defect. When material proof is absent, identify the competing outcomes and the smallest validation that would decide between them.
 
 ### 6. Decide
+
+For a revised candidate, read the full new delta, reassess findings and evidence affected by it or its dependencies, and reuse unaffected evidence. Do not restart the whole review merely because the candidate identifier changed.
 
 Admit a finding only when it:
 

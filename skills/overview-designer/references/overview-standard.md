@@ -46,9 +46,9 @@ Keep assumptions, risks, and unresolved conditions with their owning design, inc
 
 ## Revision Record
 
-Use the revision classification established in Stage 4; do not rederive it while drafting. Include a revision record only when Stage 4 classified a within-route design revision, route change, or intent change; omit it otherwise. The record reports change, impact, and basis; it proves neither the underlying fact, adoption, nor implementation and cannot be the only place where a design or unresolved condition appears.
+Use the revision classification established in Stage 4; do not rederive it while drafting. Add or update a revision record only when change tracking serves the requested deliverable, an established project convention, or an identified reader need, and Stage 4 classified a within-route design revision, route change, or intent change. Preserve existing records that still serve that purpose; do not create entries for wording or evidence-only corrections. Express the current design in its owning sections whether or not a record is needed. The record reports change, impact, and basis; it proves neither the underlying fact, adoption, nor implementation and cannot be the only place where a design or unresolved condition appears.
 
-Use one compact table, following an existing project convention when available and inventing no identifiers:
+When a record is needed, follow the existing project format or, if none exists, use one compact table. Invent no identifiers:
 
 | Design changed | Mechanism, responsibility, or choice changed | Impact | Basis and source |
 | --- | --- | --- | --- |

@@ -19,6 +19,8 @@
         "[behavioral-understanding-contract] Define extraction of business facts, explicit-versus-assumed decisions, ambiguity and unsupported handling, dependency-aware mutation sequencing and reconciliation under the selected workflow-owned policy, and the prohibition on invented business facts.",
         "[runtime-publication-and-validation] Preserve existing runtime behavior, separate finalize from signed human publication unavailable to the model, define focused owner-level proof, and record E2E/external journey evidence as excluded and unproven.",
         "[prohibited-design-scope] The response does not retain unsupported source lifecycle, make generic document acquisition a maintained Skill responsibility, claim implementation/review/E2E, write outside the requested artifact or invoke another repository Skill.",
+        "[capability-not-renaming] Removed source lifecycle and duplicate routing responsibilities do not return under renamed business capabilities, profiles or forwarding layers. Any retained layer has an established behavioral responsibility or isolation beyond forwarding or renaming.",
+        "[current-design-without-invented-history] The accepted semantic corrections appear in the current design. The fixture establishes no maintained revision record or change-history consumer, so do not invent a revision log, version identity or historical appendix merely because this is a substantive rewrite.",
         "[artifact-markdown path=evals/files/1/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },
@@ -256,7 +258,7 @@
     {
       "id": 14,
       "prompt": "$overview-designer 根据 `evals/files/14/context/` 重写 `evals/files/14/design/system-design.md`，形成发票总额始终一致的目标系统设计。草稿中的同步服务只是提议，不是约束；如果责任归属调整能闭合结果，允许这样做。只修改该设计文件，不实现代码。",
-      "expected_output": "The design recognizes from the incident evidence that the mismatch stems from the total being written by a non-owner with stale inputs, moves total computation into Invoice Service, and rejects the synchronization service.",
+      "expected_output": "The design grounds total ownership in Invoice Service and rejects synchronization as the guarantee. It preserves Tax Service authority, separates supported owner-side computation from unresolved issue-time or cross-service atomicity semantics, and does not invent a stronger guarantee to justify extra authority or state.",
       "files": [
         "evals/files/14/context/current-system.md",
         "evals/files/14/context/root-intent.md",
@@ -270,6 +272,8 @@
         "[consumers-preserved] Reports, exports and the customer PDF continue to read the total from Invoice Service unchanged.",
         "[portal-transition] The design states how Billing Portal's existing PATCH of `total` is retired or ignored and what the portal displays instead.",
         "[artifact-and-claim-boundary] Only evals/files/14/design/system-design.md is modified; the design is not presented as implemented or validated.",
+        "[ambiguous-guarantee-bounded] Reconcile the displayed-current-rule intent with the fixture rule that tax changes apply to invoices issued after effective_from. State the adopted interpretation and any decision-changing uncertainty about draft versus issued totals and rule resolution timing. Do not silently claim globally atomic tax-rule and invoice updates or move tax authority merely to satisfy an assumed stronger interpretation. Preserve the supported removal of portal-written totals while an independent timing condition remains unresolved.",
+        "[fair-route-comparison] If comparing responsibility migration or stronger coordination with owner-side computation, allow both routes the same authorized ability to adjust contracts. Do not reject Tax Service-owned rule lookup merely because its current GET lacks a guarantee while granting a competing route a new guarantee without establishing the requirement and cost. A documented conditional extension to the existing rule contract is allowed; it is not implemented evidence.",
         "[artifact-markdown path=evals/files/14/design/system-design.md] 直接读取本次执行工作区中的最终设计文件，确认其为无需解码或转换即可阅读的 Markdown 设计内容；不以执行记录中的预览或最终回复代替文件。允许普通段落、ATX 或 Setext 标题及合法 frontmatter，不要求特定的标题写法。"
       ]
     },

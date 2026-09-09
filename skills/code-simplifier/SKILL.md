@@ -1,13 +1,13 @@
 ---
 name: code-simplifier
-description: Use only when the user explicitly invokes $code-simplifier to optimize a bounded implementation candidate after its required behavior and preserved contracts are decided. Delete candidate surfaces without an established obligation, reuse existing capabilities and owners, and restructure required code to reduce coupling and total maintenance burden without choosing a new design, repairing unrelated defects, or expanding the authorized scope.
+description: Use only when explicitly invoked as $code-simplifier to edit a bounded implementation candidate whose required behavior and contracts are decided. Remove unsupported machinery, reuse established owners and capabilities, and reduce coupling and maintenance burden. This is implementation optimization, not read-only acceptance review, selection of undecided behavior or architecture, or repair of unrelated defects.
 ---
 
 # Code Simplifier
 
 Reduce a bounded implementation candidate to the lowest-total-burden complete implementation that delivers its decided behavior. Delete unsupported machinery; reuse, realign, directly simplify, or restructure required code so it fits established project responsibilities and contracts. Preserve required behavior, active contracts, affected failure semantics, user data, unrelated work, and distinctions that represent genuinely different policies.
 
-Completion means that every material candidate surface is required by the result, a necessary consequence, or a preserved obligation; direct residue is closed; required code has fitting responsibility, cohesion, dependencies, and contracts; and the final candidate carries less total coupling, change propagation, implementation, and lifecycle burden without introducing a new design.
+Completion means that every material candidate surface is required by the result, a necessary consequence, or a preserved obligation; direct residue is closed; and required code has fitting responsibility, cohesion, dependencies, and contracts. An edited candidate must reduce total coupling, change propagation, implementation, or lifecycle burden without introducing a new design. If the bounded evidence establishes no justified improvement, completion requires no edit rather than a ceremonial change.
 
 The sections below define required decisions and completion conditions, not a fixed execution sequence. Follow the candidate and its risks in whatever order yields the smallest complete intervention.
 
@@ -17,7 +17,7 @@ Identify the exact candidate and comparison base: a working-tree diff, commit, p
 
 Establish the required normal result, affected failure behavior, preserved contracts, intentional surface changes, and non-goals from the user's request, an accepted decision, or an active contract. Current code, tests, comments, implementation summaries, and historical plans are scoped evidence, not authority to define their own success.
 
-The candidate must be complete enough to establish the behavior being preserved. If optimization requires choosing new product behavior, architecture, state ownership, a public contract, or repairing a material defect independent of the optimization, leave that boundary unchanged and report the prerequisite. Optimization authority covers the candidate and its direct consequences, not adjacent debt or a general implementation task.
+The candidate must be complete enough to establish the behavior being preserved. If optimization requires deciding or changing product behavior, architecture, authoritative ownership, or a public contract, or repairing a material defect independent of the optimization, leave that boundary unchanged and report the prerequisite. Realigning an implementation with an already established owner or realizing an already accepted boundary is within scope; it does not itself reopen design. Optimization authority covers the candidate and its direct consequences, not adjacent debt or a general implementation task.
 
 ## Account for the Candidate
 
