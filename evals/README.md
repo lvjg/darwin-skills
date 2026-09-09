@@ -1,6 +1,6 @@
 # Skill 评测
 
-用例保存在 `skills/<skill-name>/evals/evals.json`，由 Skill-Up 0.10.0 执行。以下命令均在仓库根目录运行。
+用例保存在 `skills/<category>/<skill-name>/evals/evals.json`，由 Skill-Up 0.10.0 执行。以下命令均在仓库根目录运行。默认运行所有带 eval 集的 Skill；显式指定没有 eval 的 Skill 会报错。`skill-doctor` 当前尚无 eval 集。
 
 ## 校验与运行
 
@@ -33,7 +33,7 @@ Supervisor 和 Intent Clarifier 默认安装仓库全部 Skill，后者用于检
 
 ## 维护用例
 
-参考[已有用例](../skills/supervisor/evals/evals.json)。每个用例包含唯一整数 `id`、任务 `prompt`、预期结果 `expected_output` 和可判定的 `expectations`；输入文件通过 `files` 引用，路径相对 Skill 根目录，放在 `evals/files/<id>/` 下。
+参考[已有用例](../skills/coordination/supervisor/evals/evals.json)。每个用例包含唯一整数 `id`、任务 `prompt`、预期结果 `expected_output` 和可判定的 `expectations`；输入文件通过 `files` 引用，路径相对 Skill 根目录，放在 `evals/files/<id>/` 下。
 
 `intent-clarifier` 用例检查首次响应、给定历史后的续接和授权产物写入。给定历史不等于真实多轮交互；用户隐藏意图能否被及时表达、回答能否持续改变后续工作，需要另做多轮验证，不能把未来回答预先放入被测 Agent 的输入。
 

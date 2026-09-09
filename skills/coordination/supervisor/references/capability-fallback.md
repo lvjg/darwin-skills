@@ -11,5 +11,6 @@
 - `code-simplifier`
 - `e2e-verifier`
 - `ux-reviewer`
+- `skill-doctor`
 
 建立目录快照时，只读取环境目录缺失候选的 `SKILL.md` YAML frontmatter。只有某个候选实际匹配当前义务并被选中时才完整读取其 `SKILL.md`。文件不存在、不可读或 frontmatter 不能确认适用条件时，该候选不可用；不要扫描其它同级目录来猜测能力。

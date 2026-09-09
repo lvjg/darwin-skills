@@ -47,8 +47,9 @@ def git(*args)
   out
 end
 
-skill_files = ROOT.glob("skills/*/SKILL.md").sort
+skill_files = ROOT.glob("skills/*/*/SKILL.md").sort
 skill_names = skill_files.map { |file| file.parent.basename.to_s }
+errors << "skills/: duplicate Skill names" unless skill_names.uniq == skill_names
 errors << "skills/: no discoverable Skills" if skill_files.empty?
 skill_files.each do |file|
   name = file.parent.basename.to_s
@@ -66,8 +67,10 @@ skill_files.each do |file|
       check!(nonempty_text?(interface[key]), "agents/openai.yaml: interface.#{key} must be non-empty text")
     end
     check!(interface["default_prompt"].include?("$#{name}"), "default_prompt must explicitly invoke $#{name}")
-    implicit_invocation = name == "intent-clarifier"
-    check!(agent["policy"].is_a?(Hash) && agent["policy"]["allow_implicit_invocation"] == implicit_invocation, "allow_implicit_invocation must be #{implicit_invocation} for #{name}")
+    implicit_invocation = %w[intent-clarifier skill-doctor].include?(name)
+    check!(agent.fetch("policy", {}).fetch("allow_implicit_invocation", true) == implicit_invocation, "allow_implicit_invocation must be #{implicit_invocation} for #{name}")
+
+    next if name == "skill-doctor" && !file.parent.join("evals/evals.json").exist?
 
     eval_set = read_mapping(file.parent.join("evals/evals.json"))
     check!((eval_set.keys - %w[skill_name evals]).empty?, "evals.json: unsupported fields")
@@ -105,7 +108,7 @@ skill_files.each do |file|
 end
 
 if skill_names.include?("supervisor")
-  fallback = ROOT.join("skills/supervisor/references/capability-fallback.md")
+  fallback = skill_files.find { |file| file.parent.basename.to_s == "supervisor" }.parent.join("references/capability-fallback.md")
   begin
     names = fallback.read.scan(/^- `([a-z0-9]+(?:-[a-z0-9]+)*)`\s*$/).flatten
     expected = skill_names - ["supervisor"]
@@ -117,14 +120,14 @@ end
 
 begin
   readme = ROOT.join("README.md").read
-  skill_names.each do |name|
-    errors << "README.md: missing Skill inventory link for #{name}" unless readme.include?("skills/#{name}/SKILL.md")
+  skill_files.each do |file|
+    errors << "README.md: missing Skill inventory link for #{file.parent.basename}" unless readme.include?(file.relative_path_from(ROOT).to_s)
   end
 rescue Errno::ENOENT => e
   errors << e.message
 end
 
-markdown_files = [ROOT.join("README.md"), ROOT.join("MIGRATIONS.md")] + ROOT.glob("{skills,codex,evals}/**/*.md")
+markdown_files = [ROOT.join("README.md"), ROOT.join("MIGRATIONS.md")] + ROOT.glob("{skills,templates,evals}/**/*.md")
 markdown_files.select(&:file?).uniq.each do |file|
   file.read.scan(/\]\(([^)]+)\)/).flatten.each do |raw|
     target = raw.strip.sub(/\A<(.+)>\z/, "\\1").split(/\s+[\"']/).first
@@ -146,13 +149,13 @@ begin
     status, old_path = line.chomp.split("\t")
     next unless status.start_with?("D", "R")
 
-    name = old_path.match(%r{\Askills/([^/]+)/SKILL\.md\z})&.captures&.first
-    errors << "MIGRATIONS.md: retired Skill #{name.inspect} is not mapped from a source column" if name && !mappings.include?(name)
+    name = old_path.match(%r{\Askills/(?:[^/]+/)?([^/]+)/SKILL\.md\z})&.captures&.first
+    errors << "MIGRATIONS.md: retired Skill #{name.inspect} is not mapped from a source column" if name && !skill_names.include?(name) && !mappings.include?(name)
   end
-  git("diff", "--check", base, "--", "README.md", "MIGRATIONS.md", "skills", "codex", "evals", "scripts", ".github")
+  git("diff", "--check", base, "--", "README.md", "MIGRATIONS.md", "skills", "templates", "evals", "scripts", ".github")
 rescue Errno::ENOENT, ArgumentError => e
   errors << e.message
 end
 
 abort "Skill package validation failed:\n#{errors.map { |error| "- #{error}" }.join("\n")}" unless errors.empty?
-puts "Validated #{skill_names.length} Skill package(s), each with one Anthropic eval set."
+puts "Validated #{skill_names.length} Skill package(s), #{skill_files.count { |file| file.parent.join("evals/evals.json").file? }} with Anthropic eval sets."

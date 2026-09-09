@@ -48,14 +48,17 @@ abort "--output-root is required for a real run" unless options[:dry_run] || opt
 
 options[:judge_model] ||= options[:model]
 
+repository_skill_dirs = Dir[File.join(repo_root, "skills/*/*/SKILL.md")].sort.map { |path| File.dirname(path) }
+abort "duplicate repository Skill names" unless repository_skill_dirs.map { |path| File.basename(path) }.uniq.length == repository_skill_dirs.length
 skill_dirs = if ARGV.empty?
-               Dir[File.join(repo_root, "skills/*/SKILL.md")].sort.map do |path|
-                 File.dirname(path)
-               end
+               repository_skill_dirs.select { |path| File.file?(File.join(path, "evals/evals.json")) }
              else
                ARGV.map do |name|
-                 candidate = name.include?(File::SEPARATOR) ? name : File.join(repo_root, "skills", name)
-                 File.expand_path(candidate)
+                 if name.include?(File::SEPARATOR)
+                   File.expand_path(name)
+                 else
+                   repository_skill_dirs.find { |path| File.basename(path) == name } || abort("unknown Skill: #{name}")
+                 end
                end
              end
 
@@ -145,7 +148,7 @@ eval_targets.each do |skill_dir, evals|
     context = options.fetch(:skill_context)
     context = %w[supervisor intent-clarifier].include?(skill_name) ? "repository" : "target" if context == "auto"
     installed_dirs = [skill_dir]
-    installed_dirs |= Dir[File.join(repo_root, "skills/*/SKILL.md")].sort.map { |path| File.dirname(path) } if context == "repository"
+    installed_dirs |= repository_skill_dirs if context == "repository"
     config["skills"] = installed_dirs.map do |path|
       ref = { "source" => "local_path", "path" => path }
       ref["target"] = ".agents/skills/#{File.basename(path)}" if options.fetch(:engine) == "codex"

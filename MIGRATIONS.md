@@ -1,5 +1,17 @@
 # Darwin 迁移指南
 
+## 从平铺目录迁移到分类目录
+
+Skill 源码从 `skills/<skill-name>/` 移至 `skills/<category>/<skill-name>/`，分类见 [README](README.md#skills)。Skill 名称与调用方式不变，按名称运行的安装和 eval 命令继续适用；直接引用源码路径的脚本或链接需改用分类后的路径。
+
+新增的 `skill-doctor` 位于 `skills/maintenance/skill-doctor/`。可单独安装，也可使用 README 中的全量安装命令补齐：
+
+```sh
+npx skills add lvjg/darwin-skills --skill skill-doctor --global --agent codex --yes
+```
+
+全局工程指令模板由 `codex/AGENTS.md` 移至 [templates/AGENTS.md](templates/AGENTS.md)。引用旧模板路径时需更新；已复制到全局配置的文件不会因此自动变化。仓库根目录不放置该模板，避免与已加载的全局指令重复。
+
 ## 从 v0.1.0 迁移到当前版本
 
 当前版本重命名了全部 Skill，并把原来混合的交付验收和端到端责任分别拆开。`skills update` 只能更新已经安装的名称，不能完成这次迁移。

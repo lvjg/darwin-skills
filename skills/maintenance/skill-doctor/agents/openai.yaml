@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Doctor"
+  short_description: "诊断 AGENTS.md 与 Skill 的指令问题，报告修改建议和必要保留项"
+  default_prompt: "使用 $skill-doctor 检查当前项目的 AGENTS.md 和所有 Skill，依据六类检查及工作与表达准则报告问题、保留项和修改建议，先不修改文件。"
