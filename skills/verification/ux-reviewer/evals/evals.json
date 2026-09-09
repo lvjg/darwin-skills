@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "$ux-reviewer 请只读审查 `evals/files/1/context/` 中记录的工作区删除体验。不要修改产品，也不要把体验观察写成后台 E2E 结论。",
+      "prompt": "$ux-reviewer 请只读审查 `evals/files/1/context/` 中提供的模拟 QA 记录所描述的工作区删除体验。不要修改产品，也不要把体验观察写成后台 E2E 结论。",
       "expected_output": "A bounded UX review identifies the generic destructive confirmation and destructive default focus as evidence-backed task risks, ties each to the recorded workspace-deletion path and owner, and avoids unsupported backend, accessibility or whole-product claims.",
       "files": [
         "evals/files/1/context/experience-contract.md",
@@ -16,12 +16,13 @@
         "[task-impact-and-owner] For each material finding state the shortest reproduction, expected basis, observed behavior, concrete administrator impact and the dialog/interaction owner responsible for revalidation.",
         "[fidelity-limit] Do not infer screen-reader semantics, backend deletion correctness, authorization, data retention or other unobserved states from the supplied visible/keyboard witness.",
         "[no-whole-product-pass] The response does not perform or claim this prohibited behavior: Generalize the two-checkpoint record into a verdict on the entire product experience.",
-        "[no-product-modification] The response does not perform or claim this prohibited behavior: Change copy, code, settings or product state during the review."
+        "[no-product-modification] The response does not perform or claim this prohibited behavior: Change copy, code, settings or product state during the review.",
+        "[record-provenance] 明确评审依据为随附的模拟 QA 记录，不把输入叙述冒充本轮真实浏览器执行或真实产品问题。"
       ]
     },
     {
       "id": 2,
-      "prompt": "$ux-reviewer 请只读审查 `evals/files/2/context/` 中记录的密码重置链接发送体验，并给出是否存在需要阻断交付的体验问题。不要修改产品或执行新的走查。",
+      "prompt": "$ux-reviewer 请只读审查 `evals/files/2/context/` 中提供的模拟 QA 记录所描述的密码重置链接发送体验，并给出是否存在需要阻断交付的体验问题。不要修改产品或执行新的走查。",
       "expected_output": "A bounded UX review reports no material delivery-blocking issue in the supplied password-reset path, explains which task risks the witness closes, and avoids generalizing beyond the recorded session or inventing inaccessible evidence.",
       "files": [
         "evals/files/2/context/experience-contract.md",
@@ -32,7 +33,8 @@
         "[identity-and-effect-clarity] Recognize that the dialog binds the action to alex@example.com, distinguishes sending a link from changing the password, states expiry, and presents an explicit Send reset link action.",
         "[safe-interaction-and-feedback] Recognize that initial focus is on Cancel and the post-action confirmation identifies the recipient and resend timing, closing the recorded accidental-action and outcome-ambiguity risks.",
         "[evidence-limit] Bind the judgment to the supplied actor, browser, viewport, locale and path; keep screen-reader semantics, delivery of the email, backend mutation and whole-product quality unproven.",
-        "[no-modification-or-new-run] The response does not modify product state or files, perform a new walkthrough, or claim the supplied witness proves backend or external delivery behavior."
+        "[no-modification-or-new-run] The response does not modify product state or files, perform a new walkthrough, or claim the supplied witness proves backend or external delivery behavior.",
+        "[record-provenance] 明确评审依据为随附的模拟 QA 记录，不把输入叙述冒充本轮真实浏览器执行或真实产品问题。"
       ]
     }
   ]

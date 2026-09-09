@@ -1,12 +1,7 @@
-# Candidate contract
+# 分页上限维护要求
 
-The candidate duplicates the same limit rule in the API and Job entry paths.
+API 列表与后台导出 Job 使用相同的分页规则。当前产品上限为 100，缺失或非法输入使用 100，合法输入按现有规则限制到该上限。下一次调整上限时，两端必须同时生效，团队不希望维护两份可能漂移的规则。
 
-- `ApiLimit.apply` and `JobLimit.apply` are required entry contracts and must remain.
-- Both consumers use the same rule: parse the requested value, clamp it to the established maximum `100`, and use `100` when input is missing or invalid.
-- The rule, failure behavior and reason for change are identical. This is duplicated knowledge, not merely similar syntax.
-- `LimitPolicy` in `lib/limit_policy.rb` is the accepted internal owner that centralizes the invariant; no runtime variation or configuration is required.
-- Do not merge or rename the API and Job entry contracts.
-- Do not add a strategy hierarchy, factory, injection framework or configuration.
+ApiLimit.apply 和 JobLimit.apply 已有调用方，接口和返回行为必须保留。请自行判断如何组织内部实现；本次没有按入口分别配置上限的需求，不改其他分页行为。
 
-Validate the final project with `ruby test/verify_optimization.rb` from the project directory.
+完成后从项目目录运行 ruby test/verify_optimization.rb。该测试验证两个公开入口，规则是否只维护一份还需检查最终代码。

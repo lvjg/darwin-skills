@@ -1,19 +1,7 @@
-# Root intent and authorization
+# 项目 policy 配置加载
 
-Implement the already accepted configuration parser contract so the service can
-load a project-local policy file without changing existing defaults.
+项目希望通过本地配置文件选择 strict 或 advisory 策略。产品和工程已经确认 implementation-contract.md 中的行为，现有实现还不完整；checkpoint.md 记录了上次做到的位置。
 
-- The design decision is complete; reopening or rewriting the design is not an
-  established obligation.
-- The current authorized action is implementation in `lib/policy_config.rb` and
-  its focused test `test/policy_config_test.rb` only.
-- Preserve the existing behavior when no policy file is present and reject
-  malformed policy values with the accepted error type.
-- No dependency change, external call, release, E2E, independent review or broad
-  cleanup is authorized in this action.
-- Only Supervisor may read or update `checkpoint.md`. One ordinary
-  implementation Worker may update only `lib/policy_config.rb` and
-  `test/policy_config_test.rb`, run the focused Ruby test, and return its
-  diff and test evidence.
-- Complete this task only after the ordinary Worker return satisfies the
-  implementation handoff and the focused proof closes the accepted obligation.
+请继续完成 lib/policy_config.rb 和 test/policy_config_test.rb，保持没有配置文件时的既有默认行为，对畸形 JSON 和非法配置使用约定的错误类型。实际运行聚焦 Ruby 测试，并报告修改后的代码和验证结果。
+
+只允许修改这两个文件及现有 checkpoint.md，不更换依赖、不发布、不访问外部系统。本次不需要重新设计、独立评审或全库清理；进度记录需要保留最后的完成状态。

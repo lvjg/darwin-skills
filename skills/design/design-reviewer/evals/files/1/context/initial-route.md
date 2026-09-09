@@ -31,4 +31,4 @@ The proposal claims to provide a generic document-to-template capability.
 - Every editing operation attempts to preserve a globally closed graph.
 - Source coverage and source digest participate in finalization and publication.
 
-The proposal justifies the source lifecycle as traceability for long documents, but names no current audit consumer, retention requirement or external contract that requires the workflow service to own it.
+Keeping the source revision and evidence mappings with the draft is intended to let employees check a generated template against a long document during confirmation and resume that comparison in later editing sessions.

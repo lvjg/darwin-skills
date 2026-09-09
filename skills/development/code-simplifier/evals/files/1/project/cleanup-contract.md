@@ -1,13 +1,7 @@
-# Authorized simplification contract
+# Timeout CLI 维护范围
 
-The candidate changed the timeout CLI by adding `TimeoutProvider`, `TimeoutService`, an environment switch, a second parser, an `ArgumentError` fallback and a service-shape test.
+本次候选增加了 timeout 的 provider、service 和环境开关。现有命令仍只用于显示配置结果，bin/show-timeout 是入口；Config.timeout 是项目已有的配置读取接口。请自行检查实现和调用关系，判断哪些结构值得保留。
 
-- `Config.timeout` existed before the candidate and is the accepted owner of timeout defaulting and parsing.
-- `bin/show-timeout` is the only runtime consumer of the candidate layers.
-- None of the new layers, the environment switch or the fallback has a product, compatibility or runtime obligation.
-- Preserve the CLI behavior: no argument prints `5000`, an integer argument is printed as an integer, and invalid input fails.
-- Remove candidate-authored tests that protect only unsupported implementation shape.
-- Do not introduce a replacement adapter, compatibility path, feature flag, registry or abstraction.
-- Do not change `Config.timeout` or clean unrelated code.
+必须保持现有使用方式：没有参数时打印 5000，有效整数按整数打印，非法输入失败。产品未新增按环境切换来源或错误时静默回退的需求；Config 的既有行为和其他工具不在这次修改范围内。
 
-Validate the final project with `ruby test/verify_cleanup.rb` from the project directory.
+可以调整候选实现和直接相关的调用、配置及测试，但不能通过删除行为验证或更改命令结果来简化。最终从项目目录运行 ruby test/verify_cleanup.rb。

@@ -1,4 +1,6 @@
-# Recorded browser walkthrough witness
+# Workspace admin walkthrough notes
+
+This is a simulated QA handoff for evaluation, not a capture from a live browser. The observations below are the supplied scenario facts.
 
 - Product build: `admin-web-2026.08.4`
 - Browser: Chrome 140 on macOS
@@ -16,4 +18,4 @@
 5. Initial keyboard focus is visibly on `Continue`.
 6. Pressing Enter immediately closes the modal and shows `Workspace deleted`.
 
-The record includes visible text, selected object, focus observation and keyboard result from this exact session. It contains no accessibility-tree capture, screen-reader run, network trace, backend state, retention evidence or second device/locale observation.
+The record includes visible text, selected object, focus observation and keyboard result for this simulated session. It contains no accessibility-tree capture, screen-reader run, network trace, backend state, retention evidence or second device/locale observation.

@@ -17,5 +17,5 @@ These are neutral observations from the product snapshot available when the revi
 - Nodes, fields, actions and edges use keys referenced by other draft objects. Node configuration is replaced as one aggregate.
 - Edge conditions can be represented both in node detail and in a global rule collection. When both target the same edge, the compiler selects one representation instead of rejecting the conflict.
 - The candidate persists source snapshots, evidence leaves, dispositions, coverage state and a source digest used during finalization and publication.
-- The supplied requirements and contract inventory name no independent audit, retention or external consumer for that persistent source lifecycle. Within the inspected candidate, its readers belong to the same authoring, confirmation and publication path. A consumer outside that inspected scope remains an unknown, not an established absence.
+- The supplied call-site inventory covers the conversation and workflow services. Source-state readers in those services belong to authoring, confirmation and publication. No external-service inventory or retention policy was supplied with the review request.
 - Request-key idempotency and revision compare-and-swap are existing mutation guarantees.

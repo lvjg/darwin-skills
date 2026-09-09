@@ -1,15 +1,6 @@
-export class TransientDeliveryError extends Error {}
-
-export interface WebhookEvent {
-  id: string;
-  body: string;
-}
-
-export interface DeliveryReceipt {
-  deliveryId: string;
-}
-
-declare function sendWebhook(event: WebhookEvent): Promise<DeliveryReceipt>;
+import { webhookTransport } from "./webhook-transport.ts";
+import { TransientDeliveryError, type WebhookEvent, type DeliveryReceipt } from "./delivery-types.ts";
+export { TransientDeliveryError, type WebhookEvent, type DeliveryReceipt } from "./delivery-types.ts";
 
 class RetryPolicy {
   private readonly attemptsByEvent = new Map<string, number>();
@@ -40,7 +31,7 @@ const retryPolicy = new RetryPolicy();
 export function deliverWebhook(event: WebhookEvent): Promise<DeliveryReceipt> {
   return retryPolicy.execute(
     event.id,
-    () => sendWebhook(event),
+    () => webhookTransport.send(event),
     (error) => error instanceof TransientDeliveryError,
   );
 }

@@ -1,7 +1,14 @@
-# Platform recovery return
+# Platform Engineering handoff
 
-The command that submitted deploy-2020 has exited with timeout; it is not a live local process. This does not report the remote operation's terminal state or effects.
+Target: `internal-preview`, requested revision `6b120df`, operation `deploy-2020`.
 
-The first and one bounded follow-up status attempt both returned the same `status.read` permission denial. Platform Engineering confirms the permission has been revoked with no automatic reinstatement, no scheduled callback, no live query to await, and no alternate authorized source. There is no other independent task action that can progress this delivery. Platform Engineering owns restoring read access or supplying the original operation's authoritative outcome and actual running revision/health. The user does not own platform roles.
+The submit command exited with a timeout. The release terminal has no running command. We have not obtained an operation result or a health response for the requested revision, and have not submitted another deployment.
 
-No assertion has been obtained that deploy-2020 failed, succeeded, or had no effect. No new deployment was submitted.
+Status-query log:
+
+| Attempt | Result |
+| --- | --- |
+| First query after timeout | 403: missing `status.read` |
+| Follow-up query | 403: missing `status.read` |
+
+Platform Engineering reply: "The service account's read role was revoked. It will remain revoked until we restore it manually; the project requester cannot grant this role. There is no alternate read account available to this project, and this preview environment has no completion callback configured. We will need to restore access or retrieve the original operation result and the running revision/health from the platform console. We do not yet have that result or an ETA."

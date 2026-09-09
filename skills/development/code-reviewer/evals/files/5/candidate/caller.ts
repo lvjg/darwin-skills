@@ -1,4 +1,4 @@
-import { deliverWebhook, type WebhookEvent } from "./webhook-delivery";
+import { deliverWebhook, type WebhookEvent } from "./webhook-delivery.ts";
 
 export async function dispatchWebhook(event: WebhookEvent): Promise<string> {
   const receipt = await deliverWebhook(event);

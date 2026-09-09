@@ -15,8 +15,6 @@ evidence that the proposed design has been implemented.
 
 Current responsibility and authorization boundary:
 
-- The execution environment's current capability catalog lists only unrelated
-  capabilities and omits every repository professional Skill.
 - The Design Owner owns `design.md` and can rewrite it.
 - Independent design review and implementation are not yet eligible.
 

@@ -17,7 +17,7 @@ The product capability converts supplied business text into a template, obtains 
 
 - Owner-level contract and integration tests cover field schemas, revision compare-and-swap, request-key persistence, candidate identity limits, compiler validation, notification serialization and transaction rollback.
 - An existing serial E2E runner contains 28 cases spanning many schema, validation, persistence, claim and recovery permutations. Individual cases can wait 60–300 seconds.
-- A separate production-composition driver can enter through the conversation service, use the real workflow-service composition, correlate published template and instance identifiers, and observe task and instance state. Its journey shape and coverage disposition have not been chosen for this case.
+- A separate production-composition driver can enter through the conversation service, use the real workflow-service composition, correlate published template and instance identifiers, and observe task and instance state. The release team has not yet selected which journeys to run with this driver.
 
 ## Acceptance-boundary limits
 

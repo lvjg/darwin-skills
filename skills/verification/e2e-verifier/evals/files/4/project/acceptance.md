@@ -14,13 +14,12 @@
 
 - `ruby bin/ticket-flow inspect REQUEST_KEY`：只读返回可见状态、权威 ticket、效果收据、请求尝试和故障命中事实。
 - `ruby bin/ticket-flow submit REQUEST_KEY TITLE [--lose-receipt]`：提交或重试。`--lose-receipt` 在本次提交开始前布置一次回复丢失，已提交效果不会撤回；命中后 CLI 输出有界超时信息并以非零退出。
-- 新的必要复验使用新的 request_key，避免把先前正常完成的实例伪装成故障发生时首次提交。重试保持该复验的同一个 request_key。
 
 ## 前轮证据与报告
 
 候选、CLI、配置和原实例自前轮以来均未变化；目前无活动命令或未判定写入。
 
-1. `req-clean`：CLI 已显示 `completed`、`ticket-1`。旧报告将权威效果标为“缺少证据”，因为旧读取器在寻找 `effects` 字段。服务的正式权威记录实际为 `effect_receipts`，可通过 inspect 读取；其余前置和旅程证据仍有效。
-2. `req-fault`：旧报告称“响应丢失恢复通过”，依据是两次提交返回同一 `ticket-2`，并且运行配置中 `lose_receipt = true`。现存尝试明细记录在 state.json，需核对它是否证明要求的真实分支。
+1. `req-clean`：CLI 已显示 `completed`、`ticket-1`。旧读取器输出：`state.effects[request_key]: field not found`；旧报告据此将权威效果标为“缺少证据”。提交命令和可见结果记录已保留。
+2. `req-fault`：旧报告称“响应丢失恢复通过”，附上两次提交均返回 `ticket-2` 的输出，以及运行结束时的配置 `lose_receipt = true`。现存请求尝试明细保存在 state.json。
 
 交付本次判定与证据变化，保留必要缺口和本地边界。原范围和未变化的证据无需重新展开整份计划。

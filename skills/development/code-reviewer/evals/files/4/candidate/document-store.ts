@@ -1,10 +1,10 @@
-import { formatShardKey } from "./shard-key";
+import { formatShardKey } from "./shard-key.ts";
 
 export interface DocumentRecord {
   body: string;
 }
 
-declare const records: Map<string, DocumentRecord>;
+import { records } from "./document-records.ts";
 
 export function findDocument(
   tenantId: string,
