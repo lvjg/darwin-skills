@@ -5,7 +5,7 @@
 以 `supervisor` 安装目录的父目录为基准，以下同级 Skill 是与本 Skill 一同安装时可补读的专业候选：
 
 - `intent-clarifier`
-- `overview-designer`
+- `designer`
 - `design-reviewer`
 - `code-reviewer`
 - `code-simplifier`

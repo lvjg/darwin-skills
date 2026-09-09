@@ -1,5 +1,20 @@
 # Darwin 迁移指南
 
+## 从 `overview-designer` 迁移到 `designer`
+
+| 旧名称 | 当前名称 | 选择说明 |
+| --- | --- | --- |
+| `overview-designer` | `designer` | 创建、补全或修订技术方案，兼顾全局理解与关键机制的内容深度，覆盖系统、功能、流程和局部算法策略。 |
+
+调用入口改为 `$designer`，源码位于 [Designer](skills/design/designer/SKILL.md)，调用条件仍为显式调用。原 `references/overview-standard.md` 由 [设计产物规范](skills/design/designer/references/design-standard.md) 替代，负责方案表达及最终文档检查；新增的 [设计取舍参考](skills/design/designer/references/design-decisions.md) 按需辅助比较收益、代价和不确定性，设计流程仍由 `SKILL.md` 维护。直接引用旧名称、路径或参考文件的交接指令需同步更新；仓库更新不会自动迁移已安装副本。
+
+发布包含此次变更的版本后，先安装并核对新入口，再移除旧名称；保留本机自定义修改的备份：
+
+```sh
+npx skills add lvjg/darwin-skills --skill designer --global --agent codex --yes
+npx skills remove overview-designer --global --yes
+```
+
 ## 从平铺目录迁移到分类目录
 
 Skill 源码从 `skills/<skill-name>/` 移至 `skills/<category>/<skill-name>/`，分类见 [README](README.md#skills)。Skill 名称与调用方式不变，按名称运行的安装和 eval 命令继续适用；直接引用源码路径的脚本或链接需改用分类后的路径。
@@ -27,7 +42,7 @@ npx skills add lvjg/darwin-skills --skill '*' --global --agent codex --yes
 | v0.1.0 名称 | 当前名称 | 选择说明 |
 | --- | --- | --- |
 | `plan-to-delivery` | `supervisor` | 仅在任务需要跨多个关键操作、交接、等待或权威状态变化保持可恢复控制时使用。 |
-| `system-overview-design` | `overview-designer` | 创建、补全或重写系统级设计产物。 |
+| `system-overview-design` | `designer` | 创建、补全或修订系统、功能、流程及局部机制的技术方案。 |
 | `plan-review` | `design-reviewer` | 对尚未实施的技术或行为路线做只读设计判断。 |
 | `delivery-review` | `code-reviewer` | 验收精确代码交付。尚未实施的 Agent/Harness 设计使用 `design-reviewer`；精确运行行为需按实际接受边界取得相称的运行或评估证据，不由设计评审替代。 |
 | `code-cleanup` | `code-simplifier` | 在行为目标和代码候选边界明确后，删除非必要实现并重组必要代码，同时保持既定行为。 |

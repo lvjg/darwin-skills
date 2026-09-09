@@ -1,0 +1,113 @@
+{
+  "synthetic": true,
+  "samples": [
+    {
+      "at": "10:00:00",
+      "channel": "web",
+      "account_id": "A7",
+      "checkout_id": "C101",
+      "sku": "K2",
+      "qty": 1,
+      "amount_cents": 6900,
+      "reservation_id": "R101",
+      "result": "Gateway timed out after Order Service committed O501; response and token did not reach browser"
+    },
+    {
+      "at": "10:00:04",
+      "channel": "web",
+      "account_id": "A7",
+      "checkout_id": "C101",
+      "sku": "K2",
+      "qty": 1,
+      "amount_cents": 6900,
+      "reservation_id": "R101",
+      "result": "repeat click"
+    },
+    {
+      "at": "10:05:00",
+      "channel": "web",
+      "account_id": "A7",
+      "checkout_id": "C102",
+      "sku": "K2",
+      "qty": 1,
+      "amount_cents": 6900,
+      "reservation_id": "R102",
+      "result": "customer deliberately used buy again"
+    },
+    {
+      "at": "10:06:00",
+      "channel": "support",
+      "account_id": "A7",
+      "case_id": "T77",
+      "purchase_no": 1,
+      "continuation_token": "signed reference to O501",
+      "result": "customer asks support to finish C101"
+    },
+    {
+      "at": "10:07:00",
+      "channel": "support",
+      "account_id": "A7",
+      "case_id": "T77",
+      "purchase_no": 2,
+      "sku": "K2",
+      "qty": 1,
+      "amount_cents": 6900,
+      "reservation_id": "R103",
+      "result": "customer confirms another new purchase"
+    },
+    {
+      "at": "10:08:00",
+      "channel": "partner",
+      "partner_id": "P1",
+      "account_id": "A9",
+      "external_order_no": "88",
+      "sku": "K4",
+      "qty": 1
+    },
+    {
+      "at": "10:08:01",
+      "channel": "partner",
+      "partner_id": "P2",
+      "account_id": "A9",
+      "external_order_no": "88",
+      "sku": "K4",
+      "qty": 1
+    },
+    {
+      "at": "10:08:03",
+      "channel": "partner",
+      "partner_id": "P1",
+      "account_id": "A9",
+      "external_order_no": "88",
+      "sku": "K4",
+      "qty": 2,
+      "result": "partner corrected payload while retrying same number"
+    }
+  ],
+  "event_trace": [
+    {
+      "offset_seconds": 0,
+      "event": "Payment POST attempt PA501 begins"
+    },
+    {
+      "offset_seconds": 3,
+      "event": "HTTP client timeout"
+    },
+    {
+      "offset_seconds": 5,
+      "event": "GET by attempt returns 404"
+    },
+    {
+      "offset_seconds": 40,
+      "event": "charge committed and succeeds; callback lost"
+    },
+    {
+      "offset_seconds": 80,
+      "event": "Order worker process restarts"
+    },
+    {
+      "offset_seconds": 100,
+      "event": "Warehouse accepts dispatch but response lost"
+    }
+  ]
+}

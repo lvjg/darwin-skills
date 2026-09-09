@@ -107,6 +107,8 @@ eval_targets.each do |skill_dir, evals|
     evals.fetch("evals").each do |item|
       case_path = File.join(runtime_dir, "cases/case-#{item.fetch('id')}.yaml")
       case_config = YAML.safe_load(File.read(case_path))
+      # Imported expected_output is grading guidance, not task context.
+      case_config["description"] = "#{skill_name}/case-#{item.fetch('id')}"
       # Native import leaves path placeholders; context.files requires actual text.
       context_files = item.fetch("files", []).to_h { |path| [path, fixture_content(skill_dir, path)] }
       implicit_case = item.fetch("expectations").any? { |text| text.start_with?("[implicit-invocation]") }
@@ -150,7 +152,14 @@ eval_targets.each do |skill_dir, evals|
     installed_dirs = [skill_dir]
     installed_dirs |= repository_skill_dirs if context == "repository"
     config["skills"] = installed_dirs.map do |path|
-      ref = { "source" => "local_path", "path" => path }
+      # Keep grading answers and unrelated fixtures out of the agent's Skill.
+      # Copy entries individually: runtime_dir itself lives under evals/.
+      runtime_skill = File.join(runtime_dir, "skills", File.basename(path))
+      FileUtils.mkdir_p(runtime_skill)
+      Dir.children(path).reject { |entry| %w[evals .git].include?(entry) }.each do |entry|
+        FileUtils.cp_r(File.join(path, entry), runtime_skill)
+      end
+      ref = { "source" => "local_path", "path" => runtime_skill }
       ref["target"] = ".agents/skills/#{File.basename(path)}" if options.fetch(:engine) == "codex"
       ref
     end

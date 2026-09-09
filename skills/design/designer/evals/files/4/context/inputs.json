@@ -1,0 +1,102 @@
+{
+  "locations": [
+    "North",
+    "South"
+  ],
+  "travel_minutes": {
+    "North": {
+      "North": 0,
+      "South": 30
+    },
+    "South": {
+      "North": 30,
+      "South": 0
+    }
+  },
+  "workers": [
+    {
+      "id": "A",
+      "skills": [
+        "electrical",
+        "high_voltage"
+      ],
+      "initial_location": "North",
+      "shift_start": "08:30",
+      "shift_end": "12:00"
+    },
+    {
+      "id": "B",
+      "skills": [
+        "electrical"
+      ],
+      "initial_location": "South",
+      "shift_start": "08:30",
+      "shift_end": "12:00"
+    },
+    {
+      "id": "C",
+      "skills": [
+        "plumbing"
+      ],
+      "initial_location": "South",
+      "shift_start": "08:30",
+      "shift_end": "12:00"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "J1",
+      "required_skill": "electrical",
+      "location": "North",
+      "window_start": "09:00",
+      "window_end": "10:00",
+      "duration_minutes": 60,
+      "priority": "P1"
+    },
+    {
+      "id": "J2",
+      "required_skill": "high_voltage",
+      "location": "North",
+      "window_start": "09:00",
+      "window_end": "10:00",
+      "duration_minutes": 60,
+      "priority": "P0"
+    },
+    {
+      "id": "J3",
+      "required_skill": "plumbing",
+      "location": "South",
+      "window_start": "09:00",
+      "window_end": "10:00",
+      "duration_minutes": 60,
+      "priority": "P1"
+    },
+    {
+      "id": "J4",
+      "required_skill": "electrical",
+      "location": "South",
+      "window_start": "10:30",
+      "window_end": "11:30",
+      "duration_minutes": 60,
+      "priority": "P1"
+    },
+    {
+      "id": "J5",
+      "required_skill": "plumbing",
+      "location": "North",
+      "window_start": "10:30",
+      "window_end": "11:00",
+      "duration_minutes": 30,
+      "priority": "P1"
+    }
+  ],
+  "additional_job": {
+    "id": "J6",
+    "required_skill": "high_voltage",
+    "location": "South",
+    "window_start": "09:30",
+    "window_end": "10:30",
+    "duration_minutes": 60,
+    "priority": "P0"
+  }
+}

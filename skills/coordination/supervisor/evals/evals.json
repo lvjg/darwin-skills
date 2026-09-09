@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "$supervisor 请读取随附的 `evals/files/1/context/`，恢复并继续这项更正后的交付任务。只允许更新 `controller-checkpoint.md`；这个原子 case 在真正派发前停止，不要修改其他文件、调用 Worker 或运行 E2E。",
-      "expected_output": "The restored checkpoint advances from revision 7, invalidates stale conclusions, preserves still-valid obligations, binds the installed overview design capability, and records the next bounded design-rewrite action with its owner boundary, inputs, artifact, stop condition, and re-entry evidence, stopping before dispatch.",
+      "expected_output": "The restored checkpoint advances from revision 7, invalidates stale conclusions, preserves still-valid obligations, binds the installed designer capability, and records the next bounded design-rewrite action with its owner boundary, inputs, artifact, stop condition, and re-entry evidence, stopping before dispatch.",
       "files": [
         "evals/files/1/context/root-intent.md",
         "evals/files/1/context/current-system.md",
@@ -15,7 +15,7 @@
         "[authoritative-rebaseline] Update controller-checkpoint.md from revision 7 and treat the user corrections as invalidating the old route and its dependent design and delivery-acceptance conclusions; stop future work on that source-evidence and full-replacement chain.",
         "[preserve-still-valid-obligations] Carry forward the generic capability outcome, service ownership, publication prohibition, typed resource decisions and non-E2E evidence boundary either as still-valid current conclusions or through direct authoritative references that govern the prepared rewrite. Preserve implementation and evidence sufficient to prove that implementation as established remaining obligations conditional on the corrected design. The listed non-E2E checks are permitted methods, not a mandatory checklist or fixed sequence, and their full contents need not be duplicated into the checkpoint.",
         "[decisive-gap] Identify the earliest current gap as the absence of a rewritten authoritative design that incorporates the accepted corrections.",
-        "[专业能力路由] 为本次恢复后的控制任务建立一次当前能力目录快照，优先使用执行环境提供的描述；只有目录不足以判断与本 Skill 一同安装的专业能力时才读取一次 capability fallback，并只补读缺失候选的 frontmatter。因为 overview-designer 的真实合同匹配当前设计义务而选择它，再完整读取该 Skill。可原样执行的交接须显式调用 `$overview-designer`、给出可读 SKILL.md 路径，并要求 Worker 在行动前读取 Skill、按其要求读取适用参考和交付产物；不得只记录角色名，也不得因用户未单独点名该 Skill 而要求再次授权或改派不使用它的普通设计 Worker。不得在每个后续 Worker 前重读全部 Skill、扫描其它同级目录或把已安装 Skill 排成固定流水线。",
+        "[专业能力路由] 为本次恢复后的控制任务建立一次当前能力目录快照，优先使用执行环境提供的描述；只有目录不足以判断与本 Skill 一同安装的专业能力时才读取一次 capability fallback，并只补读缺失候选的 frontmatter。因为 designer 的真实合同匹配当前设计义务而选择它，再完整读取该 Skill。可原样执行的交接须显式调用 `$designer`、给出可读 SKILL.md 路径，并要求 Worker 在行动前读取 Skill、按其要求读取适用参考和交付产物；不得只记录角色名，也不得因用户未单独点名该 Skill 而要求再次授权或改派不使用它的普通设计 Worker。不得在每个后续 Worker 前重读全部 Skill、扫描其它同级目录或把已安装 Skill 排成固定流水线。",
         "[bounded-action] Specify the smallest current design-rewrite action against the actual Design Owner, including precise inputs, sole writable artifact, expected result, stop condition and evidence required for re-entry.",
         "[later-boundary] Keep implementation and its bounded outcome proof conditional on the rewritten state, carry the explicit E2E exclusion, and do not claim those actions already occurred, require every permitted check, or manufacture an unestablished review or fixed specialist stage.",
         "[supervisor-boundary] Modify only the already authorized controller-checkpoint.md rather than creating a parallel or temporary carrier. Update its current Active snapshot without requiring a format migration, preserving the result and acceptance boundary, authorization, direct governing and design references with necessary versions, all established remaining obligations, the currently selected design obligation, and the guarded next action with its expected proof and re-entry conditions; return its stable reference, new revision, state and next action. Do not write design/implementation, reuse stale acceptance, dispatch a Worker, ask the user to reconfirm recorded choices or specify parallel delivery actions."
@@ -62,7 +62,7 @@
     {
       "id": 4,
       "prompt": "$supervisor 请读取 `evals/files/4/task/`，按其中记录的目标与授权完成模板编辑设计更正：让后续实现能够保留模板身份、既有入站引用和 revision 语义。不要超出随附文件记录的授权范围。",
-      "expected_output": "Supervisor 持久化当前义务，从当前 Skill 描述中选择 overview-designer 并读取完整合同，真实委派隔离 Worker 完成设计改写并接纳其返回；只有 Worker 拥有的设计产物提供授权结果和证据后，才删除运行 checkpoint。",
+      "expected_output": "Supervisor 持久化当前义务，从当前 Skill 描述中选择 designer 并读取完整合同，真实委派隔离 Worker 完成设计改写并接纳其返回；只有 Worker 拥有的设计产物提供授权结果和证据后，才删除运行 checkpoint。",
       "files": [
         "evals/files/4/task/root-intent.md",
         "evals/files/4/task/current-state.md",
@@ -70,9 +70,9 @@
       ],
       "expectations": [
         "[持久控制状态] 根据可见的 checkpoint 快照和文件变更顺序判断；真实委派事件由独立的 worker-roundtrip expectation 证明。只使用获授权的 checkpoint.md 作为持久载体。派发前写入 Active 快照，保留根结果与验收边界、授权、必要版本的直接权威与设计引用、全部已成立的剩余义务，把陈旧替换设计记为当前义务，并记录有界责任、预期结果和停止条件。派发被接受后，在可见等待前把未返回动作写成 Waiting 并记录安全重入条件。获得有执行证据的 Worker 返回后，核对证据并清除未完成动作；返回不足以闭合任务时只保留受支持的 Active 或 Blocked 状态，闭合任务时在最终回复前删除这个新建的运行 checkpoint。不要要求 Active 中存在独立的通用重入字段，也不要在 checkpoint 中复制往返证明。",
-        "[专业能力路由] 用执行环境描述和一次 capability fallback 补读建立当前能力目录快照；依据真实合同选择 overview-designer，并因当前快照缺少它而在首次派发前完整读取该 Skill。后续路由复用未变化的目录和已选 Skill 合同，不重新扫描全部同级 Skill。这里判定可见的发现和完整读取证据；显式 `$overview-designer` 交接合同由 suite 中的派发准备 case 覆盖，真实 Worker 往返由下面的执行证据要求覆盖；不要求 judge transcript 出现未公开的交接正文。",
+        "[专业能力路由] 用执行环境描述和一次 capability fallback 补读建立当前能力目录快照；依据真实合同选择 designer，并因当前快照缺少它而在首次派发前完整读取该 Skill。后续路由复用未变化的目录和已选 Skill 合同，不重新扫描全部同级 Skill。这里判定可见的发现和完整读取证据；显式 `$designer` 交接合同由 suite 中的派发准备 case 覆盖，真实 Worker 往返由下面的执行证据要求覆盖；不要求 judge transcript 出现未公开的交接正文。",
         "[worker-roundtrip] 本次执行证据必须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受了委派并返回非空结果；若执行环境将委派与等待分开，还必须观察到非超时的完成返回。最终回复、checkpoint 或产物中的自述不能代替执行证据。",
-        "[专业Skill执行] Worker 的实际执行记录应证明其在设计行动前完整读取 overview-designer/SKILL.md，并在成稿前读取 references/overview-standard.md；Supervisor 的读取、Worker 的角色名和完成声明不能替代 Worker 的执行证据。若环境未提供 Worker 执行记录，此项无法验证，既不能判为通过，也不能把不可见当成已证实漏读。读取实际 design.md，确认它以适合当前局部范围的设计判断说明身份、引用、成功与失败时 revision 的责任和交接；设计变化整合进正文，按 Skill 分类表达适用的修订记录，不以文件修改或测试清单替代设计。保持专业 Skill 原文件和调用条件不变。",
+        "[专业Skill执行] Worker 的实际执行记录应证明其在设计行动前完整读取 designer/SKILL.md，并在成稿前读取 references/design-standard.md；Supervisor 的读取、Worker 的角色名和完成声明不能替代 Worker 的执行证据。若环境未提供 Worker 执行记录，此项无法验证，既不能判为通过，也不能把不可见当成已证实漏读。读取实际 design.md，确认它以适合当前局部范围的设计判断说明身份、引用、成功与失败时 revision 的责任和交接；设计变化整合进正文，按任务或项目约定表达必要的修订信息，未要求时不虚构修订记录，不以文件修改或测试清单替代设计。保持专业 Skill 原文件和调用条件不变。",
         "[checkpoint-absent path=checkpoint.md] 程序断言：授权设计结果得到证明后，这个新建的纯运行态 checkpoint 不得继续存在于最终 workspace。",
         "[user-facing-communication] User-visible updates use the task's domain language. Intermediate updates may communicate useful intent, meaningful milestones or partial results, expectation-setting waits, blockers, or required decisions when they help the user understand, verify, or control the work; their absence is not by itself a failure. Do not add updates merely to show activity or narrate Skill discovery, Worker routing, checkpoint maintenance, handoff mechanics, or unestablished future stages unless that mechanism materially changes task interpretation or control. The presence or absence of an intermediate update does not alter the required checkpoint writes or their order.",
         "[bounded-design-result] Rewrite design.md to use the existing owner-controlled in-place mutation, preserve template identity and inbound references, increment revision on successful mutation, distinguish the proposed design from implementation or external validation, and modify no other domain artifact.",
@@ -116,7 +116,7 @@
       ],
       "expectations": [
         "[preserve-runtime-boundary] Advance checkpoint.md from revision 6 while preserving that the decision concerns the observed behavior of the exact prompt-r17, model-snapshot-m4, tool-policy-8 and adapter-2 composition against behavior-contract.md, not a future design, code candidate or product journey.",
-        "[不误用相邻专业能力] 用执行环境描述和按需读取的一次 capability fallback 建立当前能力目录快照，识别没有可用专业 Skill 直接拥有精确运行行为验收；不得为下一个 Worker 重新扫描每个 Skill，也不得调用已退役 behavior reviewer、`$design-reviewer`、`$code-reviewer`、`$e2e-verifier`、`$ux-reviewer`、`$overview-designer` 或 `$code-simplifier`。",
+        "[不误用相邻专业能力] 用执行环境描述和按需读取的一次 capability fallback 建立当前能力目录快照，识别没有可用专业 Skill 直接拥有精确运行行为验收；不得为下一个 Worker 重新扫描每个 Skill，也不得调用已退役 behavior reviewer、`$design-reviewer`、`$code-reviewer`、`$e2e-verifier`、`$ux-reviewer`、`$designer` 或 `$code-simplifier`。",
         "[ordinary-worker-routing] Prepare one bounded runtime-evaluation responsibility for an ordinary Worker without exposing checkpoint.md or revision 6 in the future handoff, and require a return that identifies the evaluated composition and supplied evidence. Do not require a professional Skill merely to fill the retired capability slot and do not mark Needs Capability because the supplied ordinary evaluator has the required local capability and isolation.",
         "[guarded-evaluation-action] Define the later action to run the authorized intercepted-tool offline harness against both contract cases and create only runtime-evaluation.md, binding each observation to the exact runtime composition and reporting tool attempts, receipts, user-visible responses, unknowns and evidence limits.",
         "[evidence-boundary] Require evidence that distinguishes both contract paths without treating source inspection, design intent, code review, fixture success or two observations as proof of broader population reliability or an external product E2E result.",
@@ -321,7 +321,7 @@
       ],
       "expectations": [
         "[产物分别闭合] 保留 policy-code-candidate-3 的已有代码结论，识别 policy-overview-4 仍缺成稿修复与实际文件检查；不以代码测试通过、文件存在或作者返回代替 Overview 的完成证明。",
-        "[有界专业交接] 为原设计作者准备显式调用 overview-designer 的交接，要求按该 Skill 的适用参考完成现有文档的表述修订、读取最终文件并检查，返回对应位置及未满足项；保留已确认语义和修改边界，不改变六个专业 Skill 的调用条件。",
+        "[有界专业交接] 为原设计作者准备显式调用 designer 的交接，要求按该 Skill 的适用参考完成现有文档的表述修订、读取最终文件并检查，返回对应位置及未满足项；保留已确认语义和修改边界，不改变六个专业 Skill 的调用条件。",
         "[保持专业边界] Supervisor 不读取领域正文自做成稿审查、不重跑代码测试、不修改文件或真正派发；不因缺成稿检查增加未要求的独立设计审查、实现、E2E 或发布阶段。",
         "[用户结果] 告知用户代码检查已完成，但设计说明仍需整理和检查，不能宣告整个交付完成；不要求用户重复授权已允许的文档修复。"
       ]

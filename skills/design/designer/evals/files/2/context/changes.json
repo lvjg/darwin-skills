@@ -1,0 +1,76 @@
+{
+  "synthetic": true,
+  "published_current": {
+    "release_id": "rel-40",
+    "schema_version": 1,
+    "profiles": {
+      "fast": {
+        "endpoint": "search-a",
+        "timeout_ms": 180
+      }
+    },
+    "routes": [
+      {
+        "path": "/search",
+        "profile_id": "fast"
+      }
+    ]
+  },
+  "draft_A": {
+    "base_revision": 12,
+    "schema_version": 1,
+    "profiles": {
+      "balanced": {
+        "endpoint": "search-b",
+        "timeout_ms": 240
+      }
+    },
+    "routes": [
+      {
+        "path": "/search",
+        "profile_id": "balanced"
+      }
+    ]
+  },
+  "draft_B": {
+    "base_revision": 12,
+    "schema_version": 2,
+    "profiles": {
+      "balanced": {
+        "endpoint": "search-b",
+        "timeout_ms": 240,
+        "retry_policy": {
+          "max_attempts": 2
+        }
+      }
+    },
+    "routes": [
+      {
+        "path": "/search",
+        "profile_id": "balanced"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "time": "09:00",
+      "event": "Europe disconnects from center while serving rel-40"
+    },
+    {
+      "time": "09:10",
+      "event": "operator saves and requests publish of A"
+    },
+    {
+      "time": "09:12",
+      "event": "another operator attempts to save B with same base_revision"
+    },
+    {
+      "time": "09:20",
+      "event": "East receives delayed rel-40 notification after applying newer target"
+    },
+    {
+      "time": "10:15",
+      "event": "Europe reconnects; center target may have changed more than once"
+    }
+  ]
+}
