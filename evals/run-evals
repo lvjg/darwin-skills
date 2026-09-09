@@ -106,7 +106,8 @@ eval_targets.each do |skill_dir, evals|
       case_config = YAML.safe_load(File.read(case_path))
       # Native import leaves path placeholders; context.files requires actual text.
       context_files = item.fetch("files", []).to_h { |path| [path, fixture_content(skill_dir, path)] }
-      if options.fetch(:engine) == "codex"
+      implicit_case = item.fetch("expectations").any? { |text| text.start_with?("[implicit-invocation]") }
+      if options.fetch(:engine) == "codex" && !implicit_case
         abort "fixture reserves AGENTS.md for the Codex adapter" if context_files.key?("AGENTS.md")
         context_files["AGENTS.md"] = <<~MARKDOWN
           # Skill evaluation harness
@@ -142,7 +143,7 @@ eval_targets.each do |skill_dir, evals|
     eval_path = File.join(runtime_dir, "eval.yaml")
     config = YAML.safe_load(File.read(eval_path))
     context = options.fetch(:skill_context)
-    context = skill_name == "supervisor" ? "repository" : "target" if context == "auto"
+    context = %w[supervisor intent-clarifier].include?(skill_name) ? "repository" : "target" if context == "auto"
     installed_dirs = [skill_dir]
     installed_dirs |= Dir[File.join(repo_root, "skills/*/SKILL.md")].sort.map { |path| File.dirname(path) } if context == "repository"
     config["skills"] = installed_dirs.map do |path|
