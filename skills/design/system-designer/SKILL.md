@@ -1,9 +1,9 @@
 ---
-name: designer
-description: Use when explicitly invoked as $designer to create, complete, or revise a technical design for a system, feature, workflow, or mechanism, combining overall reasoning with substantive detail. Not for implementation, current-state explanation, read-only review, or delivery acceptance.
+name: system-designer
+description: Use when explicitly invoked as $system-designer to create, complete, or revise a technical design for a system, feature, workflow, or mechanism, combining overall reasoning with substantive detail. Not for implementation, current-state explanation, read-only review, or delivery acceptance.
 ---
 
-# Designer
+# System Designer
 
 ## How to Approach the Work
 

@@ -4,7 +4,7 @@
     {
       "id": 4,
       "prompt": "$supervisor 我们发现模板编辑方案会让已有流程引用失效。请根据 evals/files/4/task/ 中已确认的修改要求完成设计文档修订，供后续开发使用。这次只交付设计，不实现或发布。",
-      "expected_output": "Supervisor 持久化当前义务，从当前 Skill 描述中选择 designer 并读取完整合同，真实委派隔离 Worker 完成设计改写并接纳其返回；只有 Worker 拥有的设计产物提供授权结果和证据后，才删除运行 checkpoint。",
+      "expected_output": "Supervisor 持久化当前义务，从当前 Skill 描述中选择 system-designer 并读取完整合同，真实委派隔离 Worker 完成设计改写并接纳其返回；只有 Worker 拥有的设计产物提供授权结果和证据后，才删除运行 checkpoint。",
       "files": [
         "evals/files/4/task/root-intent.md",
         "evals/files/4/task/current-state.md",
@@ -12,9 +12,9 @@
       ],
       "expectations": [
         "[持久控制状态] 只使用 checkpoint.md；派发前写入当前目标、授权、设计义务、输入与预期证据，委派获接受后在等待前记录未返回动作及安全重入条件。接纳结果后清除活动动作；缺少完成证据时保留真实未闭合状态，不能提前删掉恢复载体。",
-        "[专业能力路由] 从当前能力目录选择并完整读取 designer，后续复用未变化的目录和合同。只在描述不足时补读 fallback，不将专业能力排成固定流水线。",
+        "[专业能力路由] 从当前能力目录选择并完整读取 system-designer，后续复用未变化的目录和合同。只在描述不足时补读 fallback，不将专业能力排成固定流水线。",
         "[worker-roundtrip] 执行记录须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受委派并返回非空结果；若委派与等待分离，还须有非超时的完成返回。自述、checkpoint 或产物不能代替往返证据。",
-        "[专业Skill执行] Worker 执行记录须证明设计前完整读取 designer/SKILL.md、成稿前读取 references/design-standard.md，并按适用要求检查最终文档。Supervisor 的读取不能代替 Worker 读取；记录不可见时判证据不足，不推断已读或漏读。",
+        "[专业Skill执行] Worker 执行记录须证明设计前完整读取 system-designer/SKILL.md、成稿前读取 references/design-standard.md，并按适用要求检查最终文档。Supervisor 的读取不能代替 Worker 读取；记录不可见时判证据不足，不推断已读或漏读。",
         "[有内容的设计产物] 实际 design.md 采用现有 Owner 的原位修改，保留模板身份和入站引用，成功时增加 revision，并交代失败语义。设计变化整合入正文，按需沿用项目修订约定，不以实施清单或完成声明替代设计。",
         "[返回与完成] Supervisor 对照交接核对产物位置或版本、最终文档检查、决定性证据及未满足项；只有设计义务闭合才报告完成，不亲自重做领域审查。最终用领域语言报告设计结果及证据边界，不把它说成实现或外部验证通过。",
         "[checkpoint-absent path=checkpoint.md] 设计结果与成稿检查有证据后，最终 workspace 不再保留这个无保留义务的运行 checkpoint。",

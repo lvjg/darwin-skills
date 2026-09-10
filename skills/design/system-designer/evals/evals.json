@@ -1,9 +1,9 @@
 {
-  "skill_name": "designer",
+  "skill_name": "system-designer",
   "evals": [
     {
       "id": 1,
-      "prompt": "$designer 根据 `evals/files/1/context/` 的业务要求和现有系统资料，设计网站、客服和合作方创建订单的统一处理方案，写入 `evals/files/1/design/solution.md`。只交付设计，只修改这个文件。",
+      "prompt": "$system-designer 根据 `evals/files/1/context/` 的业务要求和现有系统资料，设计网站、客服和合作方创建订单的统一处理方案，写入 `evals/files/1/design/solution.md`。只交付设计，只修改这个文件。",
       "expected_output": "A complete unified order design links purchase intent, accepted order, payment outcome, warehouse acceptance and customer-visible result. Its mechanisms distinguish retries from new purchases and remain feasible under the supplied timeout and downstream contracts.",
       "expectations": [
         "[purchase-identity] Derive retry/new-purchase handling from authenticated entry identity and explicit continuation references, not customer/SKU/amount or transport request identity alone. Apply it correctly to C101 retry, C102 new purchase, support purchase_no values, distinct partners sharing 88, and conflicting payload under the same P1 reference; cross-entry continuation resolves O501 without creating a second purchase. Do not falsely deduplicate ambiguous unlinked purchases.",
@@ -12,7 +12,7 @@
         "[proportionate-choice] Choose a coherent route and explain consequential costs or alternatives using the existing order database, queue/scanner and downstream capabilities. Do not assume distributed rollback, globally identical entry keys or unspecified provider guarantees; added components need a task-specific justification rather than generic platform benefits.",
         "[evidence-and-scope] Only evals/files/1/design/solution.md is changed. Respect the synthetic fixture contracts and authorized design scope; distinguish proposed extensions and capacity estimates from existing capabilities and performed validation. Do not claim deployment, implementation, measured production performance, or successful external verification without execution evidence.",
         "[artifact-markdown path=evals/files/1/design/solution.md] Read the actual final file in the execution workspace. It must contain directly readable Markdown design content; a final response, preview, empty shell or encoded payload is not the artifact. No particular headings or section count are required.",
-        "[skill-execution] 执行记录须证明本次安装的 designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
       ],
       "files": [
         "evals/files/1/context/business.md",
@@ -22,7 +22,7 @@
     },
     {
       "id": 4,
-      "prompt": "$designer 根据 evals/files/4/context/ 设计维修工单分配策略，供维护主管判断、工程师实现。 只交付并写入 evals/files/4/design/solution.md；不实现代码、不修改业务系统。",
+      "prompt": "$system-designer 根据 evals/files/4/context/ 设计维修工单分配策略，供维护主管判断、工程师实现。 只交付并写入 evals/files/4/design/solution.md；不实现代码、不修改业务系统。",
       "expected_output": "An implementable scheduling strategy preserves skills, travel, shifts and windows; demonstrates a feasible base assignment and handles the infeasible added-job variant with explicit limits and priorities.",
       "files": [
         "evals/files/4/context/task.md",
@@ -36,12 +36,12 @@
         "[tradeoffs-and-validation] 说明为什么所选策略适合规模和优先级、如何控制计算投入和处理没有找到解与证明无解的区别；针对全局可行性及搜索质量安排有区分力的检查，不要求数学最优或虚构性能。",
         "[artifact-markdown path=evals/files/4/design/solution.md] 直接读取最终工作区的 evals/files/4/design/solution.md，确认存在可直接阅读的完整 Markdown 设计；不能用最终回复或执行预览代替文件。",
         "[scope-and-evidence] 只修改 evals/files/4/design/solution.md，不改原始输入或真实业务系统。区分合成材料推演、实际执行证据与拟议验证；不把纸面方案、引用或合成回执宣称为实现、生产性能或外部业务验证。若使用外部材料，主张应对应实际读取且适用的来源；不要求固定搜索数量、指定论文或特定方法名称。",
-        "[skill-execution] 执行记录须证明本次安装的 designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
       ]
     },
     {
       "id": 11,
-      "prompt": "$designer 根据 evals/files/11/context/ 中的目标、业务节选和系统事实，设计文档生成与修改 SOP 的能力，写入 evals/files/11/design/solution.md。遵守任务文件的范围。 请阅读 evals/files/11/context/research-sources.md 中与关键设计相关的原始方法，判断其适用性并形成自己的方案；不要求采用清单中的方法。",
+      "prompt": "$system-designer 根据 evals/files/11/context/ 中的目标、业务节选和系统事实，设计文档生成与修改 SOP 的能力，写入 evals/files/11/design/solution.md。遵守任务文件的范围。 请阅读 evals/files/11/context/research-sources.md 中与关键设计相关的原始方法，判断其适用性并形成自己的方案；不要求采用清单中的方法。",
       "expected_output": "A complete system and authoring-strategy design grounded in the supplied business source and simulated current contracts. It covers creation and updates, operational mechanism depth, justified capability extensions, preservation of meaning and bounded validation.",
       "files": [
         "evals/files/11/context/business-document.md",
@@ -60,7 +60,7 @@
         "[artifact-markdown path=evals/files/11/design/solution.md] Read the final Markdown artifact itself. It contains the requested coherent design, does not claim unperformed implementation or experiments, and only the requested design file is changed.",
         "[research-transfer] At least one supplied source must be actually accessed at the level of its method or relevant implementation. Identify its concrete mechanism and assumptions, then show how it changes or supports a design choice, or justify rejection for this task. Titles, abstracts alone and citations without a method do not establish transfer. If required sources cannot be accessed, this research criterion has insufficient evidence: report the access limit rather than treating a useful unsupported design as successful research.",
         "[research-independent-choice] Adapt the selected mechanism to the supplied authoring contracts and business needs, including required work the source leaves unspecified. Do not require all listed methods or copy a paper architecture without its prerequisites.",
-        "[skill-execution] 执行记录须证明本次安装的 designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
       ]
     }
   ]

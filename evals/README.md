@@ -43,7 +43,7 @@ UX 两例使用模拟 QA 走查记录，检查从既有记录开展评审的能�
 
 | Skill | 保留 ID | 核心任务 |
 | --- | --- | --- |
-| `designer` | 1、4、11 | 订单处理架构、维修分配算法、文档到 SOP 综合设计 |
+| `system-designer` | 1、4、11 | 订单处理架构、维修分配算法、文档到 SOP 综合设计 |
 | `intent-clarifier` | 5、12、14 | 根据部分回答继续澄清、将模糊目标变成具体取舍、已知事实下直接交付 |
 | `supervisor` | 4、5、20 | 协调设计修订、协调实现与验证、跟进效果未知且查询受阻的部署 |
 | `design-reviewer` | 1、3、11 | 发现系统方案的关键缺口、认可成立的方案、识别空泛的 Agent 行为设计 |
@@ -54,9 +54,9 @@ UX 两例使用模拟 QA 走查记录，检查从既有记录开展评审的能�
 
 共 22 个用例。ID 保留原编号，允许不连续，便于追溯已有报告。已删除的用例及其专属输入不再维护；这是一组核心能力样本，不声称覆盖所有边界。`skill-doctor` 仍无行为评测。
 
-### Designer 的三个任务
+### System Designer 的三个任务
 
-[Designer 用例](../skills/design/designer/evals/evals.json) 只保留三个完整任务：
+[System Designer 用例](../skills/design/system-designer/evals/evals.json) 只保留三个完整任务：
 
 | ID | 场景 | 主要判断 |
 | --- | --- | --- |
@@ -69,7 +69,7 @@ Case 11 的业务文档是历史任务的脱敏节选，当前系统合同是模
 分别核对产物质量、Skill 加载和研究证据。`skill-execution` 要求可核实的实际加载证据；合格产物本身不证明 Skill 已应用。Case 11 提供论文原文入口，要求读到相关方法并说明其对方案的影响，不指定采用路线；来源不可访问时单列研究证据不足，不把来源故障解释为设计能力退步。只列能力名称或把核心机制推迟到后续设计，不能通过内容质量判断。
 
 ```sh
-evals/run-evals --model MODEL_NAME --output-root /tmp/designer-core designer
+evals/run-evals --model MODEL_NAME --output-root /tmp/system-designer-core system-designer
 ```
 
 ### 通用格式

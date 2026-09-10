@@ -1,0 +1,6 @@
+interface:
+  display_name: "System Designer"
+  short_description: "Develop coherent designs with global and local depth"
+  default_prompt: "Use $system-designer to understand and model the task, develop its key designs with research where needed, choose a coherent solution, and examine and refine it at the appropriate depth."
+policy:
+  allow_implicit_invocation: false
