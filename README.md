@@ -96,7 +96,7 @@ $supervisor 按 docs/requirements.md 完成订单取消功能。
 
 各 Skill 可以独立使用，按任务需要组合。设计负责形成方案，评审负责独立判断，简化负责修改实现，验证负责取得结果证据。用户可以直接调用任意一项，无需走完固定流程。
 
-`supervisor` 适合需要跨多项操作、交接、等待或状态变化保持一致的长任务。它在已有任务范围和授权内，把工作委派给匹配的专业执行者，持续检查目标、进度和证据，并向用户报告结果、需要决定的事项和阻塞。使用它需要运行环境支持委派；恢复机制等细节见 [Supervisor 文档](skills/coordination/supervisor/SKILL.md)。
+`supervisor` 适合需要跨多项操作、交接、等待或状态变化保持一致的长任务。它在已有任务范围和授权内，把工作委派给匹配的专业执行者，持续检查目标、进度和证据，并向用户报告结果、需要决定的事项和阻塞。主线程只控制任务，不承担具体专业执行；checkpoint 按恢复需要保存当前控制状态。使用它需要运行环境允许所需委派，不能通过主线程接手领域工作绕过宿主限制；该 Skill 可用于具备委派能力的其它 Agent 框架，Codex 的专用适配及通用恢复规则见 [Supervisor 文档](skills/coordination/supervisor/SKILL.md)。
 
 ![Darwin 系统变更控制闭环](assets/system-delivery-loop.png)
 

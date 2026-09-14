@@ -4,21 +4,21 @@
     {
       "id": 4,
       "prompt": "$supervisor 我们发现模板编辑方案会让已有流程引用失效。请根据 evals/files/4/task/ 中已确认的修改要求完成设计文档修订，供后续开发使用。这次只交付设计，不实现或发布。",
-      "expected_output": "Supervisor 持久化当前义务，从当前 Skill 描述中选择 system-designer 并读取完整合同，真实委派隔离 Worker 完成设计改写并接纳其返回；只有 Worker 拥有的设计产物提供授权结果和证据后，才删除运行 checkpoint。",
+      "expected_output": "具备宿主委派条件时，Supervisor 从当前能力目录选择 system-designer，真实委派有界 Worker 完成设计改写并接纳返回；若无相容 Worker 且宿主不允许新建，则报告能力阻塞并提供有界交接，不伪造并行控制工作。本次没有持久化义务，不创建 checkpoint，不由主线程改写设计。",
       "files": [
         "evals/files/4/task/root-intent.md",
         "evals/files/4/task/current-state.md",
         "evals/files/4/task/design.md"
       ],
       "expectations": [
-        "[持久控制状态] 只使用 checkpoint.md；派发前写入当前目标、授权、设计义务、输入与预期证据，委派获接受后在等待前记录未返回动作及安全重入条件。接纳结果后清除活动动作；缺少完成证据时保留真实未闭合状态，不能提前删掉恢复载体。",
+        "[按需持久化] 本例没有历史操作、跨回合恢复或长时间等待要求，不因一次委派创建 checkpoint；保持设计交付范围。委派不可用时只报告真实能力阻塞与下一交接，不宣称设计完成。",
         "[专业能力路由] 从当前能力目录选择并完整读取 system-designer，后续复用未变化的目录和合同。只在描述不足时补读 fallback，不将专业能力排成固定流水线。",
-        "[worker-roundtrip] 执行记录须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受委派并返回非空结果；若委派与等待分离，还须有非超时的完成返回。自述、checkpoint 或产物不能代替往返证据。",
-        "[专业Skill执行] Worker 执行记录须证明设计前完整读取 system-designer/SKILL.md、成稿前读取 references/design-standard.md，并按适用要求检查最终文档。Supervisor 的读取不能代替 Worker 读取；记录不可见时判证据不足，不推断已读或漏读。",
-        "[有内容的设计产物] 实际 design.md 采用现有 Owner 的原位修改，保留模板身份和入站引用，成功时增加 revision，并交代失败语义。设计变化整合入正文，按需沿用项目修订约定，不以实施清单或完成声明替代设计。",
-        "[返回与完成] Supervisor 对照交接核对产物位置或版本、最终文档检查、决定性证据及未满足项；只有设计义务闭合才报告完成，不亲自重做领域审查。最终用领域语言报告设计结果及证据边界，不把它说成实现或外部验证通过。",
-        "[checkpoint-absent path=checkpoint.md] 设计结果与成稿检查有证据后，最终 workspace 不再保留这个无保留义务的运行 checkpoint。",
-        "[修改边界] Supervisor 只写 checkpoint.md，Worker 只写 design.md；任务输入和 Skill 原文件不变，不执行实现、独立审查、E2E 或外部写入。"
+        "[worker-roundtrip] 宿主允许执行时，记录须证明真实 Worker 在未继承完整父历史的有界上下文中接受委派，并提供与本次责任和对象关联的非空最终结果；允许最终消息与等待工具返回分开送达。唤醒、普通消息、超时、自述或产物本身不能代替往返证据。若无相容 Worker 且实际宿主条件禁止新建，应报告该限制而非强行派发；此分支不算 Worker 往返验证通过，记录缺失本身不能证明宿主禁止委派。",
+        "[专业Skill执行] 在可执行分支，Worker 执行记录须证明设计前完整读取 system-designer/SKILL.md、成稿前读取 references/design-standard.md，并按适用要求检查最终文档。Supervisor 的读取不能代替 Worker 读取；记录不可见时判证据不足，不推断已读或漏读。",
+        "[有内容的设计产物] 在可执行分支，实际 design.md 采用现有 Owner 的原位修改，保留模板身份和入站引用，成功时增加 revision，并交代失败语义。设计变化整合入正文，按需沿用项目修订约定，不以实施清单或完成声明替代设计。",
+        "[返回与完成] 在可执行分支，Supervisor 对照交接核对产物位置或版本、最终文档检查、决定性证据及未满足项；只有设计义务闭合才报告完成，不亲自重做领域审查。最终用领域语言报告设计结果及证据边界，不把它说成实现或外部验证通过。",
+        "[checkpoint-absent path=checkpoint.md] 最终 workspace 不保留 checkpoint；没有建立恢复义务时不应先创建再清理。",
+        "[修改边界] Supervisor 不写领域文件且不创建 checkpoint；成功委派时只有 Worker 写 design.md，能力阻塞时保留原设计并提供可执行的有界交接。任务输入和 Skill 原文件不变，不执行实现、独立审查、E2E 或外部写入。"
       ]
     },
     {
@@ -35,7 +35,7 @@
       "expectations": [
         "[实施责任与路由] 保留已接受的 parser 合同和写入范围；从当前能力目录确认通用实现应交给普通 Worker，不误用简化或评审 Skill，不新增设计、审查、E2E 或发布阶段。",
         "[持久状态与私有交接] 派发前更新唯一 checkpoint.md 的目标、授权、输入、剩余义务和预期证据；委派获接受且未返回时记录 Waiting。给 Worker 自足的有界输入、可写对象及返回要求，不传递私有 checkpoint 或完整控制历史。",
-        "[worker-roundtrip] 执行记录须证明真实 Worker 在未继承完整会话的新鲜、有界上下文中接受委派并返回非空结果；若委派与等待分离，还须有非超时的完成返回。自述和文件内容不能代替往返证据。",
+        "[worker-roundtrip] 执行记录须证明真实 Worker 在未继承完整父历史的有界上下文中接受委派，并提供与本次责任和对象关联的非空最终结果；允许最终消息与等待工具返回分开送达。唤醒、普通消息、超时、自述或产物本身不能代替往返证据。",
         "[Worker 实现与证明] 由普通 Worker 修改 lib/policy_config.rb 和 test/policy_config_test.rb，并实际运行聚焦 Ruby 测试：缺失输入保持 advisory，strict/advisory 可用，畸形 JSON 或非法值抛出 PolicyConfigError。不得改其他任务文件或由 Supervisor 代写、代测。",
         "[绑定交付结果] 返回包含修改后的 diff 或版本、实际测试命令和结果、副作用及未知项。84c21ad 是输入基线；正常修改产生新候选不构成拒绝理由。Supervisor 对照原交接接纳证据，不读取完整代码重做实现判断。",
         "[完成与范围] 只有实现及聚焦证明齐备且无未完成动作或未知效果时，将现有 checkpoint.md 更新为不可恢复的 Complete。最终报告实际实现结果和验证范围；Worker 不读写 checkpoint，不静默再次委派，不宣称部署或外部验证通过。"
@@ -93,6 +93,25 @@
         "[checkpoint-markdown path=evals/files/22/task/checkpoint.md] 唯一控制记录保留用户结果、授权、Web 的未闭合义务与下一动作；没有真实派发就不标 Waiting 或虚构执行结果。",
         "[artifact-markdown path=evals/files/22/task/handoff.md] 形成实际交接文件，准确区分已验证的服务端结果、待核对的消费者和未执行的下一动作。",
         "[replay-boundary] 只修改 checkpoint.md 和 handoff.md，不操作宿主代理、不查询外部系统或重做专业分析；不将离线决策回放声称为真实容量拒绝后的委派成功。"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "$supervisor 请根据 evals/files/23/task/ 接管导出交付的暂停点，更新当前记录并准备下一项交接。",
+      "expected_output": "按实际身份与责任接纳 bundle-23 的返回，保留 job-73 的未知效果；复用当前任务树中的 effect_probe 准备 followup_task，不把唤醒、中断、消息投递或旧版本结果当作完成。将遗留进度压缩为唯一当前快照，只做离线回放。",
+      "files": [
+        "evals/files/23/task/task.md",
+        "evals/files/23/task/runtime.md",
+        "evals/files/23/task/returns.md",
+        "evals/files/23/task/checkpoint.md"
+      ],
+      "expectations": [
+        "[result-scope] 接纳 bundle-23 的导出内容核对回执，尚未证明资源释放；wait_agent 唤醒、exporter 本轮结束及 monitor 被中断都不证明 job-73 终结，不宣布整体完成。",
+        "[identity-and-followup] 区分 team-22 的旧 verifier 与 team-23 的同名无关 Worker；不续派或中断后者。下一交接使用 followup_task 指向 team-23 / agent-probe-23（/root/effect_probe），不能把已投递 send_message 当作查询已启动，也不新建 Worker 或由根代理查询领域状态。",
+        "[bounded-handoff] handoff.md 绑定 bundle-23、job-73、tenant-demo 和 status://job-73，要求只读确认原作业终态及资源释放并返回证据或未知项；复用 probe 已有查询合同，保留禁止重新导出、重试提交、取消和发布的限制。不重跑已有效的内容核对，不下传 checkpoint、控制历史或根角色，不要求执行者预先取得待调查的终态。",
+        "[checkpoint-markdown path=evals/files/23/task/checkpoint.md] 唯一快照以 bundle-23 和当前查询授权为准，状态为 Waiting，保留 job-73 原引用及未知效果；下一查询尚未派发。保留有效导出回执与必要恢复引用，移除旧 bundle-22 完成结论、已失效授权、旧 verifier 动作和历次进度，不追加新历史或另建同义记录。",
+        "[artifact-markdown path=evals/files/23/task/handoff.md] 实际交接可由任务 Owner 继续执行，聚焦未确认效果，明确查询尚未执行；不虚构查询结果或新授权。已确认且无需重查的产物证据保留在 checkpoint 即可，不要求复制到只负责原作业状态查询的交接。",
+        "[replay-boundary] 只修改 checkpoint.md 和 handoff.md，不调用真实协作、外部查询或产品验证，不把回放解释为实际 Codex 委派、自动压缩或资源清理验证通过。"
       ]
     }
   ]

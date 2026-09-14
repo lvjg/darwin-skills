@@ -109,8 +109,9 @@ if skill_names.include?("supervisor")
   fallback = skill_files.find { |file| file.parent.basename.to_s == "supervisor" }.parent.join("references/capability-fallback.md")
   begin
     names = fallback.read.scan(/^- `([a-z0-9]+(?:-[a-z0-9]+)*)`\s*$/).flatten
-    expected = skill_names - ["supervisor"]
-    check!(names.sort == expected.sort, "#{fallback.relative_path_from(ROOT)}: must list each repository specialist exactly once (expected #{expected.sort.inspect}, got #{names.sort.inspect})")
+    check!(!names.empty? && names.uniq == names, "#{fallback.relative_path_from(ROOT)}: must contain a non-empty list of unique candidates")
+    invalid = names - (skill_names - ["supervisor"])
+    check!(invalid.empty?, "#{fallback.relative_path_from(ROOT)}: candidates must name existing specialist Skills (invalid #{invalid.inspect})")
   rescue Errno::ENOENT, ArgumentError => e
     errors << e.message
   end
