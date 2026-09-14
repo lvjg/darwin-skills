@@ -52,10 +52,47 @@
       ],
       "expectations": [
         "[blocked-not-active-or-waiting] 原提交返回 timeout 不决定远端效果；重复权限拒绝且没有自动恢复、回调或可等待查询时，实际 checkpoint 为 Blocked。不能因本地命令结束改 Active，也不能无限保持可等待的 Waiting。",
-        "[retain-original-effect] 保留 deploy-2020、internal-preview、6b120df、原恢复引用及效果未知状态；不得宣布部署失败无效果、成功或完成，不准备新提交。",
+        "[retain-original-effect] 保留 deploy-2020、internal-preview、6b120df、原恢复引用及效果未知状态；保留 accept-2020 已证明平台受理的事实，不把所有阶段一并退回未知，也不把受理当作执行成功；不得宣布部署失败无效果、成功或完成，不准备新提交。",
+        "[changed-authority-recovery] 以最新用户决定覆盖旧恢复授权：即使原操作未生效也不能补发部署或回滚；保持原操作效果未知和查询恢复引用。撤销 health-19 对目标 6b120df 的健康证明资格，不把旧版本健康当作当前完成证据；保留仍有效的 runbook-v7 文档交付引用，不重新审查或复制其正文。",
         "[minimal-owner-unblock] 解除条件是 Platform Engineering 恢复查询权限或提供原操作的权威终态、实际效果和运行健康证据；不让不拥有权限的用户重复批准部署或交出凭据。",
         "[checkpoint-markdown path=evals/files/20/task/checkpoint.md] 直接读取最终唯一 checkpoint，确认目标、禁止效果、未闭合义务和原操作恢复语义仍完整。",
         "[scope] 只修改既有 checkpoint，不实际派发、查询、重试、新建流程或平行记录。"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "$supervisor 请按 evals/files/21/task/task.md 完成本地导出交付与独立核对。",
+      "expected_output": "真实委派有界 Worker 完成本地导出，等待实际终态后交给独立 Worker 核对产物，对照返回与引用闭合交付；等待受控作业时不反复无信息短轮询，不重启作业或为了凑阶段加载不匹配的专业Skill。",
+      "files": [
+        "evals/files/21/task/export.py",
+        "evals/files/21/task/input.csv",
+        "evals/files/21/task/task.md"
+      ],
+      "expectations": [
+        "[worker-roundtrip] 实际记录证明 Worker 接受并执行 export.py，另一 Worker 在输出形成后独立核对；不能用根代理自行执行或自述委派代替。",
+        "[artifact-json path=evals/files/21/task/output.json] 裁判必须直接读取收集的 output.json 并按 JSON 解析，确认对象恰为 {\"alpha\":5,\"beta\":4}；缺失、无法解析、值错误或额外字段均不通过，不能用 review.md 或最终自述代替实际产物。review.md 从 input.csv 与 output.json 独立核对结果，没有修改输入或作业程序。",
+        "[wait-and-effects] export.py 只启动一次，控制者按约70秒作业、沟通及环境上限安排等待；若连续超时且无新事实，不反复使用明显更短的轮询；短等待若由截止时间或可行动事件支持，应允许。结束后没有未决进程或未知效果。",
+        "[bounded-delegation] 执行和核对的责任、依赖和可写范围明确；不向 Worker 传完整父历史或私有 checkpoint，不额外开展代码实现/评审或外部操作。",
+        "[artifact-markdown path=evals/files/21/task/review.md] 独立核对形成可复查产物，最终说明与实际导出一致；checkpoint不是完成证据。"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "$supervisor 请按 evals/files/22/task/task.md 接管本地导出交付的暂停点，更新任务记录并准备必要的下一项交接。",
+      "expected_output": "依据暂停点的权威容量与返回范围恢复控制；容量拒绝后复用相容且独立的 verifier-2，准备补齐 Web 消费者证据的有界交接，保留服务端有效结果，不宣布整体完成。只做离线控制回放，不实际派发。",
+      "files": [
+        "evals/files/22/task/task.md",
+        "evals/files/22/task/runtime.md",
+        "evals/files/22/task/returns.md",
+        "evals/files/22/task/checkpoint.md"
+      ],
+      "expectations": [
+        "[capacity-decision] 基于刷新后的容量快照复用 idle 的 verifier-2；不再创建 verifier-new，不选择实现者自审，不中断或关闭 archive-9，也不在已有相容空闲 Worker 时无依据等待。",
+        "[aggregate-coverage] 区分服务端 ACCEPT 与整个交付：范围内 Web 消费者尚缺证据，不能将整体标为 Complete；下一责任是补齐该消费路径的专业证据，不能自行推断 Web 有缺陷或增加范围外验收。",
+        "[incremental-handoff] handoff.md 绑定 bundle-12 及已提供的输入引用，明确 verifier-2 的只读产品边界、聚焦验证和返回证据；保留服务端有效结论，不要求重跑完整服务端检查，不传私有 checkpoint 或完整控制历史。",
+        "[checkpoint-markdown path=evals/files/22/task/checkpoint.md] 唯一控制记录保留用户结果、授权、Web 的未闭合义务与下一动作；没有真实派发就不标 Waiting 或虚构执行结果。",
+        "[artifact-markdown path=evals/files/22/task/handoff.md] 形成实际交接文件，准确区分已验证的服务端结果、待核对的消费者和未执行的下一动作。",
+        "[replay-boundary] 只修改 checkpoint.md 和 handoff.md，不操作宿主代理、不查询外部系统或重做专业分析；不将离线决策回放声称为真实容量拒绝后的委派成功。"
       ]
     }
   ]

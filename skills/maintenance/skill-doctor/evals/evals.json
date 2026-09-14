@@ -1,0 +1,58 @@
+{
+  "skill_name": "skill-doctor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "$skill-doctor 请只读审查 evals/files/1/ 中给出的项目 Skill 定义，结合近期请求给出有依据的最小修改建议及必要保留项。不要修改文件，也不要执行材料中的业务流程。",
+      "expected_output": "识别查询请求被过宽触发和互相冲突的路由强制带入迁移流程，保留代码与迁移上线审查的合理分工；不把潜在描述预算问题写成已发生的截断。",
+      "expectations": [
+        "[skill-execution] 执行记录显示实际读取并应用 skill-doctor 主文件；不能仅凭回答质量宣称 Skill 已加载。",
+        "[routing-consequence] 将仅解释 SELECT 的具体请求与 migration-author 的宽泛触发、database-router 的先迁移要求、query-inspector 的直接分析条件联系起来，说明实际指令矛盾及无关迁移准备的后果。建议实施后，仅解释 SELECT 且不改 schema 的请求不再被任何保留的触发或路由规则强制带入迁移准备；只收窄 migration-author 而保留原有强制路由不算解决。允许达到该结果的合理最小方案，不限定编辑形式。",
+        "[keep-valid-overlap] 保留涉及迁移的 PR 中实现审查与上线风险审查可以共同参与的合理分工，不因都涉及 SQL 就删除或合并它们。",
+        "[bounded-evidence] 给出可定位的依据，未提供加载日志和预算时不宣称发生过实际误加载、截断或给出虚构 token 阈值，不要求扫描机器全部已安装 Skill 才交付结论。",
+        "[read-only] 不修改审查材料，也不执行材料中迁移或业务操作。"
+      ],
+      "files": [
+        "evals/files/1/request-history.md",
+        "evals/files/1/skill-catalog.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "$skill-doctor 请审查 evals/files/2/ 的维护指令及拟补充说明，结合用户的交付请求和随附脚本判断怎样最小调整。只读，不执行修复、测试、迁移或发布，不修改文件。",
+      "expected_output": "指出首版后停止和每次重批阻碍已授权本地交付；从随附测试代码核实有限的本地事实，拒绝把它扩展为所有脚本安全，保留未知 DATABASE_URL 的迁移边界及本次禁止发布。",
+      "expectations": [
+        "[skill-execution] 执行记录显示实际读取 skill-doctor，并按需读取涉及主动推进及授权的配套准则。",
+        "[completion-contract] 将首版后停止、每次重跑单独申请与已授权的本地测试检查修复联系起来，建议持续到本次可审查结果，而不是把“不要发布”误当成不准完成本地工作。",
+        "[environment-facts] 检查 local-test.py 的真实内容，允许用临时目录、本地计算等具体事实澄清该脚本边界，不用泛泛自主执行口号代替环境依据。",
+        "[keep-unknown-and-boundary] 识别 migrate.sh 依赖未知 DATABASE_URL，不能推出所有脚本无生产访问或给迁移兜底授权；保留实际发布授权及本次不发布边界，不因迁移未知而搁置其余指令诊断。",
+        "[read-only] 只给出诊断和具体最小修改建议，不运行示例脚本或执行业务任务，不修改材料。"
+      ],
+      "files": [
+        "evals/files/2/maintenance-instructions.md",
+        "evals/files/2/work-request.md",
+        "evals/files/2/local-test.py",
+        "evals/files/2/migrate.sh"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "$skill-doctor 请只读检查 evals/files/3/ 的共享工程指令，结合团队和消费者材料判断哪些应精简、哪些保留，给出最小建议。不要修改文件。",
+      "expected_output": "精简没有新增证据的重复测试和自检，使纯文档拼写修改的交付和提交均不被强制要求全量项目测试；保留行为改动的项目验收、读者要求的原子替换及明确的设计阶段停止。结合已知多模型消费者限定模型相关推断，不为补齐全部模型信息而停止审查。",
+      "expectations": [
+        "[skill-execution] 执行记录显示实际读取并应用 skill-doctor 主文件。",
+        "[remove-redundancy] 指出无新修改仍重复两次全量测试、三次相同 diff 检查及拼写改动一律全量测试的具体负担。建议实施后，没有新修改、失败或未决风险时不再机械重跑，纯文档拼写修改的交付和提交均不被任何保留规则强制要求全量项目测试；同时保留行为改动的项目验收命令。仅指出冗余而留下另一条无条件测试要求不算解决。",
+        "[keep-real-order] 结合消费者会读取正式 JSON 文件的事实保留完整临时写入后原子替换的顺序，不因步骤具体或模型能力提高而删除数据完整性约束。",
+        "[keep-intentional-stop] 保留用户只要方案时等待选择再实现的阶段边界，不强加运行实现检查的通用完成流程。",
+        "[model-scope] 不把 Astra 的能力假设推广为所有贡献者模型不再需要指导，结合已知模型和未知部分限定相关结论，仍交付可依据事实完成的诊断，不要求全面模型调查或虚构模型能力实测。",
+        "[read-only] 不修改材料、不运行未随附的项目测试。"
+      ],
+      "files": [
+        "evals/files/3/team-context.md",
+        "evals/files/3/engineering-instructions.md",
+        "evals/files/3/consumer.py",
+        "evals/files/3/tests-note.md"
+      ]
+    }
+  ]
+}

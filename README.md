@@ -136,7 +136,7 @@ Skill 源码统一放在 `skills/<category>/<skill-name>/`，分类不改变安�
 ruby scripts/validate-skills.rb --base HEAD
 ```
 
-八个 Skill 已有 eval 集，`skill-doctor` 暂无行为评测。需要验证模型行为时，按 [Skill 评测指南](evals/README.md) 运行；真实任务中的缺陷与用例冲突时，应修正用例，避免为通过评测扭曲 Skill。
+九个 Skill 均已有 eval 集。需要验证模型行为时，按 [Skill 评测指南](evals/README.md) 运行；真实任务中的缺陷与用例冲突时，应修正用例，避免为通过评测扭曲 Skill。
 
 [Validation workflow](.github/workflows/validation.yml) 在 PR 和 `main` 上执行静态包校验及 eval 格式检查，不调用模型。这些检查验证发布结构；模型评测只支持对应环境和用例的结论，实际交付仍需取得相应结果证据。
 

@@ -70,8 +70,6 @@ skill_files.each do |file|
     implicit_invocation = %w[intent-clarifier skill-doctor].include?(name)
     check!(agent.fetch("policy", {}).fetch("allow_implicit_invocation", true) == implicit_invocation, "allow_implicit_invocation must be #{implicit_invocation} for #{name}")
 
-    next if name == "skill-doctor" && !file.parent.join("evals/evals.json").exist?
-
     eval_set = read_mapping(file.parent.join("evals/evals.json"))
     check!((eval_set.keys - %w[skill_name evals]).empty?, "evals.json: unsupported fields")
     check!(eval_set["skill_name"] == name, "evals.json: skill_name must equal #{name.inspect}")
