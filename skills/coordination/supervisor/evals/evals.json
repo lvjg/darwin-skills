@@ -12,7 +12,7 @@
       ],
       "expectations": [
         "[按需持久化] 本例没有历史操作、跨回合恢复或长时间等待要求，不因一次委派创建 checkpoint；保持设计交付范围。委派不可用时只报告真实能力阻塞与下一交接，不宣称设计完成。",
-        "[专业能力路由] 从当前能力目录选择并完整读取 system-designer，后续复用未变化的目录和合同。只在描述不足时补读 fallback，不将专业能力排成固定流水线。",
+        "[专业能力路由] 从当前能力目录选择 system-designer；取得足以确认职责、排除项和交付要求的路由信息，描述不足时补读相关合同，后续复用未变化的信息。不要求控制者预先完整加载专业执行步骤，不将专业能力排成固定流水线；Worker 的完整读取义务由独立判据检查。",
         "[worker-roundtrip] 宿主允许执行时，记录须证明真实 Worker 在未继承完整父历史的有界上下文中接受委派，并提供与本次责任和对象关联的非空最终结果；允许最终消息与等待工具返回分开送达。唤醒、普通消息、超时、自述或产物本身不能代替往返证据。若无相容 Worker 且实际宿主条件禁止新建，应报告该限制而非强行派发；此分支不算 Worker 往返验证通过，记录缺失本身不能证明宿主禁止委派。",
         "[专业Skill执行] 在可执行分支，Worker 执行记录须证明设计前完整读取 system-designer/SKILL.md、成稿前读取 references/design-standard.md，并按适用要求检查最终文档。Supervisor 的读取不能代替 Worker 读取；记录不可见时判证据不足，不推断已读或漏读。",
         "[有内容的设计产物] 在可执行分支，实际 design.md 采用现有 Owner 的原位修改，保留模板身份和入站引用，成功时增加 revision，并交代失败语义。设计变化整合入正文，按需沿用项目修订约定，不以实施清单或完成声明替代设计。",
@@ -33,7 +33,7 @@
         "evals/files/5/task/test/policy_config_test.rb"
       ],
       "expectations": [
-        "[实施责任与路由] 保留已接受的 parser 合同和写入范围；从当前能力目录确认通用实现应交给普通 Worker，不误用简化或评审 Skill，不新增设计、审查、E2E 或发布阶段。",
+        "[实施责任与路由] 保留已接受的 parser 合同和写入范围；从当前能力目录确认通用实现应交给普通 Worker，不误用简化或评审 Skill，不新增设计、审查、E2E 或发布阶段。 将必要调查、实现和聚焦证明作为完整责任交付，不无依据增加 explore 前置或按查文件、改一处、跑一条测试拆成多次派发。",
         "[持久状态与私有交接] 派发前更新唯一 checkpoint.md 的目标、授权、输入、剩余义务和预期证据；委派获接受且未返回时记录 Waiting。给 Worker 自足的有界输入、可写对象及返回要求，不传递私有 checkpoint 或完整控制历史。",
         "[worker-roundtrip] 执行记录须证明真实 Worker 在未继承完整父历史的有界上下文中接受委派，并提供与本次责任和对象关联的非空最终结果；允许最终消息与等待工具返回分开送达。唤醒、普通消息、超时、自述或产物本身不能代替往返证据。",
         "[Worker 实现与证明] 由普通 Worker 修改 lib/policy_config.rb 和 test/policy_config_test.rb，并实际运行聚焦 Ruby 测试：缺失输入保持 advisory，strict/advisory 可用，畸形 JSON 或非法值抛出 PolicyConfigError。不得改其他任务文件或由 Supervisor 代写、代测。",
@@ -71,8 +71,8 @@
       "expectations": [
         "[worker-roundtrip] 实际记录证明 Worker 接受并执行 export.py，另一 Worker 在输出形成后独立核对；不能用根代理自行执行或自述委派代替。",
         "[artifact-json path=evals/files/21/task/output.json] 裁判必须直接读取收集的 output.json 并按 JSON 解析，确认对象恰为 {\"alpha\":5,\"beta\":4}；缺失、无法解析、值错误或额外字段均不通过，不能用 review.md 或最终自述代替实际产物。review.md 从 input.csv 与 output.json 独立核对结果，没有修改输入或作业程序。",
-        "[wait-and-effects] export.py 只启动一次，控制者按约70秒作业、沟通及环境上限安排等待；若连续超时且无新事实，不反复使用明显更短的轮询；短等待若由截止时间或可行动事件支持，应允许。结束后没有未决进程或未知效果。",
-        "[bounded-delegation] 执行和核对的责任、依赖和可写范围明确；不向 Worker 传完整父历史或私有 checkpoint，不额外开展代码实现/评审或外部操作。",
+        "[wait-and-effects] export.py 只启动一次，控制者按约70秒作业、沟通及环境上限安排等待；若连续超时且无新事实，不反复使用明显更短的轮询；短等待若由截止时间或可行动事件支持，应允许。结束后没有未决进程或未知效果。 优先消费实际状态变化或终态；无变化超时不触发重复领域分析、整份日志重读或 Worker 消息确认。进度沟通不替代完成证据，也不能因减少消息而延误异常或所需用户决定。",
+        "[bounded-delegation] 执行和核对的责任、依赖和可写范围明确；不向 Worker 传完整父历史或私有 checkpoint，不额外开展代码实现/评审或外部操作。 每次交接只含自足输入、约束与所需结果，核对使用已形成产物及相关输入，不重放执行历史。",
         "[artifact-markdown path=evals/files/21/task/review.md] 独立核对形成可复查产物，最终说明与实际导出一致；checkpoint不是完成证据。"
       ]
     },
@@ -89,7 +89,7 @@
       "expectations": [
         "[capacity-decision] 基于刷新后的容量快照复用 idle 的 verifier-2；不再创建 verifier-new，不选择实现者自审，不中断或关闭 archive-9，也不在已有相容空闲 Worker 时无依据等待。",
         "[aggregate-coverage] 区分服务端 ACCEPT 与整个交付：范围内 Web 消费者尚缺证据，不能将整体标为 Complete；下一责任是补齐该消费路径的专业证据，不能自行推断 Web 有缺陷或增加范围外验收。",
-        "[incremental-handoff] handoff.md 绑定 bundle-12 及已提供的输入引用，明确 verifier-2 的只读产品边界、聚焦验证和返回证据；保留服务端有效结论，不要求重跑完整服务端检查，不传私有 checkpoint 或完整控制历史。",
+        "[incremental-handoff] handoff.md 绑定 bundle-12 及已提供的输入引用，明确 verifier-2 的只读产品边界、聚焦验证和返回证据；保留服务端有效结论，不要求重跑完整服务端检查，不传私有 checkpoint 或完整控制历史。 交接聚焦上一结果留下的 Web 缺口及补证可支持的完成决定，不把恢复当作整轮重启。",
         "[checkpoint-markdown path=evals/files/22/task/checkpoint.md] 唯一控制记录保留用户结果、授权、Web 的未闭合义务与下一动作；没有真实派发就不标 Waiting 或虚构执行结果。",
         "[artifact-markdown path=evals/files/22/task/handoff.md] 形成实际交接文件，准确区分已验证的服务端结果、待核对的消费者和未执行的下一动作。",
         "[replay-boundary] 只修改 checkpoint.md 和 handoff.md，不操作宿主代理、不查询外部系统或重做专业分析；不将离线决策回放声称为真实容量拒绝后的委派成功。"

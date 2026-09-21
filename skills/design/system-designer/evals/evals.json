@@ -3,16 +3,17 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "$system-designer 根据 `evals/files/1/context/` 的业务要求和现有系统资料，设计网站、客服和合作方创建订单的统一处理方案，写入 `evals/files/1/design/solution.md`。只交付设计，只修改这个文件。",
+      "prompt": "$system-designer 根据 `evals/files/1/context/` 的业务要求和现有系统资料，设计网站、客服和合作方创建订单的统一处理方案。将设计保存到本项目，沿用项目文档约定；只交付设计，不修改材料或应用代码。",
       "expected_output": "A complete unified order design links purchase intent, accepted order, payment outcome, warehouse acceptance and customer-visible result. Its mechanisms distinguish retries from new purchases and remain feasible under the supplied timeout and downstream contracts.",
       "expectations": [
         "[purchase-identity] Derive retry/new-purchase handling from authenticated entry identity and explicit continuation references, not customer/SKU/amount or transport request identity alone. Apply it correctly to C101 retry, C102 new purchase, support purchase_no values, distinct partners sharing 88, and conflicting payload under the same P1 reference; cross-entry continuation resolves O501 without creating a second purchase. Do not falsely deduplicate ambiguous unlinked purchases.",
         "[complete-business-path] Explain how acceptance durably establishes an order and frozen purchase data within the 2-second response requirement, how payment and warehouse effects progress afterward, and how customer-visible order queries reflect authoritative outcomes. Payment success drives eventual dispatch without charging again; warehouse ready is not shipped. A component diagram or API deduplication alone does not establish this behavior.",
         "[uncertain-effects] The mechanism handles the 5-second Payment 404 followed by success at 40 seconds and a worker restart without starting a new charge or declaring terminal failure from transient absence. Respect the 24-hour POST deduplication limit, durable attempt identity and 30-day query capability; do not blindly repost expired keys. Explain dispatch retry after lost response using supported warehouse semantics and address at-least-once processing/local commit gaps with a feasible maintained path.",
         "[proportionate-choice] Choose a coherent route and explain consequential costs or alternatives using the existing order database, queue/scanner and downstream capabilities. Do not assume distributed rollback, globally identical entry keys or unspecified provider guarantees; added components need a task-specific justification rather than generic platform benefits.",
-        "[evidence-and-scope] Only evals/files/1/design/solution.md is changed. Respect the synthetic fixture contracts and authorized design scope; distinguish proposed extensions and capacity estimates from existing capabilities and performed validation. Do not claim deployment, implementation, measured production performance, or successful external verification without execution evidence.",
-        "[artifact-markdown path=evals/files/1/design/solution.md] Read the actual final file in the execution workspace. It must contain directly readable Markdown design content; a final response, preview, empty shell or encoded payload is not the artifact. No particular headings or section count are required.",
-        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[evidence-and-scope] Only docs/overview/unified-order.md is changed. Respect the synthetic fixture contracts and authorized design scope; distinguish proposed extensions and capacity estimates from existing capabilities and performed validation. Do not claim deployment, implementation, measured production performance, or successful external verification without execution evidence.",
+        "[artifact-markdown path=docs/overview/unified-order.md] Read the actual final file in the execution workspace. It must contain directly readable Markdown design content; a final response, preview, empty shell or encoded payload is not the artifact. No particular headings or section count are required.",
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并在成稿前读取 references/design-standard.md 及其他适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。",
+        "[delivery-standard] Follow the supplied project document convention rather than a tool/template default; do not substitute Word, a global visualization directory or a temporary file. The actual design applies design-standard.md through coherent business behavior, consequential mechanisms, rationale and validation boundaries; reading the standard alone is insufficient."
       ],
       "files": [
         "evals/files/1/context/business.md",
@@ -22,7 +23,7 @@
     },
     {
       "id": 4,
-      "prompt": "$system-designer 根据 evals/files/4/context/ 设计维修工单分配策略，供维护主管判断、工程师实现。 只交付并写入 evals/files/4/design/solution.md；不实现代码、不修改业务系统。",
+      "prompt": "$system-designer 根据 evals/files/4/context/ 设计维修工单分配策略，供维护主管判断、工程师实现。直接在当前会话中给出设计，不另存文档；不实现代码、不修改业务系统。",
       "expected_output": "An implementable scheduling strategy preserves skills, travel, shifts and windows; demonstrates a feasible base assignment and handles the infeasible added-job variant with explicit limits and priorities.",
       "files": [
         "evals/files/4/context/task.md",
@@ -34,9 +35,9 @@
         "[scarce-capability] 方法能够防止或修正仅按距离把 J1 给 A 而导致 J2 失配的问题：A 是唯一具备 high_voltage 的人员，J1 和 J2 必须同时执行，J1 可由 B 在班次内提前出发覆盖。无需命名贪心陷阱或特定算法。",
         "[infeasible-variant] 追加 J6 后明确 J2 与 J6 都只能由 A 完成，其强制区间 09:00—10:00 与 09:30—10:30 重叠且地点不同，无法全部容纳；在优先级允许范围选择保留并明确未安排项及原因，不虚构技能、拆分任务或默许加班。两个 P0 等级相同，接受满足业务排序的不同处理。",
         "[tradeoffs-and-validation] 说明为什么所选策略适合规模和优先级、如何控制计算投入和处理没有找到解与证明无解的区别；针对全局可行性及搜索质量安排有区分力的检查，不要求数学最优或虚构性能。",
-        "[artifact-markdown path=evals/files/4/design/solution.md] 直接读取最终工作区的 evals/files/4/design/solution.md，确认存在可直接阅读的完整 Markdown 设计；不能用最终回复或执行预览代替文件。",
-        "[scope-and-evidence] 只修改 evals/files/4/design/solution.md，不改原始输入或真实业务系统。区分合成材料推演、实际执行证据与拟议验证；不把纸面方案、引用或合成回执宣称为实现、生产性能或外部业务验证。若使用外部材料，主张应对应实际读取且适用的来源；不要求固定搜索数量、指定论文或特定方法名称。",
-        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[inline-design-standard] 最终会话回复本身提供可直接阅读的完整局部设计，适用 design-standard.md：目标与限制、具体分配机制、选择理由、正常日见证、不可行变体与验证边界形成连贯方案。不能只给结论摘要、职责清单或指向附件；不要求固定标题、章节数或把局部策略扩成系统架构。",
+        "[scope-and-evidence] 设计直接在会话内交付，不创建文档或附件，不改原始输入或真实业务系统。区分合成材料推演、实际执行证据与拟议验证；不把纸面方案、引用或合成回执宣称为实现、生产性能或外部业务验证。若使用外部材料，主张应对应实际读取且适用的来源；不要求固定搜索数量、指定论文或特定方法名称。",
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并在成稿前读取 references/design-standard.md 及其他适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
       ]
     },
     {
@@ -57,10 +58,10 @@
         "[update-preservation] Show how the synthetic password-confirmation update can be located, applied to an authoritative current version, and checked for unintended changes in other rules or text. Explain meaningful conflicts or ambiguous mixed-batch semantics; do not mandate full replacement, a particular diff algorithm, or invented business resolution.",
         "[research-and-selection] 识别重要方法选择，解释所选方案相对可信的简单方案的理由。实际使用的来源应能追溯到具体机制、前提和对设计的影响；不能把论文名称或当前实现的未经核实主张当作证据。本例另由 research-transfer 判据检查给定原始方法的实际读取与转化。",
         "[end-to-end-quality] Separate service structural validity from business fidelity and define evidence that could test both. Long inputs, an unclear source condition such as Backup activation, and a rejected or conflicting edit must have actionable handling without an unbounded repair loop or a parallel authoritative template store.",
-        "[artifact-markdown path=evals/files/11/design/solution.md] Read the final Markdown artifact itself. It contains the requested coherent design, does not claim unperformed implementation or experiments, and only the requested design file is changed.",
+        "[artifact-markdown path=evals/files/11/design/solution.md] Read the final Markdown artifact itself. It applies design-standard.md in the actual content, with connected mechanisms, rationale and evidence boundaries rather than a capability checklist; reading the standard alone is insufficient. It contains the requested coherent design, does not claim unperformed implementation or experiments, and only the requested design file is changed.",
         "[research-transfer] At least one supplied source must be actually accessed at the level of its method or relevant implementation. Identify its concrete mechanism and assumptions, then show how it changes or supports a design choice, or justify rejection for this task. Titles, abstracts alone and citations without a method do not establish transfer. If required sources cannot be accessed, this research criterion has insufficient evidence: report the access limit rather than treating a useful unsupported design as successful research.",
         "[research-independent-choice] Adapt the selected mechanism to the supplied authoring contracts and business needs, including required work the source leaves unspecified. Do not require all listed methods or copy a paper architecture without its prerequisites.",
-        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并按该版本合同读取适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并在成稿前读取 references/design-standard.md 及其他适用参考。可接受可核实的读取或环境加载证据，不以角色名、自述已使用或产物合格代替。记录不完整时标记加载证据不足，不能据此确认 Skill 已应用，也不能断言执行者确实漏读。"
       ]
     }
   ]

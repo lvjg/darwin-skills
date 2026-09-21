@@ -19,7 +19,7 @@
         "[account-for-candidate] Account for the provider, service, environment switch, duplicate parser, fallback and candidate-authored shape test as material candidate surfaces rather than reviewing only the main runtime file.",
         "[remove-overbuild] 移除没有需求或调用方支持的生产转发层、来源开关、重复解析和仅验证这些结构的测试；裁判读取实际改动判断维护负担是否减少，不以特定文件名或源码字符串匹配代替判断。",
         "[reuse-established-owner] CLI 复用既有 Config.timeout 的解析、默认值和失败行为，不新增一套配置责任；接受保持该责任的等价调用写法。",
-        "[boundary-validation] Run ruby test/verify_cleanup.rb after the final edit and report its actual result; the verifier executes the CLI with default, valid and invalid input.",
+        "[boundary-validation] Run ruby test/verify_cleanup.rb after the necessary simplification and final relevant edit, then report its actual result; the verifier executes the CLI with default, valid and invalid input. Focused baseline or failure-attribution checks before editing are valid and do not replace the final boundary run; avoid repeating unchanged broad checks without new evidence needs.",
         "[no-replacement-layer] The response does not perform or claim this prohibited behavior: Replace the deleted surfaces with another adapter, factory, flag, registry or abstraction.",
         "[no-scope-drift] The response does not perform or claim this prohibited behavior: Redesign Config, alter CLI behavior or clean unrelated project code."
       ]

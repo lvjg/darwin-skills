@@ -1,6 +1,8 @@
-# Design Artifact Standard
+# Design Output Standard
 
-Write for the people who must understand, choose, implement, or maintain this design. Use the user's language and established project terms. Respect an existing required format; otherwise choose a small structure that makes the operating idea and important choices clear. Do not organize the artifact around the Skill's process or give every module equal space.
+Apply this standard to the design itself, whether delivered directly in the conversation or as a document, and whether it is a complete proposal, a local design, or a revision. A short direction needs only enough mechanism and reasoning to support the requested decision; a complete design must not collapse into a list of recommendations. Do not expand a bounded request to fill sections.
+
+Write for the people who must understand, choose, implement, or maintain this design. Use the user's language and established project terms. Respect an existing required structure; otherwise choose a small structure that makes the operating idea and important choices clear. These are content requirements, not mandatory headings. Do not organize the output around the Skill's process or give every module equal space. Delivery format and location follow the main Skill's delivery rules.
 
 ## Overall Design
 
@@ -34,7 +36,7 @@ For revisions, make the current text internally consistent and preserve still-va
 
 ## Final Reading
 
-Read the actual final artifact as its intended reader, using the text, diagrams, and cases present in it. For a local revision, include the affected passages and their dependencies; expand the reading if the change affects the overall argument. Resolve these questions proportionately to scope:
+Read the actual final reply or saved document as its intended reader, using the text, diagrams, and cases present in it. For a local revision, include the affected passages and their dependencies; expand the reading if the change affects the overall argument. Resolve these questions proportionately to scope:
 
 - Can the reader explain the whole or local result and how it is produced?
 - Can the decisive behavior be applied to a concrete case without supplying an unstated strategy?

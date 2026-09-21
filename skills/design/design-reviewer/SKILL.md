@@ -35,7 +35,7 @@ Establish the required outcome and must-preserve behavior within the authorized 
 
 If no named next decision is supplied, use the narrowest consequential interpretation supported by the request and state it.
 
-Identify the applicable proposal revision only far enough to prevent mixing materially different versions. If the proposal changes, reread the affected content and invalidate dependent evidence and findings. Require an immutable identifier only when ambiguity or reproducibility can change the decision.
+On an initial review, read the submitted candidate in full before narrowing the investigation by risk. On a revised review, read the complete new delta and the candidate content, contracts, consumers, or current-system facts affected by it; do not inspect only the author's stated fixes. If a reliable comparison or usable prior review basis is unavailable, read the current candidate in full and establish the missing basis rather than assuming unchanged content is covered. Reuse prior evidence and conclusions whose object, source, and assumptions remain unchanged, and invalidate only those affected by the revision or its dependencies. Require an immutable identifier only when ambiguity or reproducibility can change the decision.
 
 ### 2. Reconstruct the Proposal and Its Pivotal Design Judgments
 

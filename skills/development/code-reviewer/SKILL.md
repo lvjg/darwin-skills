@@ -66,7 +66,7 @@ A missing test is not automatically a defect. When material proof is absent, ide
 
 ### 6. Decide
 
-For a revised candidate, read the full new delta, reassess findings and evidence affected by it or its dependencies, and reuse unaffected evidence. Do not restart the whole review merely because the candidate identifier changed.
+For a revised candidate, read the full new delta, reassess findings and evidence affected by it or its dependencies, and reuse unaffected evidence. If a reliable comparison or usable prior review basis is unavailable, read the current candidate change in full and establish the missing basis. Do not restart the whole review merely because the candidate identifier changed.
 
 Admit a finding only when it:
 

@@ -3,15 +3,17 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "$design-reviewer 请读取随附的 `evals/files/1/context/` 下的需求、当前系统事实和初始方案，独立判断该方案是否足以作为实现依据。只读，不修改文件。",
-      "expected_output": "A read-only design review rejects implementation readiness because the proposal leaves conflicting routing representations and outcome runtime semantics unresolved. It treats the persistent source lifecycle as an unresolved justification question rather than an automatic defect, does not reject full replacement merely for being non-incremental, and keeps the conclusion on the submitted proposal rather than accepting a repaired version.",
+      "prompt": "$design-reviewer 请读取随附的 `evals/files/1/context/` 下的需求、当前系统事实和完整 R2 修订方案，独立判断该方案是否足以作为实现依据。只读，不修改文件。",
+      "expected_output": "A read-only revised-design review examines the complete R2 delta and affected contracts rather than only the stated fixes, reuses unchanged ownership and publication evidence, and rejects implementation readiness because the proposal leaves conflicting routing representations and outcome runtime semantics unresolved. It treats the persistent source lifecycle as an unresolved justification question rather than an automatic defect, does not reject full replacement merely for being non-incremental, and keeps the conclusion on the submitted proposal rather than accepting a repaired version.",
       "files": [
         "evals/files/1/context/root-intent.md",
         "evals/files/1/context/current-system.md",
-        "evals/files/1/context/initial-route.md"
+        "evals/files/1/context/initial-route.md",
+        "evals/files/1/context/prior-review.md"
       ],
       "expectations": [
-        "[decision-and-independent-basis] Establish that the review supports implementation authorization, reconstruct the outcome and real starting conditions independently, and distinguish user decisions, verified facts, proposal claims and material unknowns.",
+        "[decision-and-independent-basis] Establish that the review supports implementation authorization, read the complete R2 candidate, reconstruct the outcome and real starting conditions independently, and distinguish user decisions, verified facts, proposal claims and material unknowns.",
+        "[revision-delta-and-evidence-reuse] Compare the complete R2 candidate with the archived R1 proposal and independent review in prior-review.md; do not accept the author's change summary as the comparison basis. Inspect the added global-rule and outcome surfaces and their affected compiler/runtime contracts, while reusing still-applicable evidence for the unchanged ownership split, signed human-only publication path and raw-expression prohibition rather than reopening them without cause.",
         "[submitted-proposal-remains-object] Keep the verdict on the supplied proposal. A conditional analysis that ignores unsupported source state may suppress derivative findings but must not turn the reduced route into the accepted candidate.",
         "[replacement-semantics-not-universalized] Do not reject whole-graph replacement merely because omission deletes resources, or require incremental editing and stable identity by default. Raise replacement concerns only when tied to an established active obligation or concrete failure consequence.",
         "[source-lifecycle-judgment] Do not reject the persistent source lifecycle merely because there is no independent external consumer. Test whether it is required by the direct outcome, a necessary consequence, an established protection or an explicit guarantee; if that support cannot be established, keep its justification open or disprove it with an equivalent simpler route.",

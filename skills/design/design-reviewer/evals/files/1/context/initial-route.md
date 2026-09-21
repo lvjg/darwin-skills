@@ -1,4 +1,6 @@
-# Initial proposed route
+# Revised proposed route
+
+This is the complete revision R2. The author reports that it addresses the prior review's source-retention and graph-authoring findings. The archived R1 proposal and independent review are in `prior-review.md`.
 
 The proposal claims to provide a generic document-to-template capability.
 
