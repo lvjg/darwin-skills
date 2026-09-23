@@ -40,11 +40,20 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-      - name: Install pinned Skill-Up validator
+      - name: Restore pinned Skill-Up validator
+        id: skill-up-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/bin/skill-up
+          key: skill-up-v0.12.0-linux-amd64-ec2631e45702d460b69cd700e1847f5562ef2e971f09c23be2efcec4e0f583c6
+      - name: Download pinned Skill-Up validator on cache miss
+        if: steps.skill-up-cache.outputs.cache-hit != 'true'
         run: |
-          curl -fsSL -o /tmp/skill-up.tar.gz https://github.com/alibaba/skill-up/releases/download/v0.10.0/skill-up_0.10.0_linux_amd64.tar.gz
-          echo "afe6fe23e3a5eede9c84c4087c21ac298ccc92f2a8ae4187d1c150c76926d20a  /tmp/skill-up.tar.gz" | sha256sum -c -
-          tar -xzf /tmp/skill-up.tar.gz -C /tmp
-          /tmp/skill-up --version
+          curl -fsSL -o /tmp/skill-up.tar.gz https://github.com/alibaba/skill-up/releases/download/v0.12.0/skill-up_0.12.0_linux_amd64.tar.gz
+          echo "ec2631e45702d460b69cd700e1847f5562ef2e971f09c23be2efcec4e0f583c6  /tmp/skill-up.tar.gz" | sha256sum -c -
+          mkdir -p "$HOME/.local/bin"
+          tar -xzf /tmp/skill-up.tar.gz -C "$HOME/.local/bin" skill-up
+      - name: Check Skill-Up validator version
+        run: "$HOME/.local/bin/skill-up --version"
       - name: Validate Anthropic eval sets through Skill-Up
-        run: evals/run-evals --skill-up /tmp/skill-up --model ci-placeholder --dry-run
+        run: evals/run-evals --skill-up "$HOME/.local/bin/skill-up" --model ci-placeholder --dry-run

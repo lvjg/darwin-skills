@@ -1,6 +1,0 @@
-interface:
-  display_name: "Intent Clarifier"
-  short_description: "Expose assumptions and clarify consequential choices"
-  default_prompt: "Use $intent-clarifier to make the current task interpretation and important assumptions explicit, clarify worthwhile user-owned choices through evidence and feedback, and continue or hand back the original task within its existing scope and authorization."
-policy:
-  allow_implicit_invocation: true

@@ -1,10 +1,10 @@
 # Darwin
 
-> 帮助 Codex 理清需求、审视方案、改进代码，并验证交付结果。
+> 帮助 Codex 审视方案、改进代码，并验证交付结果。
 
-使用 Codex 完成工程任务时，你可能遇到过这些情况：代码写出来了，需求却理解偏了；方案不断补充，复杂度也不断增加；测试全部通过，真实流程仍然走不通。
+使用 Codex 完成工程任务时，你可能遇到过这些情况：方案不断补充，复杂度也不断增加；代码写出来了，关键问题却没有解决；测试全部通过，真实流程仍然走不通。
 
-Darwin 是一组面向 Codex 的工程 Skills，把需求澄清、技术方案设计、专业评审和结果验证落实到具体任务中。你可以从一次方案评审开始，也可以在长任务中使用 `supervisor` 协调推进。
+Darwin 是一组面向 Codex 的工程 Skills，把技术方案设计、专业评审和结果验证落实到具体任务中。你可以从一次方案评审开始，也可以在长任务中使用 `supervisor` 协调推进。
 
 [快速开始](#快速开始) · [选择 Skill](#skills) · [使用示例](#使用示例) · [安装与更新](#安装与更新)
 
@@ -12,7 +12,6 @@ Darwin 是一组面向 Codex 的工程 Skills，把需求澄清、技术方案�
 
 | 工作中遇到的问题 | Darwin 的处理思路 |
 | --- | --- |
-| 实现完成后，才发现需求理解有偏差 | 提前暴露关键假设，用调查、问题和样例澄清目标。 |
 | 方案写清了模块职责，却没解释关键问题如何解决 | 建立整体理解，深入关键机制，按需研究成熟方法并作出设计取舍。 |
 | 方案和代码不断增加，必要性却说不清 | 从实际问题、消费者和约束判断哪些结构值得保留，寻找更简单可靠的实现。 |
 | 测试通过，但还不能确认用户目标已经实现 | 沿真实使用路径检查可见结果、最终状态和必要副作用。 |
@@ -46,7 +45,6 @@ $design-reviewer 评审 docs/design.md。
 
 | 你现在需要 | Skill | 主要产出 |
 | --- | --- | --- |
-| 明确需求、关键假设和取舍 | [`$intent-clarifier`](skills/coordination/intent-clarifier/SKILL.md) | 经澄清的任务理解与必要决定 |
 | 创建或完善系统、功能、流程或局部机制的技术方案 | [`$system-designer`](skills/design/system-designer/SKILL.md) | 范围相称、机制具体、有取舍依据的设计 |
 | 只读评审未实施的方案 | [`$design-reviewer`](skills/design/design-reviewer/SKILL.md) | 设计评审结论与改进建议 |
 | 只读审查具体代码交付 | [`$code-reviewer`](skills/development/code-reviewer/SKILL.md) | 有依据的发现与验收判断 |
@@ -56,7 +54,7 @@ $design-reviewer 评审 docs/design.md。
 | 诊断 AGENTS.md 和 Skill 指令，默认不修改 | [`$skill-doctor`](skills/maintenance/skill-doctor/SKILL.md) | 指令问题、保留项与修改建议 |
 | 协调跨操作、交接和等待的长任务 | [`$supervisor`](skills/coordination/supervisor/SKILL.md) | 任务推进、进度与结果证据 |
 
-`intent-clarifier` 和 `skill-doctor` 支持按任务描述自动选用，也支持显式调用；其他 Skill 需要显式调用。自动选用取决于运行环境的技能发现和匹配结果。
+`skill-doctor` 支持按任务描述自动选用，也支持显式调用；其他 Skill 需要显式调用。自动选用取决于运行环境的技能发现和匹配结果。
 
 ## 使用示例
 
@@ -124,7 +122,7 @@ Skill 源码统一放在 `skills/<category>/<skill-name>/`，分类不改变安�
 
 | 目录 | 用途 |
 | --- | --- |
-| `skills/coordination/` | 任务协调与需求澄清 |
+| `skills/coordination/` | 任务协调 |
 | `skills/design/` | 技术方案设计与评审 |
 | `skills/development/` | 代码审查与实现简化 |
 | `skills/verification/` | 功能验收与体验走查 |
@@ -136,7 +134,7 @@ Skill 源码统一放在 `skills/<category>/<skill-name>/`，分类不改变安�
 ruby scripts/validate-skills.rb --base HEAD
 ```
 
-九个 Skill 均已有 eval 集。需要验证模型行为时，按 [Skill 评测指南](evals/README.md) 运行；真实任务中的缺陷与用例冲突时，应修正用例，避免为通过评测扭曲 Skill。
+八个 Skill 均已有 eval 集。需要验证模型行为时，按 [Skill 评测指南](evals/README.md) 运行；真实任务中的缺陷与用例冲突时，应修正用例，避免为通过评测扭曲 Skill。
 
 [Validation workflow](.github/workflows/validation.yml) 在 PR 和 `main` 上执行静态包校验及 eval 格式检查，不调用模型。这些检查验证发布结构；模型评测只支持对应环境和用例的结论，实际交付仍需取得相应结果证据。
 

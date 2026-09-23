@@ -1,5 +1,13 @@
 # Darwin 迁移指南
 
+## 移除 `intent-clarifier`
+
+| 旧名称 | 当前归属 | 选择说明 |
+| --- | --- | --- |
+| `intent-clarifier` | 无直接替代 | 需求澄清直接在当前任务中完成，不再作为独立 Skill 安装或调用。 |
+
+若此前安装过该 Skill，应移除全局副本；仓库中的源码和评测用例已删除。
+
 ## 从 `designer` 或 `overview-designer` 迁移到 `system-designer`
 
 | 旧名称 | 当前名称 | 选择说明 |

@@ -67,7 +67,7 @@ skill_files.each do |file|
       check!(nonempty_text?(interface[key]), "agents/openai.yaml: interface.#{key} must be non-empty text")
     end
     check!(interface["default_prompt"].include?("$#{name}"), "default_prompt must explicitly invoke $#{name}")
-    implicit_invocation = %w[intent-clarifier skill-doctor].include?(name)
+    implicit_invocation = name == "skill-doctor"
     check!(agent.fetch("policy", {}).fetch("allow_implicit_invocation", true) == implicit_invocation, "allow_implicit_invocation must be #{implicit_invocation} for #{name}")
 
     eval_set = read_mapping(file.parent.join("evals/evals.json"))
@@ -88,10 +88,6 @@ skill_files.each do |file|
       end
       expectations = item["expectations"]
       check!(expectations.is_a?(Array) && !expectations.empty? && expectations.all? { |value| nonempty_text?(value) }, "#{location}: expectations must be a non-empty text array")
-      if expectations.any? { |value| value.start_with?("[implicit-invocation]") }
-        check!(implicit_invocation, "#{location}: implicit invocation cases require an implicitly selectable Skill")
-        check!(!item["prompt"].include?("$#{name}"), "#{location}: implicit invocation prompt must not explicitly invoke the target Skill")
-      end
       files = item.fetch("files", [])
       check!(files.is_a?(Array) && files.all? { |value| value.is_a?(String) && !value.empty? }, "#{location}: files must be a string array")
       files.each do |path|

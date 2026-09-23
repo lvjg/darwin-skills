@@ -113,7 +113,7 @@ if options.fetch(:engine) == "codex" && !options[:dry_run]
       "#{evals.fetch('skill_name')}/#{case_id}" if selected && needs_worker
     end.compact
   end
-  abort "证据不可用：Skill-Up 0.10.0 的 Codex 通道不能完整提供 Worker 交接与返回；未运行 #{unsupported.join(', ')}。请用 --case 选择其他用例，或在能提供所需证据的执行环境验证。" unless unsupported.empty?
+  abort "证据不可用：Skill-Up 的 Codex 通道不能完整提供 Worker 交接与返回；未运行 #{unsupported.join(', ')}。请用 --case 选择其他用例，或在能提供所需证据的执行环境验证。" unless unsupported.empty?
 end
 
 unless options[:dry_run]
@@ -140,8 +140,7 @@ eval_targets.each do |skill_dir, evals|
       case_config["description"] = "#{skill_name}/case-#{item.fetch('id')}"
       # Native import leaves path placeholders; context.files requires actual text.
       context_files = item.fetch("files", []).to_h { |path| [path, fixture_content(skill_dir, path)] }
-      implicit_case = item.fetch("expectations").any? { |text| text.start_with?("[implicit-invocation]") }
-      if options.fetch(:engine) == "codex" && !implicit_case
+      if options.fetch(:engine) == "codex"
         abort "fixture reserves AGENTS.md for the Codex adapter" if context_files.key?("AGENTS.md")
         context_files["AGENTS.md"] = <<~MARKDOWN
           # Skill evaluation harness
@@ -177,7 +176,7 @@ eval_targets.each do |skill_dir, evals|
     eval_path = File.join(runtime_dir, "eval.yaml")
     config = YAML.safe_load(File.read(eval_path))
     context = options.fetch(:skill_context)
-    context = %w[supervisor intent-clarifier].include?(skill_name) ? "repository" : "target" if context == "auto"
+    context = skill_name == "supervisor" ? "repository" : "target" if context == "auto"
     installed_dirs = [skill_dir]
     installed_dirs |= repository_skill_dirs if context == "repository"
     config["skills"] = installed_dirs.map do |path|
@@ -218,6 +217,7 @@ eval_targets.each do |skill_dir, evals|
         timeout_seconds: options.fetch(:timeout), iteration: options.fetch(:iteration), parallelism: options.fetch(:parallelism),
         skill_context: context, case_filters: options.fetch(:cases, []),
         runner: { sha256: Digest::SHA256.file(__FILE__).hexdigest, ruby_version: RUBY_VERSION },
+        codex_home: options.fetch(:engine) == "codex" ? "isolated_per_skill_run" : nil,
         skill_up_version: executable_version(options.fetch(:skill_up)),
         skills: config.fetch("skills").map do |ref|
           { name: File.basename(ref.fetch("path")), target: ref["target"], files_sha256: file_hashes(ref.fetch("path")) }
@@ -238,7 +238,17 @@ eval_targets.each do |skill_dir, evals|
     options.fetch(:cases, []).each { |pattern| command.concat(["--include-case-name", pattern]) }
     command << "--verbose" if options[:verbose]
     puts "\n==> #{skill_name}"
-    failed_skills << skill_name unless system(*command, chdir: skill_dir)
+    if options.fetch(:engine) == "codex" && !options[:dry_run]
+      # 临时用例目录的 trust 记录只写入隔离目录，同时复用本机登录。
+      Dir.mktmpdir("skill-up-codex-home-") do |eval_codex_home|
+        host_codex_home = File.expand_path(ENV.fetch("CODEX_HOME", File.join(Dir.home, ".codex")))
+        auth_file = File.join(host_codex_home, "auth.json")
+        File.symlink(auth_file, File.join(eval_codex_home, "auth.json")) if File.file?(auth_file)
+        failed_skills << skill_name unless system({ "CODEX_HOME" => eval_codex_home }, *command, chdir: skill_dir)
+      end
+    else
+      failed_skills << skill_name unless system(*command, chdir: skill_dir)
+    end
   end
 end
 abort "Skill evaluation failed: #{failed_skills.join(', ')}" unless failed_skills.empty?

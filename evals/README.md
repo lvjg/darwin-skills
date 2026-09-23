@@ -1,6 +1,6 @@
 # Skill 评测
 
-用例保存在 `skills/<category>/<skill-name>/evals/evals.json`，由 Skill-Up 0.10.0 执行。以下命令均在仓库根目录运行。默认运行所有带 eval 集的 Skill；显式指定没有 eval 的 Skill 会报错。
+用例保存在 `skills/<category>/<skill-name>/evals/evals.json`，由 Skill-Up 0.12.0 执行。以下命令均在仓库根目录运行。默认运行所有带 eval 集的 Skill；显式指定没有 eval 的 Skill 会报错。
 
 ## 校验与运行
 
@@ -11,7 +11,7 @@ ruby scripts/validate-skills.rb --base HEAD
 evals/run-evals --model ci-placeholder --dry-run
 ```
 
-运行前安装 Skill-Up 0.10.0，并配置所选执行引擎的登录或凭据。将 `MODEL_NAME` 替换为实际模型名：
+首次运行前安装 Skill-Up 0.12.0，并配置所选执行引擎的登录或凭据。之后的评测直接复用本机二进制，不会重新下载或安装 Skill-Up；CI 也缓存固定版本，仅缓存未命中时下载。将 `MODEL_NAME` 替换为实际模型名：
 
 ```sh
 evals/run-evals --model MODEL_NAME \
@@ -21,9 +21,13 @@ evals/run-evals --model MODEL_NAME \
 
 末尾指定 Skill；省略 `--case` 运行该 Skill 全部用例。默认引擎为 Codex，裁判使用同一模型；可通过 `--engine`、`--judge-model` 修改。`--iteration N` 可重复运行，其他参数见 `evals/run-evals --help`。
 
-Supervisor 和 Intent Clarifier 默认安装仓库全部 Skill，后者用于检验自动选用的正反例；其他用例只安装被评 Skill。需要隔离诊断时使用 `--skill-context target` 或 `--skill-context repository`。依赖其他 Skill 的组合用例需要 repository 上下文。
+Supervisor 默认安装仓库全部 Skill；其他用例只安装被评 Skill。需要隔离诊断时使用 `--skill-context target` 或 `--skill-context repository`。依赖其他 Skill 的组合用例需要 repository 上下文。
 
 运行器只安装 Skill 的运行资料，排除 `evals/` 和 `.git/`；用例只注入 `files` 明确列出的输入。`expected_output` 保留在定义中供维护者阅读，`expectations` 交给裁判评分；两者不作为任务描述或 Skill 资料交给被测模型。
+
+Codex 真实运行时，仓库入口 `evals/run-evals` 为每个 Skill 的本次运行创建临时 `CODEX_HOME`，只关联现有本机登录凭据；运行结束后删除。这样临时用例目录产生的 trust 记录不会写入日常 `~/.codex/config.toml`。`skill-up` 保持官方默认安装路径 `~/.local/bin/skill-up`，仓库入口直接复用该二进制，不下载或重新安装。直接执行 `skill-up run` 不经过仓库入口的隔离，需要避免全局 trust 增长时应使用 `evals/run-evals`。
+
+模型由 `--model` 明确指定，其他 Codex 用户级配置与插件不会自动继承。多用例仍由 Skill-Up 分别创建工作区；需要对比结果时保持相同的 Skill-Up、Codex CLI、模型和入口参数。Skill-Up 0.12.0 的会话文件查找尚未跟随 `CODEX_HOME`；普通用例已验证可从 Codex JSONL 输出获得工具调用与评分材料，需要完整 Worker 往返证据的用例继续按下方限制拦截。
 
 **当前限制：** Codex 通道缺少完整 Worker 执行证据，Supervisor Case 4、5、21 在真实运行前会报错退出。请选其他用例，或在能提供完整证据的执行环境中验证；dry-run 不受此限制。
 
@@ -48,7 +52,6 @@ UX 两例使用模拟 QA 走查记录，检查从既有记录开展评审的能�
 | Skill | 保留 ID | 核心任务 |
 | --- | --- | --- |
 | `system-designer` | 1、4、11 | 订单处理架构、维修分配算法、文档到 SOP 综合设计 |
-| `intent-clarifier` | 5、12、14 | 根据部分回答继续澄清、将模糊目标变成具体取舍、已知事实下直接交付 |
 | `supervisor` | 4、5、20、21、22、23 | 有界设计委派、协调实现与验证、未知效果恢复、等待本地作业、容量受限时补证、Codex 消息与身份恢复回放 |
 | `design-reviewer` | 1、3、11 | 发现系统方案的关键缺口、认可成立的方案、识别空泛的 Agent 行为设计 |
 | `code-reviewer` | 1、4、5 | 跨合同缺陷与证据不足、接受合理实现、识别功能正确但维护负担过重的改动 |
@@ -57,7 +60,7 @@ UX 两例使用模拟 QA 走查记录，检查从既有记录开展评审的能�
 | `ux-reviewer` | 1、2 | 工作区删除与密码重置两个体验评审，分别检验实质问题发现和合理接受 |
 | `skill-doctor` | 1、2、3 | 组合触发冲突、维护指令的完成与授权边界、多模型共享指令中的冗余及必要约束 |
 
-共 29 个用例。ID 保留原编号，允许不连续，便于追溯已有报告。已删除的用例及其专属输入不再维护；这是一组核心能力样本，不声称覆盖所有边界。
+共 26 个用例。ID 保留原编号，允许不连续，便于追溯已有报告。已删除的用例及其专属输入不再维护；这是一组核心能力样本，不声称覆盖所有边界。
 
 Supervisor Case 21 使用约 70 秒的受控本地作业，观察真实委派、等待和独立核对；这个等待窗口不代表产品性能，不模拟容量拒绝。E2E Case 5 检查本地回执与清理行为，不证明生产旅程。Codex 协作工具可用于补充执行证据；其结果单独记录，不冒充 Skill-Up 通道已支持完整 Worker 取证。
 
@@ -98,16 +101,6 @@ evals/run-evals --model MODEL_NAME --output-root /tmp/system-designer-core syste
 ### 通用格式
 
 参考[已有用例](../skills/coordination/supervisor/evals/evals.json)。每个用例包含唯一整数 `id`、任务 `prompt`、预期结果 `expected_output` 和可判定的 `expectations`；输入文件通过 `files` 引用，路径相对 Skill 根目录，放在 `evals/files/<id>/` 下。
-
-`intent-clarifier` 用例检查意图形成、给定对话后的续接及清晰任务下的直接交付。给定历史不等于真实多轮交互；用户隐藏意图能否被及时表达、回答能否持续改变后续工作，需要另做多轮验证，不能把未来回答预先放入被测 Agent 的输入。
-
-带 `[implicit-invocation]` 断言的用例测试自动选用：题面不点名被测 Skill，Codex 入口不注入强制读取它的 `AGENTS.md`，让运行环境正常发现已安装能力。正例检查实际读取并应用，反例允许读取发现元数据，但不应加载正文开展多余澄清。仅回答符合预期不能证明 Skill 已被选用，须结合执行记录判断；缺少读取证据时不能报告触发通过。未带该标记的显式用例保留原有加载要求。
-
-例如仅检查 Intent Clarifier 的自动选用用例配置：
-
-```sh
-evals/run-evals --model ci-placeholder --dry-run --case case-12 --case case-14 intent-clarifier
-```
 
 `[checkpoint-markdown path=...]`、`[artifact-markdown path=...]` 增加文件存在性检查并采集文件；`[checkpoint-absent path=...]` 检查文件不存在。格式和内容仍由裁判读取本次工作区中的实际文件判断。
 
