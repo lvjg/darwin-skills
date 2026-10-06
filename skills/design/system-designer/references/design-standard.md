@@ -2,11 +2,11 @@
 
 Apply this standard to the design itself, whether delivered directly in the conversation or as a document, and whether it is a complete proposal, a local design, or a revision. A short direction needs only enough mechanism and reasoning to support the requested decision; a complete design must not collapse into a list of recommendations. Do not expand a bounded request to fill sections.
 
-Write for the people who must understand, choose, implement, or maintain this design. Use the user's language and established project terms. Respect an existing required structure; otherwise choose a small structure that makes the operating idea and important choices clear. These are content requirements, not mandatory headings. Do not organize the output around the Skill's process or give every module equal space. Delivery format and location follow the main Skill's delivery rules.
+Write for the people who must understand, choose, implement, or maintain this design, using the user's language and established project terms. Make its background and goals, overall solution, and key designs recognizable and connected in the actual explanation. Respect the user's required structure; otherwise choose a small structure, allowing these content layers to share a section. They are not mandatory headings. Do not organize the output around the Skill's process or give every module equal space. Delivery format and location follow the main Skill's delivery rules.
 
 ## Overall Design
 
-Open with the required result, the proposed approach, and the principal reason it fits. Include only background and constraints needed to understand the design. Keep proposed behavior distinguishable from current implementation where that distinction matters.
+Open with the problem and intended result, what counts as completion, the proposed approach, and the principal reason it fits. Develop only the background and material constraints needed to understand that choice. The merits of a preferred technology do not establish the need. Keep proposed behavior distinguishable from current implementation where that distinction matters.
 
 Establish enough overall context for the requested scope, then explain the details on which its result depends. Return from an important detail to its effect on the whole, especially when it changes another decision or assumption.
 
@@ -18,7 +18,7 @@ For a local design, state its result and relationship to the adopted surrounding
 
 Give a key design its own explanation when its internal choices materially determine the outcome or a major quality or cost. Name it for the problem or result it addresses. Open with the mechanism selected and the reason for that choice.
 
-Explain how the relevant input becomes the result. Include the representation, operation, selection rule, interaction, or feedback that performs the decisive work, together with only the contracts and state needed to understand it. Use a worked case, diagram, decision table, or pseudocode when it makes the mechanism easier to inspect. No particular form is required.
+Explain how the relevant input becomes the result. Include the representation, operation, selection rule, interaction, or feedback that performs the decisive work, together with only the contracts and state needed to understand it. Interfaces, named owners, and statements of required behavior do not replace this strategy. Use a worked case, diagram, decision table, or pseudocode when it makes the mechanism easier to inspect. No particular form is required.
 
 Keep the strongest material alternative, selection basis, costs, and reconsideration condition beside the choice they explain. Describe research at the point where it supports or limits the mechanism; distinguish a source's method and evidence from the adaptation proposed here. A literature survey is not required unless requested.
 
@@ -38,9 +38,8 @@ For revisions, make the current text internally consistent and preserve still-va
 
 Read the actual final reply or saved document as its intended reader, using the text, diagrams, and cases present in it. For a local revision, include the affected passages and their dependencies; expand the reading if the change affects the overall argument. Resolve these questions proportionately to scope:
 
-- Can the reader explain the whole or local result and how it is produced?
-- Can the decisive behavior be applied to a concrete case without supplying an unstated strategy?
-- Are the important choices, costs, evidence, and conditions understandable?
-- Do the prose, diagrams, cases, and existing contracts describe a consistent design?
+- From the opening and relevant body, can the reader identify the problem, intended result, material constraints and completion criteria, explain the whole or local operating idea, and understand why its key mechanisms matter?
+- Can the decisive mechanisms be applied to concrete material without supplying an unstated strategy? Are the selection basis, strongest material alternative, accepted costs, evidence, and conditions understandable beside the choices they explain?
+- Do the mechanisms compose into the intended result using information available at each point, with important state, action and failure behavior resolved? Do the prose, diagrams, cases, and existing contracts describe that same design?
 
 Remove repeated governance statements and text that adds no understanding. When a mechanism is missing, repair the design instead of adding a heading, responsibility declaration, or surrounding implementation detail.
