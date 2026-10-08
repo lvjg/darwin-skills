@@ -74,6 +74,22 @@
         "[bounded-revision-output] 最终会话回复直接提供可读的修订后短设计。已有背景目标和整体路径继续提供语境，修订机制与它们保持一致；无需重写三个层次，也不得新增三个通用标题、重复背景或重建整体结构。只读过标准、给修订建议或声称层次齐全都不能代替实际修订；不创建文件或附件、不实现代码、不添加新架构或实施计划。",
         "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在修订前完整进入执行者上下文，并在成稿前读取 references/design-standard.md。可接受可核实的读取或环境加载证据；记录不完整时标记加载证据不足，不据此断言漏读。加载证据与修订质量分别判定，确认读取不能抵销机制、原结构或范围保留失败。"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "$system-designer 根据 evals/files/13/context/ 设计导出完成后的站内通知，直接在当前会话中给出设计，供后端工程师实现。不实现代码，不修改材料。",
+      "expected_output": "A short in-conversation design wires the existing job hooks to the notification service with a stable deduplication key, links to the export page instead of an expiring signed URL, relies on existing hook retries and failure records, and adds no new infrastructure, research or roadmap.",
+      "files": [
+        "evals/files/13/context/task.md",
+        "evals/files/13/context/system.md"
+      ],
+      "expectations": [
+        "[direct-mechanism] 在导出最终状态后通过现有 on_success/on_failure 钩子调用通知服务，通知 exports.user_id 对应的发起人。识别钩子至少调用一次会造成重复，并用由 export_id 派生的稳定 dedupe_key 防止重复通知，不依赖进程内状态或先查后写。通知链接指向导出页 /exports/{id}，由导出页在点击下载时生成新的签名地址；不能把 15 分钟有效的签名地址写进通知。失败通知同样指向可重新导出的导出页。说明通知调用失败时由钩子重试，耗尽后进入现有失败记录与告警，手动重放因 dedupe_key 而不会重复。接受等价的合理写法。",
+        "[proportionate-investment] 现有钩子、通知服务和 30 秒轮询已能满足一分钟内送达；设计直接使用它们，不新增消息队列、outbox 表、补偿扫描任务、WebSocket/SSE 推送或新服务，除非说明现有能力无法满足的具体原因。不为邮件、其他渠道或未来需求预留扩展点或路线图；不开展外部文献或网络检索，不为没有实质分歧的点排列多方案比较。篇幅与这次局部改动相称，不扩展为带通用背景、架构总览、容量规划或上线计划的完整系统方案；不要求固定字数或章节。可核实的执行记录显示无关外部检索时判为未满足；记录不完整时只依据产物判断。",
+        "[readable-result] 最终会话回复本身是可直接阅读的设计：开头说明要解决的问题、完成标准和采用的做法，并让读者看出成功、最终失败和钩子重复调用时用户分别看到什么。不能只给结论摘要、实现任务清单或代码。",
+        "[scope-and-evidence] 设计直接在会话内交付，不创建文档或附件，不实现代码，不修改材料。不把设计说成已实现或已验证；不就材料已能确定的常规技术选择向用户确认或停下等待。",
+        "[skill-execution] 执行记录须证明本次安装的 system-designer/SKILL.md 正文在开展设计前完整进入执行者上下文，并在成稿前读取 references/design-standard.md。可接受可核实的读取或环境加载证据；记录不完整时标记加载证据不足，不据此断言漏读。加载证据与成品质量分别判定，确认读取不能抵销机制、篇幅或范围失败。"
+      ]
     }
   ]
 }
