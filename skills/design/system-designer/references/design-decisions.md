@@ -1,4 +1,4 @@
-# Design Tradeoffs
+# Design Decisions
 
 Use the relevant guidance when reasonable alternatives pull in different directions. A useful judgment explains why a concrete gain is worth a concrete sacrifice under this task's conditions, and what would reverse that judgment. These are lenses for a choice, not another design workflow or a checklist to complete.
 
