@@ -40,6 +40,6 @@ When evidence remains limited, weigh the cost of being wrong and changing later.
 
 ## Further Investigation Versus Acting Now
 
-Ask whether obtainable information could change a consequential choice enough to justify the cost and delay of obtaining it. Investigate the decisive difference. Use a calculation or experiment when that is what can resolve the uncertainty; additional citations do not substitute for it. Stop reading sources that only repeat what is already known.
+Identify what evidence could change the preferred option and how to obtain it. Compare its value with acquisition cost and delay. Use a calculation or experiment when it can settle the uncertainty; additional citations do not substitute for it. Stop reading sources that only repeat what is already known.
 
-Deepen details whose plausible alternatives change the result, approach, or material cost. Stop when remaining choices are interchangeable implementation details or further work is unlikely to change the recommendation. Time spent is not evidence of validity, and exhausted time does not make a missing central mechanism complete. Where uncertainty cannot be resolved, bound the recommendation instead of claiming certainty or postponing every decision.
+Time spent is not evidence of validity; running out of time does not complete a missing central mechanism. If uncertainty cannot be resolved, bound the recommendation rather than claiming certainty or postponing every decision.

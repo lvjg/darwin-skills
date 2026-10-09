@@ -1,45 +1,56 @@
 # Design Output Standard
 
-Apply this standard to the design itself, whether delivered directly in the conversation or as a document, and whether it is a complete proposal, a local design, or a revision. A short direction needs only enough mechanism and reasoning to support the requested decision; a complete design must not collapse into a list of recommendations. Do not expand a bounded request to fill sections.
+Apply this standard to the design itself, whether delivered in the conversation or as a document. Write for the people who must understand, choose, implement, or maintain the design, using the user's language and established project terms. Delivery format and location follow the main Skill's rules.
 
-Write for the people who must understand, choose, implement, or maintain this design, using the user's language and established project terms. Make its background and goals, overall solution, and key designs recognizable and connected in the actual explanation. Respect the user's required structure; otherwise choose a small structure, allowing these content layers to share a section. They are not mandatory headings. Do not organize the output around the Skill's process or give every module equal space. Delivery format and location follow the main Skill's delivery rules.
+## Required Structure and Scope
 
-## Overall Design
+For a complete design, use these three explicit top-level sections in this order: **Background and Goals**, **Overall Solution**, and **Key Designs**. Translate these headings into the user's language while preserving their meaning. Keep these layers separate rather than scattering their contents across topic sections. A complete proposal for one feature or mechanism uses the same structure at that scope; it does not require a whole-system architecture.
 
-Open with the problem and intended result, what counts as completion, the proposed approach, and the principal reason it fits. Develop only the background and constraints needed to understand that choice. The merits of a preferred technology do not establish the need. Keep proposed behavior distinguishable from current implementation where that distinction matters.
+The user's required structure or an agreed project template takes precedence. Fit the content into that structure and make the three layers easy to locate. For a bounded revision, preserve the existing structure and unaffected text; update the affected explanation and its dependencies. For a short direction or a simple local design with one operating path and no consequential choices to develop separately, the layers may be combined. A request for a complete proposal, or a design combining several consequential mechanisms, keeps the three sections even when the answer is short. Keep each structure within the requested scope.
 
-Establish enough overall context for the requested scope, then explain the details on which its result depends. Return from an important detail to its effect on the whole, especially when it changes another decision or assumption.
+For a complete design, follow the title with a short lead stating the proposed approach, intended result, and any condition that changes the decision. Develop the explanation in the sections below. Do not organize the design around investigation steps or give every module equal space.
 
-For a whole-system design, explain how the main mechanisms cooperate and trace a representative input or use to its visible result. Make the important responsibilities, information dependencies, and effects understandable. Use a relationship or flow diagram when it clarifies the mechanism.
+Keep information specific to a mechanism or choice beside it. Add supplementary sections after the three core sections when they serve a distinct purpose across mechanisms or support a design decision, implementation, validation, or maintenance. For information spanning several mechanisms, summarize shared effects, dependencies, and required actions with references to the affected key designs rather than repeating their explanations. Omit sections without substantive content. Existing structure and agreed templates follow the scope rules above.
 
-For a local design, state its result and relationship to the adopted surrounding design, then develop that mechanism directly. Do not reconstruct the entire system merely to fill an overview structure.
+## Background and Goals
 
-## Key Mechanisms and Choices
+Explain the starting situation, the problem or opportunity, and the result the design must produce. Include the constraints that shape the choice and observable completion criteria. For a new system, describe its starting conditions without inventing an existing defect. The merits of a preferred technology do not establish the need.
 
-Give a key design its own explanation when its internal choices materially determine the outcome or a major quality or cost. Name it for the problem or result it addresses. Open with the mechanism selected and the reason for that choice.
+Give only the context needed to understand the proposal. Distinguish requirements and adopted decisions from inherited implementation choices or assumptions. Keep proposed behavior distinguishable from current implementation where that affects the reader's decision.
 
-Explain how the relevant input becomes the result. Include the representation, operation, selection rule, interaction, or feedback that performs the decisive work, together with only the contracts and state needed to understand it. Interfaces, named owners, module diagrams, tool-call lists, and statements of required behavior do not replace this strategy. Use a worked case, diagram, decision table, or pseudocode when it makes the mechanism easier to inspect. No particular form is required.
+## Overall Solution
 
-Keep the strongest alternative, selection basis, costs, and reconsideration condition beside the choice they explain. Describe research at the point where it supports or limits the mechanism; distinguish a source's method and evidence from the adaptation proposed here. A literature survey is not required unless requested.
+State the operating idea and its principal selection reason before detailing its parts. Explain how the main mechanisms cooperate: where work starts, what information is available, how decisions and effects occur, and what result reaches the user or consumer. Make the responsibilities and dependencies understandable in domain language.
 
-Allocate detail by design significance. Preserve a difficult internal strategy even if it belongs to one module. Leave ordinary code organization and interchangeable implementation details to implementation.
+Trace a representative input or use through this path. Use a relationship or flow diagram when it clarifies the cooperation, with names consistent with the prose. The reader should understand the path without first studying schemas, API parameters, or failure-state tables. A component inventory or tool-call list cannot supply this explanation.
+
+Identify the few choices that determine the result and point to their explanations under Key Designs. Explain how they affect other choices and any modules or consumers that depend on them. Identify the capabilities or contracts relied on or changed, required dependent adjustments, and consequences of unmet dependencies where they affect the result. For a local proposal, show its input, result, and relationship to the surrounding design; do not reconstruct unrelated parts of the system.
+
+## Key Designs
+
+Give each consequential mechanism a subsection named for the problem or result it addresses. Open with the chosen mechanism and why it fits, then explain how its relevant input becomes the result. Include the representation, operation, selection rule, interaction, or feedback that performs the decisive work, together with the contracts and state needed to understand and implement it. Interfaces, named owners, and statements of required behavior do not replace this strategy.
+
+Use a worked case, decision table, diagram, or pseudocode where it lets the reader inspect the decisive operation. Preserve a difficult internal strategy even if it belongs to one module, and explain how important details affect the overall result. Keep the decisive operation, selection rule, and behavior-changing failure conditions in the main explanation. Place supporting schemas, exhaustive check matrices, and source indexes in a referenced subsection or appendix only when they would interrupt that explanation. Leave ordinary code organization and interchangeable implementation details to implementation.
+
+For consequential choices, keep the strongest viable alternative, selection basis, accepted costs, and reconsideration condition beside the choice they explain. Do not manufacture a comparison for a routine decision. Describe research where it supports or limits the mechanism, distinguishing the source's method and evidence from the adaptation proposed here.
 
 ## Conditions, Validation, and Change
 
-Place assumptions and unresolved conditions with the affected design. State what they can change and what evidence or decision is needed. A final open-issues list is useful only for matters that affect the overall next step; omit an empty list.
+Place assumptions and unresolved conditions with the affected design. State what they can change and what evidence or decision is needed. A final open-decisions section is useful only for matters that affect the overall next step; omit an empty one.
 
-Explain the few checks or experiments that can establish the important behavior or discriminate among remaining alternatives. Clearly distinguish actual results from proposed validation. Formal validity, intended meaning, and practical quality may require different evidence.
+Explain the few checks or experiments that can establish important behavior or distinguish remaining alternatives. Clearly distinguish actual results from proposed validation. Formal validity, intended meaning, and practical quality may require different evidence.
 
-Include transition, compatibility, rollout, or recovery details only where an active obligation or the chosen mechanism requires them; do not add a roadmap for hypothetical requirements.
+Include transition, compatibility, rollout, or recovery details only where an active obligation or the chosen mechanism requires them.
 
-For revisions, make the current text internally consistent and preserve still-valid content. Use existing project conventions for status and change history when needed by the reader. Do not invent version identifiers, revision tables, or approval claims. A historical note cannot substitute for updating the design itself.
+For revisions, update the current explanation and preserve still-valid content. Keep it complete and authoritative; revision records cannot substitute for this update. Records are part of a maintained design artifact. Preserve existing entries and record substantive changes between delivered versions, within the requested scope. Use the existing format, or concise entries stating what changed, why, and which design or dependency is affected. Use actual revision metadata; do not invent past versions, authorship, or approval claims. An initial proposal needs no fabricated history or empty record section.
 
 ## Final Reading
 
-Read the actual final reply or saved document as its intended reader, using the text, diagrams, and cases present in it. For a local revision, include the affected passages and their dependencies; expand the reading if the change affects the overall argument. Resolve these questions proportionately to scope:
+Read the actual reply or saved document as its intended reader. For a local revision, include the affected passages and their dependencies; expand the reading if the change affects the overall argument. Check the applicable structure and the explanation separately:
 
-- From the opening and relevant body, can the reader identify the problem, intended result, constraints and completion criteria, explain the whole or local operating idea, and understand why its key mechanisms matter?
-- Can the decisive mechanisms be applied to concrete material without supplying an unstated strategy? Are the selection basis, strongest alternative, accepted costs, evidence, and conditions understandable beside the choices they explain?
-- Do the mechanisms compose into the intended result using information available at each point, with important state, action and failure behavior resolved? Do the prose, diagrams, cases, and existing contracts describe that same design?
+- Does a complete design have the three explicit sections in order, or follow the user's required structure or agreed template? Is a short direction, simple local design, or bounded revision using its exception without omitting needed design or adding unrelated scope? Do supplementary sections serve a distinct purpose without repeating the core explanation? Headings alone do not establish content quality.
+- Can a reader understand the problem, intended result, constraints, completion criteria, operating idea, and key choices from the background and overall explanation before reading implementation detail?
+- Can the key mechanisms be applied to concrete material without supplying an unstated strategy? Are their reasons, alternatives, costs, evidence, and conditions understandable beside the choices?
+- Do the mechanisms compose into the intended result using information available at each point, with important state, action, and failure behavior resolved? Are the current explanation, diagrams, cases, and applicable contracts consistent? Do applicable revision records accurately describe the actual changes?
 
-Remove repeated governance statements and text that adds no understanding. When a mechanism is missing, repair the design instead of adding a heading, responsibility declaration, or surrounding implementation detail.
+Repair a missing mechanism in the design itself. Repair an unclear structure or explanation by reorganizing and rewriting the affected text. Remove repetition and bookkeeping that add no understanding; do not substitute extra headings, responsibility declarations, or implementation detail for the missing explanation.

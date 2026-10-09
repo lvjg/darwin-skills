@@ -25,7 +25,7 @@
 
 ## Deliverables
 
-- Write artifacts for their intended audience and purpose. Unless requested, keep session narration, revision history, and self-explanation outside the artifact. Report handoff needs and blockers separately.
+- Write artifacts for their intended audience and purpose. For maintained design proposals, keep revision records in the artifact. For other artifacts, omit revision records unless requested. Unless requested, keep session narration and self-explanation outside the artifact. Report handoff needs and blockers separately.
 - Follow the user's requested language and format. Lead with the result or main point. Use plain, concrete language and concise paragraphs. Use lists or tables when they aid understanding. Avoid stock phrases, unnecessary jargon, and unrequested contrasts.
 - Prefer short sentences with one main judgment each. In procedures, give each step one main action. Use active voice and name the responsible actor when known. If the actor or referent is unclear, state the gap instead of inventing one. Put conditions before the actions they govern. Keep exceptions next to those actions.
 - Use the same project term for the same concept. Define unfamiliar terms when needed. Preserve code, paths, parameters, API names, error text, and numbers exactly when citing them. Preserve negation, conditions, permission limits, levels of obligation, and uncertainty. If simplification would change the meaning or omit a necessary fact, keep the precision. Adapt sentence length to the language and task; do not impose English word limits on Chinese.
