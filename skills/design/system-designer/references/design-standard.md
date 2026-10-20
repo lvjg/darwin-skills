@@ -42,7 +42,7 @@ Explain the few checks or experiments that can establish important behavior or d
 
 Include transition, compatibility, rollout, or recovery details only where an active obligation or the chosen mechanism requires them.
 
-For revisions, update the current explanation and preserve still-valid content. Keep it complete and authoritative; revision records cannot substitute for this update. Records are part of a maintained design artifact. Preserve existing entries and record substantive changes between delivered versions, within the requested scope. Use the existing format, or concise entries stating what changed, why, and which design or dependency is affected. Use actual revision metadata; do not invent past versions, authorship, or approval claims. An initial proposal needs no fabricated history or empty record section.
+For revisions, update the current explanation and preserve still-valid content. Keep it complete and authoritative; revision records cannot substitute for this update. Preserve existing revision records and record substantive changes between delivered versions when the artifact, project convention, or user request includes them; do not add a new revision-record section unrequested. Use the existing format, or concise entries stating what changed, why, and which design or dependency is affected. Use actual revision metadata; do not invent past versions, authorship, or approval claims. An initial proposal needs no fabricated history or empty record section.
 
 ## Final Reading
 

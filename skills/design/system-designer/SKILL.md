@@ -1,6 +1,6 @@
 ---
 name: system-designer
-description: Use when explicitly invoked as $system-designer to create, complete, or revise a technical design for a system, feature, workflow, or mechanism, combining overall reasoning with substantive detail. Not for implementation, current-state explanation, read-only review, or delivery acceptance.
+description: Use only when explicitly invoked as $system-designer to create, complete, or revise a technical design for a system, feature, workflow, or mechanism, combining overall reasoning with substantive detail. Not for implementation, current-state explanation, read-only review, or delivery acceptance.
 ---
 
 # System Designer
@@ -9,7 +9,7 @@ description: Use when explicitly invoked as $system-designer to create, complete
 
 Act as the designer responsible for a coherent solution to the user's problem. Work between an understanding of the problem and an explanation of how a solution produces the result. Use the overall picture to decide what needs deeper design; use what you learn in the details to correct the overall picture. A design can be broad or local in scope and still require both views.
 
-The sections below describe dependencies in the work. The design's output structure is defined in `references/design-standard.md`, not by these process sections. Reuse sound prior work and return only to the conclusions affected by new evidence. A small, well-understood task may pass through them quickly. An expression-only correction needs no new design exploration.
+The sections below describe dependencies in the work. The design's output structure is defined in [references/design-standard.md](references/design-standard.md), not by these process sections. Reuse sound prior work and return only to the conclusions affected by new evidence. A small, well-understood task may pass through them quickly. An expression-only correction needs no new design exploration.
 
 ## 1. Understand the Task and Build a Working Model
 
@@ -47,7 +47,7 @@ Stop investigating when further evidence is unlikely to change an important deci
 
 Compare viable answers against the established requirements and priorities, giving each the same constraints and permission to change existing arrangements. Discard those that violate a hard requirement. Judge the remaining differences by actual benefit, uncertainty, and the cost to users, builders, operators, and maintainers; prefer the simpler approach when benefits are comparable.
 
-When a choice involves competing objectives, coupled mechanisms, uncertain evidence, or the cost of further investigation, read `references/design-decisions.md`. Do not ask the user to make routine technical choices.
+When a choice involves competing objectives, coupled mechanisms, uncertain evidence, or the cost of further investigation, read [references/design-decisions.md](references/design-decisions.md). Do not ask the user to make routine technical choices.
 
 Combine the selected mechanisms into an end-to-end solution. Trace how work starts, which information is available, how decisions and effects occur, and what result reaches the user or consumer. Resolve interfaces, responsibilities, shared assumptions, and applicable state or failure behavior at the places where the mechanisms meet. A set of good local designs is not yet evidence of a good whole.
 
@@ -59,7 +59,7 @@ Once a coherent candidate exists, choose the few perspectives and concrete quest
 
 Apply the proposed mechanism to a discriminating case using only information available at each point. If it succeeds only because you supply an unstated strategy, develop that missing design. For uncertain claims, use an appropriate calculation, contract check, or bounded local experiment within scope; formal validity alone does not establish intended meaning or practical quality.
 
-Respond to what the examination finds. A missing fact returns to understanding or investigation; a wrong framing changes the model and its dependent designs; a failing mechanism requires redesign; a justified local omission can be filled locally. Do not automatically add a fallback, layer, or state to every objection. Test whether removing or changing a choice eliminates the problem more cleanly, and use `references/design-decisions.md` when the tradeoff is unclear.
+Respond to what the examination finds. A missing fact returns to understanding or investigation; a wrong framing changes the model and its dependent designs; a failing mechanism requires redesign; a justified local omission can be filled locally. Do not automatically add a fallback, layer, or state to every objection. Test whether removing or changing a choice eliminates the problem more cleanly, and use [references/design-decisions.md](references/design-decisions.md) when the tradeoff is unclear.
 
 End the reflection when material objections are resolved or bounded, the solution still meets its priorities, and further work is unlikely to change a consequential decision. Recheck the parts affected by a revision rather than restarting a universal review. When an unresolved fact can change the design, keep the dependent part conditional instead of hiding it behind a named owner or claiming a complete solution.
 
@@ -67,7 +67,7 @@ End the reflection when material objections are resolved or bounded, the solutio
 
 Deliver the design as Markdown, directly in the conversation unless file delivery is requested or already agreed. For file delivery, use the specified path; otherwise update the existing design in place or follow the repository's design-document location. For a new repository document with no location convention, use `docs/design/<topic>.md`. Tool defaults, global visualization directories, and temporary files must not override the agreed destination. Resolve routine choices from context without an extra confirmation.
 
-Before composing any user-facing design output, read and apply `references/design-standard.md`; reuse it when already available and still applicable. It defines the required structure, reading order, and mechanism depth for direct conversation replies, repository documents, local designs, and revisions. Delivery medium does not relax that contract.
+Before composing any user-facing design output, read and apply [references/design-standard.md](references/design-standard.md); reuse it when already available and still applicable. It defines the required structure, reading order, and mechanism depth for direct conversation replies, repository documents, local designs, and revisions. Delivery medium does not relax that contract.
 
 Apply the standard's final-reading checks to the actual reply or saved document before delivery. Reading the standard or passing a technical design review does not establish output compliance. Repair the structure and explanation where needed, within the requested scope. For file delivery, return its location and a concise account of the result rather than a second full design in the conversation.
 

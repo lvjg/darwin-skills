@@ -88,4 +88,4 @@ Make no edit when the candidate already is the lowest-total-burden complete impl
 
 ## Response Contract
 
-Lead with whether the bounded candidate was optimized without changing its decided behavior. State the candidate and base, meaningful deletion, reuse, responsibility or structural correction, direct consequence closure, final validation, net burden reduction, preserved constraints, and any unresolved boundary. If no edit was needed, say so with evidence. Keep the response as short as the outcome allows.
+Lead with whether the bounded candidate was optimized without changing its decided behavior. State the candidate and base, final validation, preserved constraints, and any applicable meaningful deletion, reuse, responsibility or structural correction, direct consequence closure, net burden reduction, or unresolved boundary. If no edit was needed, say so with evidence. Keep the response as short as the outcome allows.
