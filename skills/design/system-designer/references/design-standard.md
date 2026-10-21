@@ -10,7 +10,7 @@ The user's required structure or an agreed project template takes precedence. Fi
 
 For a complete design, follow the title with a short lead stating the proposed approach, intended result, and any condition that changes the decision. Develop the explanation in the sections below. Do not organize the design around investigation steps or give every module equal space.
 
-Keep information specific to a mechanism or choice beside it. Add supplementary sections after the three core sections when they serve a distinct purpose across mechanisms or support a design decision, implementation, validation, or maintenance. For information spanning several mechanisms, summarize shared effects, dependencies, and required actions with references to the affected key designs rather than repeating their explanations. Omit sections without substantive content. Existing structure and agreed templates follow the scope rules above.
+Keep information specific to a mechanism or choice beside it. Add supplementary sections after the three core sections when they serve a distinct purpose across mechanisms or support a design decision, implementation, validation, or maintenance. For information spanning several mechanisms, summarize shared effects, dependencies, and required actions with references to the affected key designs rather than repeating their explanations. Omit sections without substantive content.
 
 ## Background and Goals
 
