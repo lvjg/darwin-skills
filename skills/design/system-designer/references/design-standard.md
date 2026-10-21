@@ -4,9 +4,12 @@ Apply this standard to the design itself, whether delivered in the conversation 
 
 ## Required Structure and Scope
 
-For a complete design, use these three explicit top-level sections in this order: **Background and Goals**, **Overall Solution**, and **Key Designs**. Translate these headings into the user's language while preserving their meaning. Keep these layers separate rather than scattering their contents across topic sections. A complete proposal for one feature or mechanism uses the same structure at that scope; it does not require a whole-system architecture.
+Match the deliverable's structure to the request while keeping all content within the requested scope:
 
-The user's required structure or an agreed project template takes precedence. Fit the content into that structure and make the three layers easy to locate. For a bounded revision, preserve the existing structure and unaffected text; update the affected explanation and its dependencies. For a short direction or a simple local design with one operating path and no consequential choices to develop separately, the layers may be combined. A request for a complete proposal, or a design combining several consequential mechanisms, keeps the three sections even when the answer is short. Keep each structure within the requested scope.
+- **User-specified structure or agreed project template**: Follow that structure first. Fit the content into it so the background, overall solution, and key designs remain easy to locate.
+- **Complete design (system, feature, or local mechanism with consequential choices)**: Use three explicit top-level sections in this order: **Background and Goals**, **Overall Solution**, and **Key Designs**. Translate these headings into the user's language while preserving their meaning, and keep these layers separate rather than scattering their contents across topic sections. A complete proposal for one feature or mechanism, or a design combining several consequential mechanisms, keeps the three sections at that local scope even when short, without requiring a whole-system architecture.
+- **Short direction or simple local design**: For a requested short direction, or a simple local design with one operating path and no consequential choices to develop separately, the three layers may be combined.
+- **Bounded revision of an existing design**: Preserve the existing structure, headings, and unaffected text; update only the affected explanation and its dependencies.
 
 For a complete design, follow the title with a short lead stating the proposed approach, intended result, and any condition that changes the decision. Develop the explanation in the sections below. Do not organize the design around investigation steps or give every module equal space.
 
