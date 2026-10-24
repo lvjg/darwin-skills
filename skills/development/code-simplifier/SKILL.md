@@ -18,13 +18,15 @@ Read the candidate end to end across all material surfaces—runtime files, wrap
 3. an active consumer, contract, constraint, or failure policy that must be preserved; or
 4. a direct consistency consequence of the simplification.
 
+Absence of an in-repository caller does not prove that a published or external surface is unused; if an external obligation cannot be ruled out within scope, retain that boundary and report it rather than guessing.
+
 ## 2. Apply the Deletion Test and Restructure
 
-Before polishing any added layer, provider, service, flag, parser, fallback, state store, or compatibility alias, ask which of the four obligations above would fail if that mechanism disappeared and callers used the owning capability directly. **If none fails, delete the mechanism and its shape-only tests rather than renaming, splitting, or replacing it with another adapter or abstraction.**
+Before polishing any added layer, provider, service, flag, parser, fallback, state store, compatibility shim/alias, or superseded path left behind by a replacement, ask which of the four obligations above would fail if that mechanism disappeared and callers used the owning capability directly (a transition or compatibility path requires an identified active consumer, owner, and removal condition). **If none fails, delete the mechanism, dead wiring, and shape-only tests rather than renaming, splitting, or replacing them with another adapter or abstraction.**
 
 For the behavior that remains necessary, choose the smallest complete intervention:
 
-- **Reuse established owners**: route callers directly to existing project, framework, or library capabilities whose responsibility, contract, defaults, and failure semantics already fit.
+- **Reuse and realign with established owners**: route callers directly to existing project, framework, or library capabilities whose responsibility, contract, defaults, and failure semantics already fit. Move duplicated or misplaced decisions, state, or effects back to their owning module boundary, and restructure required code when the candidate bundles unrelated responsibilities that change for different reasons, leaks storage or implementation details across a contract, or shares mutable state.
 - **Unify identical rules vs. preserve distinct policies**: when multiple entrypoints enforce the exact same business rule (such as shared parsing, bounds, clamping, and fallback semantics), centralize that rule in one place while keeping required public entrypoints intact so future rule changes happen once. Conversely, **do not merge paths or add a shared abstraction merely because happy-path syntax looks similar when their failure, fallback, or exception policies genuinely differ**.
 - **Close direct consequences**: update all callers, imports, exports, wiring, and tests directly affected by the simplification. Remove candidate-authored tests only when the unsupported surface they tested was intentionally deleted and no behavior coverage is lost; never weaken protected behavior to make a test pass.
 
