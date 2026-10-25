@@ -1,4 +1,4 @@
-# 导出交付 — Waiting
+# 导出交付
 
 - Result: 交付 bundle-22 的导出文件并确认资源释放。
 - Constraints: 允许查询和重新提交；不发布。

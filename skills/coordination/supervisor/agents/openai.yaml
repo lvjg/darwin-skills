@@ -1,6 +1,6 @@
 interface:
   display_name: "Supervisor"
-  short_description: "Control and recover long-running tasks by evidence"
-  default_prompt: "Use $supervisor to keep this multi-step task recoverable, delegate the current obligation to the right Worker, and converge on evidence without imposing a fixed workflow."
+  short_description: "Orchestrate multi-agent work and specialist Skills by evidence"
+  default_prompt: "Use $supervisor to orchestrate this multi-agent task, compose the right specialist Skills by risk, enforce independent verification, and converge on evidence without a fixed workflow."
 policy:
   allow_implicit_invocation: false

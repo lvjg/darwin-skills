@@ -1,4 +1,4 @@
-# Export delivery — Active
+# Export delivery
 
 - Result: format upgrade works for the server and Web download consumer.
 - Constraints: local implementation and necessary verification only; no release.

@@ -4,7 +4,6 @@
 - Checkpoint reference: `checkpoint.md`
 - Revision: 2
 - Supervisor: `$supervisor`
-- Control state: Active
 - Root result: implement accepted policy-file loading while preserving the absent-file default
 - Authorization: only `lib/policy_config.rb`, `test/policy_config_test.rb`, and this checkpoint may change
 - Authoritative contract: `implementation-contract.md` version 2

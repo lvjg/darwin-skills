@@ -1,7 +1,6 @@
 # Preview recovery
 
 Task: preview-permission-20
-State: Waiting
 Revision: 4
 
 Result: internal-preview runs `6b120df` with healthy proof.
