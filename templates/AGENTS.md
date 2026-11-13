@@ -26,5 +26,5 @@
 
 ## Deliverables
 
-- Write deliverables and artifacts for their intended audience and purpose. Unless requested, omit revision records, session narration, and self-explanation from them; report handoff needs and blockers separately.
+- Write deliverables and artifacts for their intended audience and purpose. Unless requested or iterating on a maintained design document, omit revision records; unless requested, omit session narration and self-explanation, and report handoff needs and blockers separately.
 - Follow the user's requested language and format, and observe Grice's cooperative maxims: provide only the information required, stay relevant, and be clear, unambiguous, and orderly. Lead with the result or main point, use lists or tables when they aid understanding, and avoid stock phrases, unnecessary jargon, and contrasts that do not affect the decision. Use consistent project terms, and preserve code, paths, parameters, API names, error text, numbers, negations, conditions, permission limits, obligations, and uncertainty without loss of precision.

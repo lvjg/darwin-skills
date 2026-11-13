@@ -16,7 +16,7 @@
 
 本次从 `designer` 更名不改变设计职责、思考流程和三个核心用例。
 
-调用入口改为 `$system-designer`，源码位于 [System Designer](skills/design/system-designer/SKILL.md)，调用条件仍为显式调用。原 `references/overview-standard.md` 由 [设计产物规范](skills/design/system-designer/references/design-standard.md) 替代，负责方案表达及最终文档检查；新增的 [设计取舍参考](skills/design/system-designer/references/design-decisions.md) 按需辅助比较收益、代价和不确定性，设计流程仍由 `SKILL.md` 维护。直接引用旧名称、路径或参考文件的交接指令需同步更新；仓库更新不会自动迁移已安装副本。
+调用入口改为 `$system-designer`，源码位于 [System Designer](skills/design/system-designer/SKILL.md)，调用条件仍为显式调用。设计流程、方案取舍与完整设计产物规范统一由 `SKILL.md` 维护（原 `references/overview-standard.md`、`references/design-standard.md` 与 `references/design-decisions.md` 已内联退役）；涉及模型或 Agent/Harness 机制时按需读取 [Agent 架构设计参考](skills/design/system-designer/references/agent-architecture.md)。直接引用旧名称、路径或已退役参考文件的交接指令需同步更新；仓库更新不会自动迁移已安装副本。
 
 发布包含此次变更的版本后，先安装并核对新入口；若已安装 `supervisor`，同时更新其设计能力路由。再移除旧名称，并保留本机自定义修改的备份：
 
