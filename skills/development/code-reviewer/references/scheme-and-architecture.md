@@ -13,6 +13,7 @@ Compare the reconstructed code topology directly against the agreed scheme, key 
 - **Boundary and semantic owner fidelity:** verify that business rules, state transitions, invariants, and authority checks land in the agreed semantic owner rather than drifting into callers, controllers, UI handlers, or transport adapters for convenience.
 - **Layering and dependency direction:** check whether cross-layer imports, shared mutable state, or leaked storage/third-party shapes punch through intended module boundaries.
 - **Obligation and mechanism completeness:** verify that required normal flows, failure/recovery transitions, and key design invariants were genuinely implemented rather than downgraded into hard-coded special cases, partial happy-path shortcuts, or silent requirement omissions.
+- **Pinned upstream port and compatibility baseline:** when a candidate ports a pinned external upstream system, protocol specification, or registered compatibility layer, treat the pinned upstream source and registered compatibility ledger as part of the authoritative baseline. Before classifying apparent omissions—such as unfiltered lookups, deferred updates, or specific side-effect ordering—as a `DEFECT`, verify them against the pinned upstream implementation to rule out intentional upstream contracts; if upstream parity is claimed verbally without verifiable pinned source or compatibility ledger evidence in scope, record `[EVIDENCE GAP]`.
 
 ## 3. Identify Implementation-Exposed Design Flaws (Reverse Audit)
 
