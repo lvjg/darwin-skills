@@ -1,100 +1,87 @@
 ---
 name: code-reviewer
-description: Use only when the user explicitly invokes $code-reviewer to review a specific implemented code change. Perform a read-only, evidence-based assessment of correctness, scope discipline, repository fit, integration, lifecycle burden, and proof, with additional scrutiny for risks common in changes generated or materially modified by coding agents, then decide whether the candidate is ready to accept.
+description: Use only when the user explicitly invokes $code-reviewer to review a specific implemented code change—either as a full acceptance gate or as a scoped specialist review. Perform a read-only, evidence-based assessment of scheme and architecture alignment, implementation-exposed design flaws, cross-boundary closure, repository fit, runtime correctness, and verification honesty, then decide whether the candidate holds within the requested scope.
 ---
 
 # Code Reviewer
 
 ## Objective
 
-Review a specific implemented code change and decide whether it is ready to accept for the requested target gate (such as a local commit, merge, or release). Evaluate the change both as a whole system intervention and in its concrete implementation: determine whether it solves the problem at the right boundary, preserves system-wide contracts and invariants, keeps responsibilities cohesive and decoupled, avoids unnecessary lifecycle burden, and has sufficient evidence. Apply additional scrutiny for failure modes common in code generated or modified by coding agents.
+Review a specific implemented code change and decide whether it is ready to accept for the requested target gate (such as a local commit, merge, or release) or within an explicitly requested specialist scope (such as scheme/architecture alignment, cross-boundary closure, anti-ratchet fit, test/proof honesty, or AI/harness governance).
 
-Judge the delivered code and its actual system effect, not whether it follows a proposal, looks locally clean, compiles, or passes its own tests. Treat agent authorship as a reason to verify likely failure modes, not as evidence of a defect.
+Judge the delivered code against agreed architectural designs, active contracts, repository reality, and actual system effect—not whether it matches an author summary, looks locally clean, compiles in isolation, or passes self-authored tests. Treat coding-agent authorship as a signal to check common structural and verification failure modes, not as evidence of a defect.
 
-Keep the review read-only: do not modify candidate files, repository state, or live external systems. Within the task's authorization, run safe, isolated, non-mutating local checks (such as supplied focused tests, typechecks, or read-only probes) when needed to verify unproven claims or distinguish competing outcomes.
+Keep the review strictly read-only: never modify candidate files, repository state, or live external systems. Within task authorization, prefer deterministic read-only probes first—running supplied focused tests, compiler/typechecks, and repository symbol/caller searches—whenever a local check or search can settle an unproven claim or blast radius instead of speculative reasoning.
 
 ## Method
 
-Work between the whole system picture and the concrete code details: use the overall picture to understand how the change fits the system and where risk concentrates, and use what you find in the details to test whether the overall approach and boundaries hold. Pursue only questions that can change the verdict or minimum acceptance conditions, and stop expanding discovery once the evidence suffices for the target gate. Do not invent requirements for hypothetical future callers, distributed environments, or external integrations absent from the accepted contract.
+Work top-down from system design and boundaries to concrete paths so hunk-level details never crowd out architectural judgment. Pursue only questions that can change the verdict or minimum acceptance conditions for the requested scope, and do not invent requirements for hypothetical callers, distributed environments, or external journeys outside the accepted contract.
 
-### 1. Pin Down the Candidate and Obligations
+### 1. Pin Down Candidate, Baseline Authority, and Scope
 
-1. **Locate the exact candidate and gate.** Identify the target files, commit range, or staged/unstaged working-tree diff and comparison base, separating unrelated dirty files. Judge a staged candidate against its authorized stage and preserved obligations.
-2. **Establish required behavior and obligations.** Read the user request and active contracts to determine the underlying problem, required normal and failure behavior, preserved public or persisted interfaces, constraints, and explicit exclusions (such as E2E or live external calls). Read current repository code and resolved dependencies to establish repository reality.
-3. **Treat author artifacts as claims, not authority.** Do not let implementation summaries, plans, comments, diagnostics, or candidate-authored tests define what counts as success. Keep any unresolved requirement or contract conflict that could change the verdict explicit as a blocking prerequisite rather than inventing acceptance criteria or redesigning an accepted architecture.
+1. **Bind exact candidate and review scope.** Identify the target files, commit range, or staged/unstaged diff and comparison base, separating unrelated dirty files. Determine whether the user requested a **full gate review** or a **scoped specialist review**; in scoped mode, restrict lens loading, path checks, and the verdict to the named aspect(s) after anchoring on the governing repository owner.
+2. **Separate baseline authority from author choices and claims.** Distinguish:
+   - **Authoritative baseline:** user request, agreed technical design / ADR / spec, active public or persisted contracts, and verified repository architecture and dependencies;
+   - **Author-chosen structure:** unprescribed internal mechanisms, module splits, or abstractions introduced by the candidate (fully subject to architecture and deletion audit);
+   - **Unverified claims:** implementation summaries, comments, reported diagnostics, and candidate-authored tests (clues to verify, never definitions of success).
+   Keep any unresolved requirement or contract conflict that could change the verdict explicit as a blocking prerequisite rather than inventing policy.
 
-### 2. Reconstruct the Whole Change and End-to-End Closure
+### 2. Stage 1 — Audit Scheme Alignment, Exposed Design Flaws, and Structural Fit
 
-Before judging individual hunks, read the candidate change end to end and reconstruct how the whole change operates across the system:
+Before inspecting line-level runtime details, evaluate the candidate at the whole-scheme and module-boundary level (skipping unrelated lenses only when an explicit scoped specialist request excludes them, while still identifying the existing semantic owner):
 
-1. **Verify whole-problem closure, production wiring, and lifecycle symmetry.** Reconstruct what mechanism the change introduces across files and state lifecycles. Without reopening accepted design routes, verify that the delivered mechanism solves the problem at the boundary that owns it rather than only patching a downstream symptom or leaving half of the lifecycle unaddressed. Trace backward to confirm that changed handlers, helpers, tool bindings, config keys, and build artifacts are registered and selected in production entrypoints (not just test imports), and verify that write/read, serialization/deserialization, and creation/cleanup paths stay symmetric.
-2. **Reconcile cross-boundary producers and consumers side by side.** Trace each material change forward through wrappers, decoders, callers, and public or persisted contracts on both sides. Check whether intermediate wrappers drop required fields, union or capability catalogs omit accepted cases, mismatched limits cause a downstream consumer to reject data after upstream state has already mutated, or unversioned breaking changes break active consumers or mixed-version rollouts.
-3. **Close sibling, bypass, and replacement paths.** Check whether old, disabled, maintenance, batch, or retry paths bypass a new rule or remain half-migrated. When replacing an existing path, verify that active consumers reach the replacement and superseded paths are removed or explicitly bounded. Confirm that rewrites did not silently drop existing authorization, tenant isolation, idempotency, cancellation, or boundary (`>=` vs `>`) guards.
+1. **Scheme alignment and implementation-exposed design flaws.** Read [scheme-and-architecture.md](references/scheme-and-architecture.md) when an agreed design/ADR/spec exists, when the change spans module or layer boundaries or alters core domain/state models, or when reviewing architecture. Reconstruct the implemented scheme above individual hunks, check **forward design-to-code drift and silent obligation omissions**, and check **reverse implementation-exposed design flaws**—where concrete repository reality disproves an agreed design assumption and requires escalating the design/contract conflict rather than piling on local patches.
+2. **Repository reuse and anti-ratchet fit.** Read [repo-fit-and-anti-ratchet.md](references/repo-fit-and-anti-ratchet.md) when the change adds modules, classes, helpers, abstractions, state stores, retry/fallback wrappers, configs, dependencies, or compatibility exports, or when reviewing maintainability/fit. Verify full contract fit against maintained repository capabilities, responsibility placement/cohesion/decoupling, and the **deletion test**.
+3. **Macro short-circuit.** When a mechanism fundamentally deviates from agreed design, exposes a blocking design flaw, or fails the deletion test, require the architectural alignment, design escalation, or deletion directly and **discard derivative hunk-level findings inside the rejected structure** (continuing across independent contract, rollout, or verification surfaces carrying separate residual risk or false proof).
 
-Separate required changes, necessary consequences, and unsupported additions. An uninspected surface outside the diff is not proof of absence; read the smallest relevant source or retain a bounded evidence gap.
+### 3. Stage 2 — Load Triggered Specialist Lenses and Falsify Paths
 
-### 3. Audit System Architecture, Ownership, and Lifecycle Burden
+Across surviving code paths and independent contract or verification surfaces within the requested scope, read **only** the specialist lens(es) matching both the requested scope and actual MR surfaces:
 
-Before auditing internal details of added machinery, judge how the candidate's structure fits the broader repository and its long-term maintenance:
+- **[cross-boundary-closure.md](references/cross-boundary-closure.md)** — changes touching cross-module/service interfaces, persisted or serialized schemas, shared unions/enums, entrypoint wiring, handlers/stateful writers/config keys whose production registration or sibling routes must close, business/authority guards with potential bypass paths, or path replacement/migration.
+- **[agent-integrity-and-proof.md](references/agent-integrity-and-proof.md)** — changes adding or modifying tests, mocks/fakes, snapshots, test/compiler/linter configs, production stubs/hardcoded branches/swallowed errors, type or error escape hatches (`any`, unsound casts, `@ts-ignore`, `# type: ignore`, lint suppressions, broad catches, `?.`), or verification claims.
+- **[llm-and-harness-governance.md](references/llm-and-harness-governance.md)** — changes wiring prompts, skills, LLM calls, tools/MCP, agent loops/state, context assembly/compaction, or eval harnesses.
 
-1. **Preserve single source of truth and reuse existing capabilities.** Confirm APIs, types, configuration, error semantics, and extension points against actual repository definitions and installed versions. Before accepting custom code, a new retry/fallback mechanism, a parallel state store, or a new dependency, search existing maintained capabilities in the repository and compare full contract fit (such as error predicates, attempt bounds, return values, and final-error behavior), runtime compatibility, lockfile consistency, and lifecycle cost.
-2. **Verify responsibility placement, cohesion, and decoupling across modules.**
-   - **Responsibility ownership:** Verify that business rules, state transitions, permissions, effects, and recovery live in the semantic owner that governs them rather than leaking into callers, controllers, UI, or transport wrappers.
-   - **Cohesion:** Keep logic governing the same decision, invariant, or state lifecycle together so a single rule is not duplicated and drifting across files; do not bundle unrelated responsibilities that change for different reasons or have different trust/lifecycle boundaries.
-   - **Decoupling and change containment:** Check that module boundaries do not leak low-level storage shapes, third-party implementation details, hidden call-order requirements, or shared mutable state across contracts, and do not widen the failure blast radius. Do not mistake pass-through interfaces, extra files, or ceremonial wrappers for decoupling when they still leak the underlying contract.
-3. **Apply a deletion and anti-ratchet test.** Keep maintained capability on the maintained path and isolate disposable experiments. Reject parallel implementations, duplicate sources of truth, unbounded in-memory operational state, unused public compatibility exports, and retries, fallbacks, or defensive machinery that lack a real obligation, owner, and removal condition. Ask what required outcome, active consumer, established invariant, boundary isolation, or reproduced failure mode would fail if an added abstraction, class, state store, configuration, or alias were deleted and the caller used the existing owner directly:
-   - If none fails, conceptually remove the unsupported structure, require its deletion, and discard derivative findings about fixing or hardening its internal implementation unless removing it still affects an active consumer, persisted data, security boundary, or independent surface.
-   - Incidental changes are findings only when they create a material consequence or burden. Do not reject code merely because another implementation is shorter, cleaner, or more familiar; accept a focused local helper or thin adapter when it centralizes an established invariant or isolates a real boundary without adding unnecessary state, config, or public surface.
+**Path-level runtime falsification:** When runtime correctness lies within the requested scope (always in full gate reviews), trace active production paths—confirming production reachability and paired lifecycle symmetry—and apply native domain reasoning to construct concrete, triggerable failure scenarios where material: concurrent race/interleaving, non-atomic or non-idempotent partial failure and retry replay, missing principal/tenant binding or untrusted-input containment at the owning data/effect boundary, or `O(N^2)`/`N+1`/unbounded fan-out and leaked resources on error or cancellation paths. Drop speculative edge cases that have no real trigger path in the code.
 
-### 4. Verify Runtime Semantics and Agent Integrity
+**Anti-constraint-decay execution:** Never split a scoped single-lens review. In a full or multi-lens review, handle compact changes sequentially in one session (do not spawn subagents merely because a small diff matches multiple lenses); only when a sprawling multi-module change genuinely strains single-pass attention across multiple heavy specialist lenses—and the host supports read-only subagents—complete Stage 1 first to fix the architectural baseline, then dispatch bounded, non-overlapping read-only passes per triggered lens (supplying authoritative contracts, exact code scope, ownership baseline, and the assigned reference; withhold author narrative rationalizations, passing reported build/test claims strictly as unverified claims to falsify when auditing proof, with no inter-agent debate) and reconcile centrally.
 
-Guided by the global trace, verify concrete runtime behavior on the required code paths where the change makes it material:
+**Proof boundary:** Even when `agent-integrity-and-proof.md` is not triggered, run safe supplied local checks when helpful and separate what source inspection or local doubles proved from unproven compiler, persistent-storage, concurrency, or external boundaries.
 
-1. **Check concurrency, failure recovery, and amplification.** Verify that code does not mutate caller-owned or shared objects in place, that multi-step, concurrent, or retryable paths enforce atomic/CAS or request-key idempotency guarantees, and that partial failures roll back or reconcile cleanly without introducing material I/O amplification (such as N+1 calls in loops or holding locks across external calls) or broken transient/permanent error classification.
-2. **Check authority and deterministic enforcement.** Verify that operations bind to authenticated identity and tenant scope. When code wires an LLM, prompt, or agent tool, verify that deterministic rules (permissions, schema validation, and publication or side-effect gates) are enforced in code rather than delegated to prompt prose.
-3. **Reject fake completeness, symptom patching, and escape hatches.** Reject stubs, fake production paths, hard-coded test/prompt cases, silent success fallbacks, swallowed batch/partial failures, and leaf null-checks (`?.`) or broad catches that hide upstream contract corruption or data loss instead of fixing the owning boundary. Inspect type, linter, or schema escape hatches (`any`, unsound casts, `@ts-ignore`, `# type: ignore`, lint suppressions, or loosened schemas) against the underlying types to see if they mask a real contract break.
+### 4. Synthesize and Decide
 
-### 5. Challenge Claims and Bound the Evidence
+For a revised candidate, read the full new delta, reassess affected findings and evidence, and reuse unaffected conclusions; if a usable prior basis is unavailable, review the current candidate in full.
 
-Use the smallest evidence that distinguishes success from failure at the boundary that owns the result. Source inspection establishes structure; focused tests establish only their represented contract and fixtures; a local helper, mock, in-memory double, task identifier, or intermediate acknowledgement cannot establish an outcome owned by another persistence, transport, or external boundary.
+Step back to judge the candidate as a whole against the target gate or requested specialist scope. Merge downstream symptoms or local workarounds caused by one root architectural, contract, or implementation issue into a single causal finding. Never let an early blocker skip auditing an independent contract, rollout/persistence, or authority surface whose failure changes required rework or residual risk. Admit a finding only when it:
 
-1. **Audit candidate tests and reported checks.** Check whether tests mirror buggy implementation logic or constants into assertions (tautological tests), weaken assertions, broaden mocks over the boundary under test, accept snapshots without establishing intent, skip decisive boundary cases (`skip`/`todo`), miss `await` on async checks, exclude changed code, or alter test/compiler configuration to hide a failure. Reconcile reported typecheck and test claims against the actual bound types in source, and run supplied safe local tests when available. Do not turn a simulated or constrained environment failure into a code defect until a candidate-causal path is established.
-2. **State the real proof boundary.** Distinguish what local execution proved (such as in-memory cache logic or a mocked transport) from what it did not prove (such as full compiler typechecking, persistent replay/rollback/concurrency at the storage owner, or live external delivery). A missing test is not automatically a defect; when material proof is absent for a required guarantee at its owning boundary, identify the competing outcomes and the smallest validation that would decide between them.
-
-### 6. Synthesize and Decide
-
-For a revised candidate, read the full new delta, reassess findings and evidence affected by it or its dependencies, and reuse unaffected evidence. If a reliable comparison or usable prior review basis is unavailable, read the current candidate change in full and establish the missing basis. Do not restart the whole review merely because the candidate identifier changed.
-
-Step back from individual hunks to judge the candidate as a whole against the required outcome and target gate. Combine multiple downstream symptoms or local workarounds caused by one root architectural, contract, or implementation issue into a single causal finding. Admit a finding only when it:
-
-- lies on a required or actual path, or a materially shipped surface;
-- violates or leaves unproven an accepted result, scope, contract, owner, cohesion/decoupling boundary, or lifecycle obligation for the target gate;
-- has traceable evidence or a precisely bounded unknown;
+- lies on a required or actual path, or a materially shipped surface within scope;
+- violates or leaves unproven an accepted obligation, agreed design boundary, contract, semantic owner, cohesion/decoupling rule, or lifecycle constraint;
+- has traceable code/tool evidence or a precisely bounded unknown;
 - has a concrete acceptance consequence; and
-- can state the minimum correction, validation, or prerequisite owner decision needed without redesigning the accepted architecture (when multiple valid contract fixes exist and depend on an owner tradeoff, state the conflict and options rather than prescribing one policy).
+- states the minimum fix, validation, or owner/design escalation needed (when concrete code facts expose a conflict in an agreed design or require an owner tradeoff, state the conflict and decision options rather than prescribing local hacks or authoring an unsolicited replacement architecture).
 
 Classify each finding as:
 
-- **DEFECT** — verified candidate behavior or structure violates an obligation or adds unjustified lifecycle burden.
-- **EVIDENCE GAP** — a material delivery claim, required guarantee, or decision-changing requirement/contract prerequisite remains unresolved at its owning boundary, without establishing a code defect.
+- **DEFECT** — verified behavior or structure deviates from agreed design/contracts, breaks runtime correctness, exposes an unworkable design assumption in delivered code, or adds unjustified lifecycle burden.
+- **EVIDENCE GAP** — a material claim, required boundary guarantee, or decision-changing contract/design prerequisite remains unresolved at its owning boundary without establishing a code defect.
 
-Return **ACCEPT** when no material defect or evidence gap remains. Return **REJECT** otherwise. Continue past the first blocker only where another independent surface can change the required correction or residual risk.
+Return **ACCEPT** when no material defect or evidence gap remains within the requested scope; return **REJECT** otherwise.
 
 ## Findings and Output
 
-Order findings by consequence. Exclude style preferences, local verbosity, micro-optimizations, hypothetical consumers, generic best practices without a triggered failure state, unrelated debt, review workflow narration, dimension checklists, scores, strengths for balance, nits, or optional cleanup suggestions.
+Order findings by consequence (macro scheme/architecture and root contract blockers first). Exclude style preferences, local verbosity, micro-optimizations, hypothetical consumers, untriggered best practices, unrelated debt, workflow narration, checklists, scores, strengths, nits, or optional cleanup.
 
 Respond in the user's language using this compact structure:
 
 ```text
-Decision: ACCEPT | REJECT (<candidate and target gate>)
+Decision: ACCEPT | REJECT (<candidate and target gate, or named specialist scope>)
 
 Findings:
-- [DEFECT] <narrowest location> — <candidate fact>; <violated obligation and concrete consequence>; <minimum correction>.
+- [DEFECT] <narrowest location or boundary> — <verified fact>; <violated design/contract/invariant and concrete consequence>; <minimum fix or required design/owner escalation>.
 - [EVIDENCE GAP] <owning boundary> — <unresolved claim, prerequisite, and competing outcomes>; <smallest required validation or owner decision>.
 
 Verification & Evidence Limits:
-- <concise summary of verified core paths/checks and any material evidence limits qualifying the decision>.
+- <concise summary of verified paths/checks, any uninspected scopes in specialist mode, and material boundary limits qualifying the decision>.
 ```
 
-On `ACCEPT`, omit `Findings` and state concisely in `Verification & Evidence Limits` what core contracts/checks were verified and which boundaries remain outside the claim. On `REJECT`, include `Verification & Evidence Limits` only when local verification results or scope limits materially qualify the findings.
+On `ACCEPT`, omit `Findings` and state concisely in `Verification & Evidence Limits` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `Verification & Evidence Limits` only when local verification results, specialist scope bounds, or environment limits materially qualify the findings.

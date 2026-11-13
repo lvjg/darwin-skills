@@ -70,6 +70,27 @@
         "[minimum-correction] State the minimum acceptance condition without redesigning or modifying the candidate.",
         "[local-behavior-evidence] 实际运行随附的本地测试，区分受控传输验证与真实合作方投递；测试通过不自动证明实现的长期维护代价合理，也不等于 TypeScript 编译通过。"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "$code-reviewer 请按已约定的席位预留架构方案审查 evals/files/6/candidate/ 的实现与验证材料，判断能否提交。保持只读，不修改文件；可以运行随附的本地测试。",
+      "expected_output": "A read-only review rejects the candidate at the scheme and boundary level: it catches importMembersBatch drifting from the agreed single-owner QuotaLedger design (bypassing admin, suspended-workspace, and audit obligations), diagnoses the implementation-exposed conflict between the agreed synchronous durable-audit design premise and AuditQueue's asynchronous non-transactional contract (which the candidate papered over with fire-and-forget swallowed rejections and a false auditCommitted return), challenges the blind spots in the passing local tests, and escalates the audit design/contract conflict rather than prescribing another silent local workaround or nitpicking explicit loop style.",
+      "files": [
+        "evals/files/6/candidate/accepted-delivery.md",
+        "evals/files/6/candidate/audit-queue.ts",
+        "evals/files/6/candidate/quota-ledger.ts",
+        "evals/files/6/candidate/quota-store.ts",
+        "evals/files/6/candidate/review.test.mjs",
+        "evals/files/6/candidate/seat-handlers.ts",
+        "evals/files/6/candidate/validation-evidence.md"
+      ],
+      "expectations": [
+        "[reject-scheme-drift-and-conflict] Reject the candidate for local commit despite passing local tests.",
+        "[design-to-code-drift] Identify that importMembersBatch bypasses the agreed QuotaLedger single semantic owner and mutates QuotaStore directly, dropping workspace_admin authorization, suspended-workspace rejection, and audit emission while returning auditCommitted: true.",
+        "[implementation-exposed-design-conflict] Trace QuotaLedger.reserveSeats against AuditQueue.enqueue and diagnose that the agreed synchronous inline durable-audit assumption conflicts with AuditQueue's async non-transactional buffer contract, causing the implementation to fire-and-forget, swallow rejections, and falsely report auditCommitted: true.",
+        "[escalate-not-patch] Require aligning importMembersBatch to QuotaLedger and escalating the synchronous-signature vs. async-non-transactional AuditQueue design/contract conflict for owner/design resolution rather than prescribing another silent catch or authoring an unsolicited cross-service architecture.",
+        "[test-blind-spot-and-no-nits] Run the supplied local test and note that it leaves non-admin/suspended batch imports and AuditQueue rejection untested and does not constitute a TypeScript compiler check; do not nitpick explicit deduplication loop style or modify files."
+      ]
     }
   ]
 }
