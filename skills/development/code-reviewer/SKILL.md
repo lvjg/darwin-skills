@@ -50,7 +50,7 @@ Across surviving code paths and independent contract or verification surfaces wi
 
 ### 4. Synthesize and Decide
 
-For a revised candidate, read the full new delta, reassess affected findings and evidence, and reuse unaffected conclusions; if a usable prior basis is unavailable, review the current candidate in full.
+For a revised candidate, read the full new delta, reassess affected findings and evidence, and reuse unaffected conclusions from a prior independent review (treating author change summaries strictly as unverified claims); if a usable prior independent review basis is unavailable, review the current candidate in full.
 
 Step back to judge the candidate as a whole against the target gate or requested specialist scope. Merge downstream symptoms or local workarounds caused by one root architectural, contract, or implementation issue into a single causal finding. Never let an early blocker skip auditing an independent contract, rollout/persistence, or authority surface whose failure changes required rework or residual risk. Admit a finding only when it:
 
@@ -84,4 +84,4 @@ Verification & Evidence Limits:
 - <concise summary of verified paths/checks, any uninspected scopes in specialist mode, and material boundary limits qualifying the decision>.
 ```
 
-On `ACCEPT`, omit `Findings` and state concisely in `Verification & Evidence Limits` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `Verification & Evidence Limits` only when local verification results, specialist scope bounds, or environment limits materially qualify the findings.
+On `ACCEPT`, omit `Findings` and state concisely in `Verification & Evidence Limits` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `Verification & Evidence Limits` only when local verification results, specialist scope bounds, or environment limits materially qualify the findings. When a coordinator explicitly assigns a writable isolated report path outside repository state and a response size cap, write the full report above to that path (preserving candidate and repository read-only bounds) and return in chat the `Decision`, a compact blocker routing summary (classification, owning boundary, violated contract, minimum fix or escalation, and report section refs), and material `Verification & Evidence Limits` within the cap; if the environment is read-only, return a compact report inline.
