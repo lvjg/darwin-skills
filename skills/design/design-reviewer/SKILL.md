@@ -7,7 +7,7 @@ description: Use only when the user explicitly invokes $design-reviewer for an i
 
 Decide whether the submitted design is sound enough to support the user's next decision. Work between an independently established model of the problem and starting system and a step-by-step trace of how the proposed mechanisms produce the result.
 
-Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit candidate or repository files or author a replacement design or prompt. Mention reviewer-author or context separation only when the named decision gate or user request requires it.
+Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit files or author a replacement design or prompt. Mention reviewer-author or context separation only when the named decision gate or user request requires it.
 
 Inspect relevant code, schemas, configurations, prompts, or focused tests when they establish or test a design premise, using repository history only when current evidence is insufficient and requiring an immutable version identifier only when ambiguity could change the verdict. Do not convert design evidence into acceptance of delivered code or runtime behavior, and do not treat the absence of implementation, deployed integration, or runtime execution as a design defect unless the named decision requires that evidence now.
 
@@ -63,4 +63,4 @@ Write in the user's language and project terms without exposing internal review 
 - **Decision-changing evidence gap** — grounded unknown -> decision branch it controls -> smallest separating evidence.
 - **User-owned tradeoff** — unresolved choice -> authorized owner -> valid route and consequence under each option.
 
-Lead with blockers when present; otherwise lead with whether the named decision can proceed and the decisive basis supporting it. State only the assumptions, unverified items, and later implementation or runtime proofs that materially qualify the decision, without fixed verdict templates or boilerplate disclaimers. When a coordinator explicitly assigns a writable isolated report path outside the repository and a response size cap, write the full review to that path and return in chat whether the decision can proceed, a compact blocker/tradeoff routing summary (category, affected boundary or contract, minimum change or owner decision, and report section refs), and material qualifiers within the cap; if the environment is read-only, return a high-density review inline.
+Lead with blockers when present; otherwise lead with whether the named decision can proceed and the decisive basis supporting it. State only the assumptions, unverified items, and later implementation or runtime proofs that materially qualify the decision, without fixed verdict templates or boilerplate disclaimers.
