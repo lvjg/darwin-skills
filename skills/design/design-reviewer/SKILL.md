@@ -51,7 +51,7 @@ Test the surviving pivotal judgments against the smallest concrete scenarios cap
 
 - Construct a discriminating case where demands compete for a constrained resource or window, where hard constraints collide and become infeasible, where decisive inputs are missing or ambiguous, or where concurrent updates, timeouts, or partial completions occur with uncertain external effects.
 - Walk through the proposed mechanism step by step using only the information and capabilities available at each point. If reaching a valid result requires supplying an unstated selection rule, tie-breaker, lookahead, or recovery path, record that missing design.
-- On revisions or complex schemas, check whether added state or patches genuinely resolve the root issue rather than masking a broken premise.
+- On revisions, protective guards, or complex schemas, verify causal direction first—distinguishing upstream root causes from downstream symptoms and intended invariant enforcement from defects, and testing counterexamples only from reachable boundary preconditions—and check whether added state or patches genuinely resolve the root issue rather than masking a broken premise.
 
 ## 5. Conclude and Report
 
