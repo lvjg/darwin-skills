@@ -13,8 +13,8 @@ Coding agents under test or compiler pressure often silence errors rather than f
 
 Run supplied safe local tests when authorized and audit whether the tests can actually fail when production behavior breaks:
 
-- **Tautological and weakened assertions:** check whether tests copy buggy implementation formulas/constants into expected values, assert only call counts or shallow shapes while ignoring corrupted outputs, accept unverified snapshots, or `skip`/`todo` decisive failure cases.
-- **Mock boundary and schema fidelity:** reject mocks or in-memory doubles that replace the exact boundary under test or drift from the real producer's schema, nullability, error codes, or async timing. For fault/recovery tests, verify proof that the fault was armed and hit the target branch before recovery assertions run.
+- **Tautological and weakened assertions:** check whether tests copy buggy implementation formulas/constants into expected values, codify unapproved regressions or misleading error semantics, assert only call counts or shallow shapes while ignoring corrupted outputs, accept unverified snapshots, or `skip`/`todo` decisive failure cases.
+- **Mock boundary and schema fidelity:** reject mocks or in-memory doubles that replace the exact boundary under test or drift from the real producer's schema, nullability, error codes, or async timing, or tests that bypass the real entrypoint/execution pipeline to assert downstream outputs on hand-crafted intermediate state. For fault/recovery tests, verify proof that the fault was armed and hit the target branch before recovery assertions run.
 - **Async and configuration honesty:** check for missing `await` on async assertions, order/timing flakiness, excluded changed files, or weakened `tsconfig`/test-runner/linter flags hiding failures.
 
 ## 3. State the Exact Proof Boundary
