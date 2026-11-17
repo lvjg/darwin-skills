@@ -39,7 +39,7 @@ Select the design mode before locking in the architecture:
 - **Shift dimensions before adding machinery**: When a direct mechanism is awkward, brittle, or costly, try changing **representation, decomposition, order, timing, information acquisition, or feedback** before adding components, coordinators, or state. On consequential choices, test credible alternatives—including the strongest direct or maintained capability—on the same case without padding candidate counts.
 - **Deterministic enforcement vs. judgment**: Enforce permissions, tenant scope, formal schemas, atomic state transitions, and irreversible side-effect gates at a deterministic boundary rather than relying on human or model discipline. Where human judgment remains, specify visible context, discretion, feedback, and unresolved-case handling; where model or Agent judgment remains, apply `agent-architecture.md`.
 - **Research and method transfer (only when unclear or sources are supplied)**:
-  - Favor task fit over novelty, using one sufficient source type; stop searching once evidence cannot change consequential choices.
+  - Favor task fit over novelty, using one sufficient source (engineering docs or papers); stop searching once evidence cannot change consequential choices.
   - Trace supplied sources to representation, mechanism, feedback, preconditions, and limits—never stop at titles, abstracts, or feature lists.
   - Supply local prerequisites borrowed methods leave to humans or missing capabilities, and explain rejected supplied/candidate methods.
   - Cite only sources actually read; if sources or key evidence are inaccessible, state limits, keep supported work, and bound uncertainty.

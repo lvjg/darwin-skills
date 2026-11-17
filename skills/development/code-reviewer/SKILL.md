@@ -42,11 +42,10 @@ Across surviving code paths and independent contract or verification surfaces wi
 - **[agent-integrity-and-proof.md](references/agent-integrity-and-proof.md)** — tests, mocks/fakes, snapshots, test/compiler/linter configs, production stubs/hardcoding/swallowed errors, type/lint/error escape hatches, or verification claims.
 - **[llm-and-harness-governance.md](references/llm-and-harness-governance.md)** — changes wiring prompts, skills, LLM calls, tools/MCP, agent loops/state, context assembly/compaction, or eval harnesses.
 
-**Path-level runtime falsification:** Within runtime-correctness scope (always in full gates), trace production-reachable paths end-to-end—confirming paired lifecycle symmetry on single-module paths—to construct triggerable failures:
-- **Concurrency, atomicity, and retry:** concurrent races or out-of-order state transitions, non-atomic partial failure, or non-idempotent retries.
-- **Coercion, authority, and containment:** lossy coercion, boundary rules leaked into shared evaluators, non-causal/heuristic checks failing open on validation, eligibility, or authority gates, or missing principal/tenant binding or untrusted-input containment at the owning data/effect boundary.
-- **Scale and cleanup:** unbounded fan-out/complexity or leaked resources on error/cancellation paths.
-- **Causal grounding:** ground counterexamples in valid entrypoint preconditions and trace anomalies or local patches upstream to root cause—never fault intended guard rejections, blame downstream consumers for violated upstream invariants, or admit unreached speculation.
+**Path-level runtime falsification:** Within runtime-correctness scope (always in full gates), trace production-reachable paths for concrete, triggerable failures from valid entrypoint preconditions—dropping unreached speculation:
+- **State and retries:** concurrent races, out-of-order transitions, non-atomic partial failure, or non-idempotent retries.
+- **Boundary guards:** lossy coercion, fail-open validation/authority checks, or missing principal/tenant binding and untrusted-input containment at the owning boundary.
+- **Scale and cleanup:** unbounded fan-out/complexity or leaked resources on error and cancellation paths.
 
 **Anti-constraint-decay execution:**
 - **Single-session default:** never split scoped single-lens reviews; handle compact full or multi-lens diffs sequentially in one session without subagents.
