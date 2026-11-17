@@ -1,6 +1,6 @@
 # Overall Scheme and Key Design Alignment
 
-Apply this lens when an agreed design, ADR, or specification exists, when the change spans module or layer boundaries or alters core domain/state models, or when requested as an architecture review. Complete this lens **before** inspecting line-level implementation details.
+Apply this lens when an agreed design, ADR, specification, or upstream port exists, when the change spans module or layer boundaries or alters core domain/state models, or when requested as an architecture review. Complete this lens **before** inspecting line-level implementation details.
 
 ## 1. Reconstruct the Implemented Scheme Above the Hunk Level
 
