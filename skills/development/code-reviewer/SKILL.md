@@ -71,17 +71,17 @@ Return **ACCEPT** when no material defect or evidence gap remains within the req
 
 Order findings by consequence (macro scheme/architecture and root contract blockers first). Exclude style preferences, local verbosity, micro-optimizations, hypothetical consumers, untriggered best practices, unrelated debt, workflow narration, checklists, scores, strengths, nits, or optional cleanup.
 
-Respond in the user's language using this compact structure:
+Respond in the user's language—localizing headings and action labels while keeping `ACCEPT` / `REJECT`, `[DEFECT]`, and `[EVIDENCE GAP]`—in scannable Markdown (never pack multi-clause findings into semicolon-chained walls, start headings with file links, or repeat per-finding `Location`/`Issue` form labels):
 
-```text
-Decision: ACCEPT | REJECT (<candidate and target gate, or named specialist scope>)
+```markdown
+**<Verdict>: ACCEPT | REJECT** — <candidate, version/range, and target gate or specialist scope>
 
-Findings:
-- [DEFECT] <narrowest location or boundary> — <verified fact>; <violated design/contract/invariant and concrete consequence>; <minimum fix or required design/owner escalation>.
-- [EVIDENCE GAP] <owning boundary> — <unresolved claim, prerequisite, and competing outcomes>; <smallest required validation or owner decision>.
+### 1. [DEFECT | EVIDENCE GAP] <short title (prefix `Repo/Module: ` when multi-repo)>
+<1 short paragraph or flat `-` bullets weaving inline primary file/line links directly into verified fact → violated contract/invariant & consequence (or unresolved claim & competing outcomes)>
+- **<Fix / Validation>**: <minimum fix, required check, or design/owner escalation>
 
-Verification & Evidence Limits:
-- <concise summary of verified paths/checks, any uninspected scopes in specialist mode, and material boundary limits qualifying the decision>.
+### <Verification & evidence limits>
+- <one short bullet per point: brief confirmed checks/paths, test/script blind spots, or uninspected/external boundaries>
 ```
 
-On `ACCEPT`, omit `Findings` and state concisely in `Verification & Evidence Limits` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `Verification & Evidence Limits` only when local verification results, specialist scope bounds, or environment limits materially qualify the findings.
+On `ACCEPT`, omit finding headings and state concisely under `<Verification & evidence limits>` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `<Verification & evidence limits>` only when local check results, proof blind spots, specialist scope bounds, or environment limits materially qualify the findings—summarizing passing paths in one brief line without link dumps so gaps and operational risks stand out.
