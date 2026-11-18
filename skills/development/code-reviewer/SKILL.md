@@ -78,17 +78,21 @@ Return **ACCEPT** when no material defect or evidence gap remains within the req
 
 Order findings by consequence (macro scheme/architecture and root contract blockers first). Exclude style preferences, local verbosity, micro-optimizations, hypothetical consumers, untriggered best practices, unrelated debt, workflow narration, checklists, scores, strengths, nits, or optional cleanup.
 
-Respond in the user's language—localizing headings and action labels while keeping `ACCEPT` / `REJECT`, `[DEFECT]`, and `[EVIDENCE GAP]`—in scannable Markdown (never pack multi-clause findings into semicolon-chained walls, start headings with file links, or repeat per-finding `Location`/`Issue` form labels):
+Write **prose-first at the behavior and contract level** in the user's language—localizing headings and action labels while keeping `ACCEPT` / `REJECT`, `[DEFECT]`, and `[EVIDENCE GAP]`:
+
+- **Narrative before mechanics:** lead each finding with what behavior, contract, or boundary fails and its concrete consequence in clear, short sentences before supporting mechanism details; split distinct coupled sub-issues into flat `-` bullets instead of packing multi-clause walls or nested parentheticals.
+- **Evidence anchors without code clutter:** weave primary `file:line` links onto the owning boundary and name only governing owners, public/persisted contract terms, or decisive values needed to disambiguate—omitting pass-through helper chains, transcribed conditionals, and raw code or SQL expressions; never open headings with file links or repeat `Location`/`Issue` form labels.
+- **Invariant-level remediation:** state the target invariant, boundary alignment, required validation, or owner/design escalation in prose rather than dictating replacement code or SQL snippets.
 
 ```markdown
 **<Verdict>: ACCEPT | REJECT** — <candidate, version/range, and target gate or specialist scope>
 
 ### 1. [DEFECT | EVIDENCE GAP] <short title (prefix `Repo/Module: ` when multi-repo)>
-<1 short paragraph or flat `-` bullets weaving inline primary file/line links directly into verified fact → violated contract/invariant & consequence (or unresolved claim & competing outcomes)>
-- **<Fix / Validation>**: <minimum fix, required check, or design/owner escalation>
+<1 short prose paragraph or flat `-` bullets stating broken behavior/contract & consequence (or unresolved guarantee & competing outcomes) with inline primary `file:line` links>
+- **<Fix / Validation>**: <target invariant, boundary fix, required check, or design/owner escalation>
 
 ### <Verification & evidence limits>
-- <one short bullet per point: brief confirmed checks/paths, test/script blind spots, or uninspected/external boundaries>
+- <one short bullet per point: brief domain-level confirmed scope, test/script blind spots, or uninspected/external boundaries>
 ```
 
-On `ACCEPT`, omit finding headings and state concisely under `<Verification & evidence limits>` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `<Verification & evidence limits>` only when local check results, proof blind spots, specialist scope bounds, or environment limits materially qualify the findings—summarizing passing paths in one brief line without link dumps so gaps and operational risks stand out.
+On `ACCEPT`, omit finding headings and state concisely under `<Verification & evidence limits>` what core contracts/checks were verified and which boundaries or unrequested aspects remain outside the claim. On `REJECT`, include `<Verification & evidence limits>` only when local check results, proof blind spots, specialist scope bounds, or environment limits materially qualify the findings—summarizing confirmed paths in one brief domain-level sentence (without review-process narration, symbol lists, or link dumps) so gaps and operational risks stand out.
