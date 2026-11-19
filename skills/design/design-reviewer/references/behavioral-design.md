@@ -10,7 +10,10 @@ Before evaluating prompt wording, examples, or agent topology, verify that the p
 - Check what the system must do when decisive facts are missing, ambiguous, conflicting, or match multiple rules or records (such as asking for clarification rather than guessing, or keeping eligibility guidance distinct from approval).
 - If the proposal relies on vague goals (such as "understand intent" or "answer safely") and happy-path examples without defining how decisive inputs, ambiguity, and invariants govern the visible result, report that behavioral contract gap before auditing downstream mechanisms.
 
-Next, verify the split between model discretion and deterministic enforcement. Model use is justified only where interpretation, judgment, or generation cannot be closed by an existing maintained deterministic capability at lower lifecycle cost. Keep the deterministic guarantees required by the core review at their owning enforcement boundary rather than delegating them to prompt compliance or silently moving domain authority into the Harness. Do not require planning, memory, reflection, retries, evaluators, or multi-agent orchestration unless an established obligation and demonstrated gap require them.
+Next, verify the split between model discretion and deterministic enforcement:
+
+- **Model justification:** model use is justified only where interpretation, judgment, or generation cannot be closed by an existing maintained deterministic capability at lower lifecycle cost.
+- **Deterministic enforcement and minimal orchestration:** keep the deterministic guarantees required by the core review at their owning enforcement boundary rather than delegating them to prompt compliance or silently moving domain authority into the Harness. Do not require planning, memory, reflection, retries, evaluators, or multi-agent orchestration unless an established obligation and demonstrated gap require them.
 
 ## 2. Context Composition, Capacity, and Action Governance
 
@@ -18,7 +21,8 @@ A generated explanation, classification, recommendation, summary, or plan may it
 
 Connect and challenge only the links on which the claim depends:
 
-- **Context integrity and capacity bounds:** check where decisive facts come from, how instructions and tool results take precedence, and whether full-catalog/document injection or multi-turn loops fit context-window, latency, and token budgets. Verify what prevents untrusted content, context compaction, truncation, stale memory, or intermediate generated artifacts (plans, reflections, rubric scores) from dropping or overriding authoritative facts and unfinished context across turns, breaking single compaction ownership or message-pairing invariants, or leaving in-flight child work without join bounds.
+- **Context provenance and capacity bounds:** check where decisive facts come from, how instructions and tool results take precedence, and whether full-catalog/document injection or multi-turn loops fit context-window, latency, and token budgets.
+- **Compaction, state continuity, and child join bounds:** verify what prevents untrusted content, context compaction, truncation, stale memory, or intermediate generated artifacts (plans, reflections, rubric scores) from dropping or overriding authoritative facts and unfinished context across turns, breaking single compaction ownership or message-pairing invariants, or leaving in-flight child work without join bounds.
 - **Action governance and unknown effects:** when the model selects a tool or action, verify that deterministic authority and input validation govern execution, that an invocation, task identifier, acknowledgement, callback, or receipt is kept distinct from completion, and that tool failure, timeout, partial completion, or an unknown external effect triggers safe clarification, refusal, recovery, or stop before another consequential action.
 
 ## 3. Discriminating Validation
@@ -27,6 +31,8 @@ For each model-dependent pivotal claim, verify that the proposal specifies valid
 
 `design claim -> plausible wrong behavior -> discriminating scenario -> oracle and observation boundary -> evidence needed for the named decision`
 
-Match validation to the claim: static source or configuration checks establish wiring and omissions; one controlled run proves only that exact scenario and composition; a controlled contrast tests sensitivity to a changed factor; repeated or sampled runs are needed only for reliability or rate claims; authoritative state or rendered output is needed only when the claim depends on an external effect or client presentation. Happy-path fluency, helpfulness ratings, or runs that converged only after human reminders cannot validate ambiguity handling, autonomous reliability, or safety invariants. Existing runtime evidence is required now only when the user's named decision cannot safely defer it.
+Match validation to the claim: static source or configuration checks establish wiring and omissions; one controlled run proves only that exact scenario and composition; a controlled contrast tests sensitivity to a changed factor; repeated or sampled runs are needed only for reliability or rate claims; authoritative state or rendered output is needed only when the claim depends on an external effect or client presentation.
+
+Happy-path fluency, helpfulness ratings, or runs that converged only after human reminders cannot validate ambiguity handling, autonomous reliability, or safety invariants. Existing runtime evidence is required now only when the user's named decision cannot safely defer it.
 
 Feed the result back into the core review's finding categories (`Established defect`, `Decision-changing evidence gap`, or `User-owned tradeoff`) with the concrete consequence and minimum contract, enforcement, or validation change required.

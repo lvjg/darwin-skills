@@ -4,7 +4,7 @@ Apply this lens when a change introduces new modules, classes, helpers, abstract
 
 ## 1. Enforce Single Source of Truth and Existing Capability Reuse
 
-Coding agents frequently invent local parallel machinery instead of reusing maintained repository primitives. Before accepting custom infrastructure, a second retry/cache/validation mechanism, unbounded in-memory operational state, a parallel state map, an unused public compatibility export, or a new package dependency:
+Coding agents frequently invent local parallel machinery instead of reusing maintained repository primitives. Before accepting custom infrastructure, a duplicate helper/retry/cache/validation mechanism, parallel operational state, or a new package dependency:
 
 - Search the repository and installed dependencies for existing owners covering the same concern.
 - Compare **full contract fit**—inputs, error predicates, execution/locking order, attempt/capacity bounds, return values, final-error semantics, runtime compatibility, lockfile consistency, and operational cost—rather than matching by function name alone.
@@ -16,7 +16,7 @@ Coding agents frequently invent local parallel machinery instead of reusing main
 
 ## 3. Apply the Deletion Test and Reject Symptom Patching
 
-Ask what required outcome, active consumer, established invariant, real boundary isolation, or reproduced failure mode would break if an added abstraction, unbounded or duplicate state store, fallback, config flag, or unused public compatibility export/alias were deleted and callers used the semantic owner directly:
+Ask what required outcome, active consumer, established invariant, real boundary isolation, or reproduced failure mode would break if an added abstraction, unbounded or duplicate state store, fallback, config knob, or unused compatibility export/alias were deleted and callers used the semantic owner directly:
 
 - **Deletion verdict:** if none breaks, require deleting the unsupported structure and **discard derivative findings** about polishing or hardening its internals (unless removing it affects an active consumer, persisted data, or security boundary).
 - **Anti-symptom-patching:** reject defensive leaf checks (`?.`), broad fallbacks, ad-hoc adapters, or counterexample-narrow patches (partial whitelists, timing heuristics, or scattered state flags) added solely to mask broken invariants, unmodeled state transitions, or misplaced ownership.

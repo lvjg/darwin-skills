@@ -7,9 +7,11 @@ description: Use only when the user explicitly invokes $design-reviewer for an i
 
 Decide whether the submitted design is sound enough to support the user's next decision. Work between an independently established model of the problem and starting system and a step-by-step trace of how the proposed mechanisms produce the result.
 
-Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit files or author a replacement design or prompt. Mention reviewer-author or context separation only when the named decision gate or user request requires it.
+Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit files or author a replacement design or prompt.
 
-Inspect relevant code, schemas, configurations, prompts, or focused tests when they establish or test a design premise, using repository history only when current evidence is insufficient and requiring an immutable version identifier only when ambiguity could change the verdict. Do not convert design evidence into acceptance of delivered code or runtime behavior, and do not treat the absence of implementation, deployed integration, or runtime execution as a design defect unless the named decision requires that evidence now.
+Inspect relevant code, schemas, configurations, prompts, or focused tests when they establish or test a design premise, using repository history only when current evidence is insufficient and requiring an immutable version identifier only when ambiguity could change the verdict.
+
+Do not convert design evidence into acceptance of delivered code or runtime behavior, and do not treat the absence of implementation, deployed integration, or runtime execution as a design defect unless the named decision requires that evidence now.
 
 The sections below define dependencies in the review work, not a fixed output structure. Scale depth to the named decision—exploring direction, entering detailed design, authorizing implementation, or checking release prerequisites—and stop once the evidence settles that decision.
 
@@ -63,10 +65,10 @@ Test the surviving pivotal judgments against the smallest concrete scenarios cap
 
 Replay all must-preserve obligations, separate independent defects from downstream consequences, and drop stylistic preferences. Do not reject a proposal merely because another route is cleaner, more familiar, or theoretically more extensible, and do not accept the current proposal on behalf of a hypothetical repair.
 
-Write in the user's language and project terms without exposing internal review jargon (`pivotal judgment`, `semantic owner`, `premise reset`, `simpler counterroute`) as headings or labels. Report only decision-relevant findings:
+Write in the user's language and project terms without exposing this skill's internal review terminology as headings or labels. Report only decision-relevant findings:
 
 - **Established defect** — verified fact or obligation -> failed judgment or missing central mechanism -> concrete consequence -> minimum design change or reopened decision.
 - **Decision-changing evidence gap** — grounded unknown -> decision branch it controls -> smallest separating evidence.
 - **User-owned tradeoff** — unresolved choice -> authorized owner -> valid route and consequence under each option.
 
-Lead with blockers when present; otherwise lead with whether the named decision can proceed and the decisive basis supporting it. State only the assumptions, unverified items, and later implementation or runtime proofs that materially qualify the decision, without fixed verdict templates or boilerplate disclaimers.
+Lead with blockers when present; otherwise lead with whether the named decision can proceed and the decisive basis supporting it. State only the assumptions, unverified items, and later implementation or runtime proofs that materially qualify the decision, omitting fixed verdict templates, boilerplate disclaimers, or process and independence caveats not required by the named gate or request.
