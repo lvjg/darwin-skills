@@ -45,7 +45,7 @@ Across surviving code paths and independent contract or verification surfaces wi
 **Path-level runtime falsification:** Within runtime-correctness scope (always in full gates), trace production-reachable paths for concrete, triggerable failures from valid entrypoint preconditions—dropping unreached speculation:
 - **State and retries:** concurrent races, out-of-order transitions, non-atomic partial failure, or non-idempotent retries.
 - **Boundary guards:** lossy coercion, fail-open validation/authority checks, or missing principal/tenant binding and untrusted-input containment at the owning boundary.
-- **Scale and cleanup:** unbounded fan-out/complexity or leaked resources on error and cancellation paths.
+- **Scale and cleanup:** unbounded fan-out, complexity, or hot-path cache invalidation, or leaked resources on error and cancellation paths.
 
 **Anti-constraint-decay execution:**
 - **Single-session default:** never split scoped single-lens reviews; handle compact full or multi-lens diffs sequentially in one session without subagents.

@@ -21,4 +21,4 @@ Run supplied safe local tests when authorized and verify that suites specify rea
 
 ## 3. State the Exact Proof Boundary
 
-Reconcile every reported build, typecheck, or test claim against actual commands and selected source bindings (for example, Node type-stripping execution is not a TypeScript compiler typecheck). Separate what local source and controlled doubles proved from unproven guarantees owned by persistent storage, concurrent execution, or live external systems, recording material unproven obligations as bounded `[EVIDENCE GAP]`s rather than invented defects or unrequested E2E mandates.
+Reconcile every reported build, typecheck, or test claim against actual commands, final candidate HEAD (including post-simplification commits), and selected source bindings (for example, Node type-stripping execution is not a TypeScript compiler typecheck). Separate what local source and controlled doubles proved from unproven guarantees owned by persistent storage, concurrent execution, or live external systems, recording material unproven obligations as bounded `[EVIDENCE GAP]`s rather than invented defects or unrequested E2E mandates.

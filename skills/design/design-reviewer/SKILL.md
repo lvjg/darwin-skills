@@ -7,7 +7,7 @@ description: Use only when the user explicitly invokes $design-reviewer for an i
 
 Decide whether the submitted design is sound enough to support the user's next decision. Work between an independently established model of the problem and starting system and a step-by-step trace of how the proposed mechanisms produce the result.
 
-Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit files or author a replacement design or prompt.
+Remain read-only. Judge the submitted proposal as written, not a conditionally repaired version, and do not edit files or author a replacement design or prompt. When invoked in the same conversation that authored the proposal, treat prior design rationalizations as untrusted claims and run premise-falsification and simpler-route checks before auditing internal edge cases (prefer a cold-context reviewer on consequential redesigns).
 
 Inspect relevant code, schemas, configurations, prompts, or focused tests when they establish or test a design premise, using repository history only when current evidence is insufficient and requiring an immutable version identifier only when ambiguity could change the verdict.
 
@@ -50,7 +50,7 @@ Where mechanisms meet across components, state, or time, test whether authority,
 - **End-to-end budgets and cost transfer:** compare response latency budgets against synchronous downstream timeouts and fan-out counts, retry windows against deduplication or idempotency TTLs, and resource, payload, or context limits against contention, batch sizes, or data volume. Verify that local choices do not silently shift latency, polling, manual reconciliation, lost context, or lock contention to callers, operators, or users.
 - **Mechanism necessity and premise reset:**
   1. *Necessity basis:* added dependencies, parallel authority, persistent state/copies, outboxes, coordinators, queues, reconciliation jobs, compatibility readers, extra passes, or generic engines must serve the authorized outcome directly, a necessary consequence, an established guard/constraint, or an explicit user guarantee.
-  2. *Simpler-route test:* before auditing internals, test if existing capabilities and allowed failure semantics close all obligations—preserving active consumers, durable business facts, committed external effects, security boundaries, and cleanup—at materially lower lifecycle cost; if so, reject it and drop derivative findings tied only to keeping it.
+  2. *Simpler-route test:* before auditing internals, first check whether observed user evidence (screenshots, logs, transcripts) already refutes the mechanism's core causal assumption or whether added guards exist mainly to mitigate risks introduced by the new mechanism itself, and test if existing capabilities and allowed failure semantics close all obligations—preserving active consumers, durable business facts, committed external effects, security boundaries, and cleanup—at materially lower lifecycle cost; if so, reject it and drop derivative findings tied only to keeping it.
   3. *Unproven purpose & object rule:* keep plausible unproven purposes open as questions or evidence gaps; setting one aside under an explicit assumption may suppress internal noise, yet **never** turns the reduced route into the accepted proposal.
 
 ## 4. Falsify with Discriminating Cases

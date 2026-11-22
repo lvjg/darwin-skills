@@ -16,6 +16,7 @@ Model prompts guide interpretation and generation, not security or state invaria
 - **Loop bounds and effect confirmation:** verify hard caps on turns, retries, subagent fan-out, and token/time budgets. Confirm that code keeps a tool call, task ID, or queued acknowledgement distinct from a verified external effect, and handles timeout or unknown external state safely without blind non-idempotent retries.
 - **Lifecycle isolation and child-task commit ordering:** verify that lifecycle hooks isolate main-loop state from auxiliary model calls, and that state-dependent child work starts only after parent state commits (rather than blocking tool execution while waiting for a pending commit).
 - **Failure handling and cleanup:** verify that error and cancellation paths drain durability and cleanup, that model or tool failures are not masked behind silent fallback text, and that invalid model tool calls return recoverable tool errors rather than session-crashing faults.
+- **ACI payload hygiene and instruction coherence:** verify that tool outputs project bounded, audience-isolated payloads (no raw UI/internal metadata, channel-escaped text, or unexecutable schema enums), that system prompts, Skills, and tool contracts do not contradict each other, and that prompt or output denoising preserves actionable recovery hints and valid domain contracts.
 
 ## 3. Check Evaluation and Behavioral Honesty
 
